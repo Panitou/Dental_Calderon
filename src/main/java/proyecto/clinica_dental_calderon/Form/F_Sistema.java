@@ -2,6 +2,7 @@ package proyecto.clinica_dental_calderon.Form;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,6 +13,8 @@ import javax.swing.ImageIcon;
  * GitHub https://github.com/Panitou
  */
 public class F_Sistema extends javax.swing.JFrame implements ActionListener {
+
+    public Connection connection;
 
     //ICONO DEL SISTEMA
     String logo = "/images/diente.png";
@@ -33,11 +36,12 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
     ImageIcon proformasImagen = new ImageIcon(F_Sistema.class.getResource(Proforma));
     ImageIcon sesionImagen = new ImageIcon(F_Sistema.class.getResource(CerrarSesion));
 
-    Panel_Pacientes pacientes;
-    Panel_Citas citas;
-    Panel_Tratamientos tratamientos;
-    Panel_Pagos pagos;
-    Panel_Proformas proformas;
+    Panel_Pacientes pacientes = new Panel_Pacientes();
+    Panel_Citas citas = new Panel_Citas();
+    Panel_Tratamientos tratamientos = new Panel_Tratamientos();
+    Panel_Pagos pagos = new Panel_Pagos();
+    Panel_Proformas proformas = new Panel_Proformas();
+    F_Login login = new F_Login();
 
     public F_Sistema() throws SQLException {
 
@@ -58,135 +62,150 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
 
         lblLogo.requestFocusInWindow();
 
-        // Instancia tus paneles aquí
-        pacientes = new Panel_Pacientes();
-        citas = new Panel_Citas();
-        tratamientos = new Panel_Tratamientos();
-        pagos = new Panel_Pagos();
-        proformas = new Panel_Proformas();
-
         // Inicializa las conexiones cerradas al inicio
         pacientes.cerrarRecursos();
         citas.cerrarRecursos();
         tratamientos.cerrarRecursos();
         pagos.cerrarRecursos();
         proformas.cerrarRecursos();
+        login.cerrarRecursos();
 
         btnPacientes.addActionListener(this);
         btnTratamientos.addActionListener(this);
         btnCitas.addActionListener(this);
         btnPagos.addActionListener(this);
         btnReportes.addActionListener(this);
+        btnCerrarSs.addActionListener(this);
 
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Object evt = e.getSource();
-
         try {
-            // Cierra todas las conexiones al inicio de cada acción
+            Object evt = e.getSource();
             pacientes.cerrarRecursos();
             citas.cerrarRecursos();
             tratamientos.cerrarRecursos();
             pagos.cerrarRecursos();
             proformas.cerrarRecursos();
-
-            // Abre la conexión correspondiente al botón presionado
-            if (evt.equals(btnPacientes)) {
-                pacientes.abrirConexion();
-                //Cerrar Recursos de los otros paneles
-                tratamientos.cerrarRecursos();
-                citas.cerrarRecursos();
-                pagos.cerrarRecursos();
-                proformas.cerrarRecursos();
-
-                // Resto del código para mostrar el panel de pacientes
-                citas.setVisible(false);
-                tratamientos.setVisible(false);
-                proformas.setVisible(false);
-                pagos.setVisible(false);
-                pacientes.setVisible(true);
-
-                PanelSistema.add(pacientes);
-                PanelSistema.validate();
-                deshabilitar_Boton_Pacientes();
-                // Resto de tu código para el botón Pacientes
-            } else if (evt.equals(btnTratamientos)) {
-                tratamientos.abrirConexion();
-                //Cerrar conexiones
-                pacientes.cerrarRecursos();
-                citas.cerrarRecursos();
-                pagos.cerrarRecursos();
-                proformas.cerrarRecursos();
-
-                citas.setVisible(false);
-                pacientes.setVisible(false);
-                proformas.setVisible(false);
-                pagos.setVisible(false);
-                tratamientos.setVisible(true);
-
-                PanelSistema.add(tratamientos);
-                PanelSistema.validate();
-                deshabilitar_Boton_Tratamientos();
-                // Resto de tu código para el botón Tratamientos
-            } else if (evt.equals(btnCitas)) {
-                citas.abrirConexion();
-                //Cerrar conexiones
-                pacientes.cerrarRecursos();
-                tratamientos.cerrarRecursos();
-                pagos.cerrarRecursos();
-                proformas.cerrarRecursos();
-
-                pacientes.setVisible(false);
-                tratamientos.setVisible(false);
-                proformas.setVisible(false);
-                pagos.setVisible(false);
-                citas.setVisible(true);
-
-                PanelSistema.add(citas);
-                PanelSistema.validate();
-                deshabilitar_Boton_Citas();
-                // Resto de tu código para el botón Citas
-            } else if (evt.equals(btnPagos)) {
-                pagos.abrirConexion();
-                //Cerrar conexiones
-                pacientes.cerrarRecursos();
-                tratamientos.cerrarRecursos();
-                citas.cerrarRecursos();
-                proformas.cerrarRecursos();
-
-                citas.setVisible(false);
-                pacientes.setVisible(false);
-                tratamientos.setVisible(false);
-                proformas.setVisible(false);
-                pagos.setVisible(true);
-
-                PanelSistema.add(pagos);
-                PanelSistema.validate();
-                deshabilitar_Boton_Pagos();
-                // Resto de tu código para el botón Pagos
-            } else if (evt.equals(btnReportes)) {
-                proformas.abrirConexion();
-                //Cerrar conexiones
-                pacientes.cerrarRecursos();
-                tratamientos.cerrarRecursos();
-                citas.cerrarRecursos();
-                pagos.cerrarRecursos();
-
-                pacientes.setVisible(false);
-                citas.setVisible(false);
-                tratamientos.setVisible(false);
-                pagos.setVisible(false);
-                proformas.setVisible(true);
-
-                PanelSistema.add(proformas);
-                PanelSistema.validate();
-                deshabilitar_Boton_Reportes();
-                // Resto de tu código para el botón Reportes
+            login.cerrarRecursos();
+            try {
+                // Cierra todas las conexiones al inicio de cada acción
+                
+                // Abre la conexión correspondiente al botón presionado
+                if (evt.equals(btnPacientes)) {
+                    pacientes.abrirConexion();
+                    //Cerrar Recursos de los otros paneles
+                    tratamientos.cerrarRecursos();
+                    citas.cerrarRecursos();
+                    pagos.cerrarRecursos();
+                    proformas.cerrarRecursos();
+                    login.cerrarRecursos();
+                    
+                    // Resto del código para mostrar el panel de pacientes
+                    citas.setVisible(false);
+                    tratamientos.setVisible(false);
+                    proformas.setVisible(false);
+                    pagos.setVisible(false);
+                    pacientes.setVisible(true);
+                    
+                    PanelSistema.add(pacientes);
+                    PanelSistema.validate();
+                    deshabilitar_Boton_Pacientes();
+                    // Resto de tu código para el botón Pacientes
+                } else if (evt.equals(btnTratamientos)) {
+                    tratamientos.abrirConexion();
+                    //Cerrar conexiones
+                    pacientes.cerrarRecursos();
+                    citas.cerrarRecursos();
+                    pagos.cerrarRecursos();
+                    proformas.cerrarRecursos();
+                    login.cerrarRecursos();
+                    
+                    citas.setVisible(false);
+                    pacientes.setVisible(false);
+                    proformas.setVisible(false);
+                    pagos.setVisible(false);
+                    tratamientos.setVisible(true);
+                    
+                    PanelSistema.add(tratamientos);
+                    PanelSistema.validate();
+                    deshabilitar_Boton_Tratamientos();
+                    // Resto de tu código para el botón Tratamientos
+                } else if (evt.equals(btnCitas)) {
+                    citas.abrirConexion();
+                    //Cerrar conexiones
+                    pacientes.cerrarRecursos();
+                    tratamientos.cerrarRecursos();
+                    pagos.cerrarRecursos();
+                    proformas.cerrarRecursos();
+                    login.cerrarRecursos();
+                    
+                    pacientes.setVisible(false);
+                    tratamientos.setVisible(false);
+                    proformas.setVisible(false);
+                    pagos.setVisible(false);
+                    citas.setVisible(true);
+                    
+                    PanelSistema.add(citas);
+                    PanelSistema.validate();
+                    deshabilitar_Boton_Citas();
+                    // Resto de tu código para el botón Citas
+                } else if (evt.equals(btnPagos)) {
+                    pagos.abrirConexion();
+                    //Cerrar conexiones
+                    pacientes.cerrarRecursos();
+                    tratamientos.cerrarRecursos();
+                    citas.cerrarRecursos();
+                    proformas.cerrarRecursos();
+                    login.cerrarRecursos();
+                    
+                    citas.setVisible(false);
+                    pacientes.setVisible(false);
+                    tratamientos.setVisible(false);
+                    proformas.setVisible(false);
+                    pagos.setVisible(true);
+                    
+                    PanelSistema.add(pagos);
+                    PanelSistema.validate();
+                    deshabilitar_Boton_Pagos();
+                    // Resto de tu código para el botón Pagos
+                } else if (evt.equals(btnReportes)) {
+                    proformas.abrirConexion();
+                    //Cerrar conexiones
+                    pacientes.cerrarRecursos();
+                    tratamientos.cerrarRecursos();
+                    citas.cerrarRecursos();
+                    pagos.cerrarRecursos();
+                    login.cerrarRecursos();
+                    
+                    pacientes.setVisible(false);
+                    citas.setVisible(false);
+                    tratamientos.setVisible(false);
+                    pagos.setVisible(false);
+                    proformas.setVisible(true);
+                    
+                    PanelSistema.add(proformas);
+                    PanelSistema.validate();
+                    deshabilitar_Boton_Reportes();
+                    // Resto de tu código para el botón Reportes
+                } else if (evt.equals(btnCerrarSs)) {
+                    pacientes.cerrarRecursos();
+                    citas.cerrarRecursos();
+                    tratamientos.cerrarRecursos();
+                    pagos.cerrarRecursos();
+                    proformas.cerrarRecursos();
+                    
+                    dispose();
+                    
+                    login.show();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
             }
+            
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            Logger.getLogger(F_Sistema.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -353,9 +372,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
     }//GEN-LAST:event_btnCitasActionPerformed
 
     private void btnCerrarSsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSsActionPerformed
-        this.dispose(); // Cierra la ventana F_Sistema
-        F_Login login = new F_Login();
-        login.setVisible(true); // Abre la ventana F_Login
+
 
     }//GEN-LAST:event_btnCerrarSsActionPerformed
 

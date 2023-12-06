@@ -60,6 +60,8 @@ public class BarraProgreso extends javax.swing.JFrame {
 
         this.setUndecorated(true);
         initComponents();
+        
+        
         this.setLocationRelativeTo(null);
         setBackground(new Color(0, 0, 0, 0));
 

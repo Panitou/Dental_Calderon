@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import proyecto.clinica_dental_calderon.DB.Conexion;
@@ -15,7 +17,25 @@ import proyecto.clinica_dental_calderon.DB.Conexion;
  */
 public final class F_Login extends javax.swing.JFrame {
 
-    Conexion cx = new Conexion();
+    public Connection connection;
+    public PreparedStatement ps;
+    public ResultSet rs;
+
+    public void abrirConexion() throws SQLException {
+        // Verifica si ya hay una conexión abierta antes de abrir una nueva
+        if (connection == null || connection.isClosed()) {
+            // Abre una nueva conexión si no hay ninguna abierta
+            Conexion cx = new Conexion(); // Instancia de tu clase de conexión
+            connection = cx.getConnection(); // Método para obtener la conexión
+        }
+        // Resto del código para usar la conexión en el panel de pacientes...
+    }
+
+    public void cerrarRecursos() throws SQLException {
+        if (connection != null && !connection.isClosed()) {
+            connection.close(); // Cierra la conexión si está abierta
+        }
+    }
 
     String logo = "/images/diente.png";
 
@@ -31,8 +51,10 @@ public final class F_Login extends javax.swing.JFrame {
     ImageIcon ojo_cerrado = new ImageIcon(F_Sistema.class.getResource(ojoCerrado));
     ImageIcon linea = new ImageIcon(F_Sistema.class.getResource(Linea));
 
-    public F_Login() {
+    public F_Login() throws SQLException {
         initComponents();
+
+        abrirConexion();
 
         this.setIconImage(new ImageIcon(F_Sistema.class.getResource(logo)).getImage());
 
@@ -49,7 +71,6 @@ public final class F_Login extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         lblAcceder.requestFocus();
         lblOjo1.setVisible(false);
-
     }
 
     // Sobrescribir dispose para limpiar recursos
@@ -69,8 +90,6 @@ public final class F_Login extends javax.swing.JFrame {
 
         PanelLogin = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        pnlSesion = new javax.swing.JPanel();
-        lblInSs = new javax.swing.JLabel();
         lblAcceder = new javax.swing.JLabel();
         lblLogo = new javax.swing.JLabel();
         lblLine = new javax.swing.JLabel();
@@ -81,6 +100,7 @@ public final class F_Login extends javax.swing.JFrame {
         lblUsu = new javax.swing.JLabel();
         lblDormir = new javax.swing.JLabel();
         lblOjo1 = new javax.swing.JLabel();
+        btnIngresar = new javax.swing.JButton();
         lblTeam = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -96,54 +116,6 @@ public final class F_Login extends javax.swing.JFrame {
         PanelLogin.setLayout(null);
         PanelLogin.add(jLabel3);
         jLabel3.setBounds(530, 130, 250, 250);
-
-        pnlSesion.setBackground(new java.awt.Color(62, 134, 203));
-        pnlSesion.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                pnlSesionMouseClicked(evt);
-            }
-        });
-
-        lblInSs.setFont(new java.awt.Font("Roboto Black", 1, 18)); // NOI18N
-        lblInSs.setForeground(new java.awt.Color(255, 255, 255));
-        lblInSs.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblInSs.setText("ENTRAR");
-        lblInSs.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lblInSs.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblInSsMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                lblInSsMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                lblInSsMouseExited(evt);
-            }
-        });
-
-        javax.swing.GroupLayout pnlSesionLayout = new javax.swing.GroupLayout(pnlSesion);
-        pnlSesion.setLayout(pnlSesionLayout);
-        pnlSesionLayout.setHorizontalGroup(
-            pnlSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 120, Short.MAX_VALUE)
-            .addGroup(pnlSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlSesionLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(lblInSs, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        pnlSesionLayout.setVerticalGroup(
-            pnlSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 40, Short.MAX_VALUE)
-            .addGroup(pnlSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlSesionLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(lblInSs, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-
-        PanelLogin.add(pnlSesion);
-        pnlSesion.setBounds(150, 550, 120, 40);
 
         lblAcceder.setBackground(new java.awt.Color(51, 51, 51));
         lblAcceder.setFont(new java.awt.Font("Ubuntu Condensed", 1, 30)); // NOI18N
@@ -215,24 +187,33 @@ public final class F_Login extends javax.swing.JFrame {
         PanelLogin.add(lblOjo1);
         lblOjo1.setBounds(370, 480, 40, 40);
 
+        btnIngresar.setBackground(new java.awt.Color(0, 204, 204));
+        btnIngresar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnIngresar.setForeground(new java.awt.Color(255, 255, 255));
+        btnIngresar.setText("ENTRAR");
+        btnIngresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIngresarActionPerformed(evt);
+            }
+        });
+        PanelLogin.add(btnIngresar);
+        btnIngresar.setBounds(130, 540, 160, 50);
+
         getContentPane().add(PanelLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 450, 630));
         getContentPane().add(lblTeam, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 0, 870, 630));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
     void validarPass() {
         String username = txtUsuario.getText();
         String pass = String.valueOf(txtPass.getPassword());
 
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        Connection connection = null;
         String query = "SELECT * FROM TB_USUARIO WHERE usuarios = ? AND contrasena = ?";
 
         try {
-            connection = cx.getConnection();
+            abrirConexion(); // Abre la conexión aquí
+
             ps = connection.prepareStatement(query);
             ps.setString(1, username);
             ps.setString(2, pass);
@@ -240,44 +221,19 @@ public final class F_Login extends javax.swing.JFrame {
             if (rs.next()) {
                 CerrarFrame();
                 ProgresoBar();
-                cx.incrementConnectionCount();
-                cx.decrementConnectionCount();
             } else {
                 JOptionPane.showMessageDialog(null, "Credenciales incorrectas");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            // Cerrar los recursos y la conexión en el bloque finally para asegurar su liberación
             try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (ps != null) {
-                    ps.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
+                cerrarRecursos();
             } catch (SQLException ex) {
-                ex.printStackTrace();
+                Logger.getLogger(F_Login.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
-
-    private void lblInSsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblInSsMouseClicked
-        validarPass();
-    }//GEN-LAST:event_lblInSsMouseClicked
-
-    private void lblInSsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblInSsMouseEntered
-        //EVT CAMBIAR LOS COLORES DEL PANEL Y DEL LABEL CUANDO EL CURSOR ENTRA
-        pnlSesion.setBackground(new Color(46, 100, 151));
-    }//GEN-LAST:event_lblInSsMouseEntered
-
-    private void lblInSsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblInSsMouseExited
-        //EVT CAMBIAR LOS COLORES DEL PANEL Y DEL LABEL CUANDO EL CURSOR SALE
-        pnlSesion.setBackground(new Color(62, 134, 203));
-    }//GEN-LAST:event_lblInSsMouseExited
 
     private void txtUsuarioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtUsuarioMousePressed
         //EVT
@@ -308,10 +264,6 @@ public final class F_Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtPassMousePressed
 
-    private void pnlSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlSesionMouseClicked
-        validarPass();
-    }//GEN-LAST:event_pnlSesionMouseClicked
-
     private void lblDormirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDormirMouseClicked
         txtPass.requestFocus();
 
@@ -327,29 +279,36 @@ public final class F_Login extends javax.swing.JFrame {
         txtPass.setEchoChar('*');
     }//GEN-LAST:event_lblOjo1MouseClicked
 
+    private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
+        validarPass();
+    }//GEN-LAST:event_btnIngresarActionPerformed
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new F_Login().setVisible(true);
-            }
+                try {
+                    new F_Login().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(F_Login.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
+            }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelLogin;
+    private javax.swing.JButton btnIngresar;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lblAcceder;
     private javax.swing.JLabel lblContra;
     private javax.swing.JLabel lblDormir;
-    private javax.swing.JLabel lblInSs;
     private javax.swing.JLabel lblLine;
     private javax.swing.JLabel lblLine1;
     private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblOjo1;
     private javax.swing.JLabel lblTeam;
     private javax.swing.JLabel lblUsu;
-    private javax.swing.JPanel pnlSesion;
     private javax.swing.JPasswordField txtPass;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
