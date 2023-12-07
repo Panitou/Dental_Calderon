@@ -21,6 +21,13 @@ public class F_Agregar_Paciente extends javax.swing.JFrame {
         setDateToCurrent();
         dateFecha_Ingreso.setEnabled(false);
 
+        // Bloquear la funcionalidad de pegar (Ctrl+V) para evitar que se pegue texto
+        txtDni.setTransferHandler(null);
+        txtNombre.setTransferHandler(null);
+        txtApellido.setTransferHandler(null);
+        txtCelular.setTransferHandler(null);
+        txtEdad.setTransferHandler(null);
+
         //Restricciones
         txtDni.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -31,22 +38,22 @@ public class F_Agregar_Paciente extends javax.swing.JFrame {
             }
         });
 
-        // Validación para Nombre (solo letras, máximo 100 caracteres)
+        // Validación para Nombre (solo letras, espacios y máximo 100 caracteres)
         txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 char c = evt.getKeyChar();
-                if (!(Character.isLetter(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE)
+                if (!(Character.isLetter(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE || c == KeyEvent.VK_SPACE)
                         || txtNombre.getText().length() >= 100) {
                     evt.consume();
                 }
             }
         });
 
-// Validación para Apellido (solo letras, máximo 100 caracteres)
+// Validación para Apellido (solo letras, espacios y máximo 100 caracteres)
         txtApellido.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 char c = evt.getKeyChar();
-                if (!(Character.isLetter(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE)
+                if (!(Character.isLetter(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE || c == KeyEvent.VK_SPACE)
                         || txtApellido.getText().length() >= 100) {
                     evt.consume();
                 }
@@ -75,11 +82,12 @@ public class F_Agregar_Paciente extends javax.swing.JFrame {
             }
         });
 
-// Validación para Enfermedad (letras y números, no signos)
+// Validación para Enfermedad (letras, números, espacios y máximo 100 caracteres)
         txaEnfermedad.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 char c = evt.getKeyChar();
-                if (!(Character.isLetterOrDigit(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE)) {
+                if (!(Character.isLetterOrDigit(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE || c == KeyEvent.VK_SPACE)
+                        || txaEnfermedad.getText().length() >= 100) {
                     evt.consume();
                 }
             }

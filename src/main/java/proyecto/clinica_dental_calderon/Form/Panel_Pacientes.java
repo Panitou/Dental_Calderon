@@ -7,6 +7,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -36,21 +37,19 @@ import okhttp3.Response;
  */
 public class Panel_Pacientes extends javax.swing.JPanel {
 
-    String casa = "/images/casa.png";
     String actualizar = "/images/actualizar.png";
+    String buscar = "/images/buscar.png";
+    String limpiar = "/images/borrar.png";
 
-    ImageIcon casaImagen = new ImageIcon(F_Sistema.class.getResource(casa));
-    ImageIcon actualizarImagen = new ImageIcon(F_Sistema.class.getResource(actualizar));
+    ImageIcon actualizarImagen = new ImageIcon(Panel_Pacientes.class.getResource(actualizar));
+    ImageIcon buscarImagen = new ImageIcon(Panel_Pacientes.class.getResource(buscar));
+    ImageIcon limpiarImage = new ImageIcon(Panel_Pacientes.class.getResource(limpiar));
 
     private final OkHttpClient client = new OkHttpClient();
 
     public Connection connection;
     public PreparedStatement ps;
     public ResultSet rs;
-
-    String url_imagenes = "https://github.com/Panitou/calderon-clinica/blob/main/iconos_clinica/";
-    String buscar = url_imagenes + "buscar.png?raw=true";
-    String limpiar = url_imagenes + "borrar.png?raw=true";
 
     public void abrirConexion() throws SQLException {
         // Verifica si ya hay una conexión abierta antes de abrir una nueva
@@ -73,7 +72,8 @@ public class Panel_Pacientes extends javax.swing.JPanel {
 
         //imagenes
         btnActualizar.setIcon(actualizarImagen);
-        btnCasa.setIcon(casaImagen);
+        btnBuscar.setIcon(buscarImagen);
+        btnLimpiar.setIcon(limpiarImage);
 
         JTableHeader header = table_Pacientes.getTableHeader();
         header.setFont(new Font("Microsoft JhengHei UI", Font.BOLD, 12));
@@ -85,8 +85,6 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         abrirConexion();
         Mostrar_Datos_Tabla_Pacientes(table_Pacientes);
         deshabilitarEdicionTabla(table_Pacientes);
-        obtenerImagen(buscar, btnBuscar);
-        obtenerImagen(limpiar, btnLimpiar);
     }
 
     private void obtenerImagen(String url, JButton boton) {
@@ -162,7 +160,6 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         txtBuscar = new javax.swing.JTextField();
         btnLimpiar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        btnCasa = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(1365, 770));
         setPreferredSize(new java.awt.Dimension(1365, 770));
@@ -273,15 +270,6 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         jPanel1.add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1300, 210, 40, 40));
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 210, 270, 40));
 
-        btnCasa.setBackground(new java.awt.Color(255, 255, 255));
-        btnCasa.setBorder(null);
-        btnCasa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCasaActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(1260, 20, 32, 32));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -322,6 +310,63 @@ public class Panel_Pacientes extends javax.swing.JPanel {
             modificar_paciente.setVisible(true);
             modificar_paciente.setResizable(false);
             modificar_paciente.setLocationRelativeTo(null);
+
+            // Bloquear la funcionalidad de pegar (Ctrl+V) para evitar que se pegue texto
+            modificar_paciente.txtDni.setTransferHandler(null);
+            modificar_paciente.txtNombre.setTransferHandler(null);
+            modificar_paciente.txtApellidos.setTransferHandler(null);
+            modificar_paciente.txtCelular.setTransferHandler(null);
+            modificar_paciente.txtEdad.setTransferHandler(null);
+            modificar_paciente.txaDescripcion.setTransferHandler(null);
+
+            modificar_paciente.txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+                public void keyTyped(java.awt.event.KeyEvent evt) {
+                    char c = evt.getKeyChar();
+                    if (!(Character.isLetter(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE || c == KeyEvent.VK_SPACE)
+                            || modificar_paciente.txtNombre.getText().length() >= 100) {
+                        evt.consume();
+                    }
+                }
+            });
+
+            modificar_paciente.txtApellidos.addKeyListener(new java.awt.event.KeyAdapter() {
+                public void keyTyped(java.awt.event.KeyEvent evt) {
+                    char c = evt.getKeyChar();
+                    if (!(Character.isLetter(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE || c == KeyEvent.VK_SPACE)
+                            || modificar_paciente.txtApellidos.getText().length() >= 100) {
+                        evt.consume();
+                    }
+                }
+            });
+
+            modificar_paciente.txtCelular.addKeyListener(new java.awt.event.KeyAdapter() {
+                public void keyTyped(java.awt.event.KeyEvent evt) {
+                    char c = evt.getKeyChar();
+                    if (!(Character.isDigit(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE)
+                            || modificar_paciente.txtCelular.getText().length() >= 15) {
+                        evt.consume();
+                    }
+                }
+            });
+
+            modificar_paciente.txtEdad.addKeyListener(new java.awt.event.KeyAdapter() {
+                public void keyTyped(java.awt.event.KeyEvent evt) {
+                    char c = evt.getKeyChar();
+                    if (!(Character.isDigit(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE)
+                            || modificar_paciente.txtEdad.getText().length() >= 4) {
+                        evt.consume();
+                    }
+                }
+            });
+
+            modificar_paciente.txaDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+                public void keyTyped(java.awt.event.KeyEvent evt) {
+                    char c = evt.getKeyChar();
+                    if (!(Character.isLetterOrDigit(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE || c == KeyEvent.VK_SPACE)) {
+                        evt.consume();
+                    }
+                }
+            });
 
             modificar_paciente.txtNombre.setText(nombre_paciente);
             modificar_paciente.txtApellidos.setText(apellido_paciente);
@@ -396,10 +441,6 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         Limpiar();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
-    private void btnCasaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCasaActionPerformed
-
-    }//GEN-LAST:event_btnCasaActionPerformed
-
     void Limpiar() {
         DefaultTableModel model = (DefaultTableModel) table_Pacientes.getModel();
         TableRowSorter<DefaultTableModel> rowSorter = new TableRowSorter<>(model);
@@ -443,7 +484,6 @@ public class Panel_Pacientes extends javax.swing.JPanel {
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnAgregarPaciente;
     public javax.swing.JButton btnBuscar;
-    private javax.swing.JButton btnCasa;
     private javax.swing.JButton btnCopiar_Dni;
     private javax.swing.JButton btnEditar_Datos_Paciente;
     public javax.swing.JButton btnLimpiar;

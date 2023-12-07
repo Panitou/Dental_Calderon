@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -221,8 +223,12 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevo_TratamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevo_TratamientoActionPerformed
-        F_Nuevo_Tratamiento nuevo_tratamiento = new F_Nuevo_Tratamiento();
-        nuevo_tratamiento.setVisible(true);
+        try {
+            F_Nuevo_Tratamiento nuevo_tratamiento = new F_Nuevo_Tratamiento();
+            nuevo_tratamiento.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(Panel_Tratamientos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnNuevo_TratamientoActionPerformed
 
     private void btn_VistaGeneralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_VistaGeneralActionPerformed

@@ -1,12 +1,15 @@
 package proyecto.clinica_dental_calderon.Form;
 
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -22,7 +25,7 @@ import proyecto.clinica_dental_calderon.controlador_Tratamiento.Tratamientos;
  */
 public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
 
-    public F_Nuevo_Tratamiento() {
+    public F_Nuevo_Tratamiento() throws SQLException {
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(null);
@@ -33,7 +36,20 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
         Cargar_Combos_Odontologos(cbxOdontologo);
         cbxTratamiento.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cbxTratamientoItemStateChanged(evt);
+                try {
+                    cbxTratamientoItemStateChanged(evt);
+                } catch (SQLException ex) {
+                    Logger.getLogger(F_Nuevo_Tratamiento.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+
+        txaDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+                if (!(Character.isLetterOrDigit(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE || c == KeyEvent.VK_SPACE)) {
+                    evt.consume();
+                }
             }
         });
     }
@@ -372,7 +388,21 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (c != null) {
+                    c.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+            }
         }
+
     }//GEN-LAST:event_btnCompletarActionPerformed
 
     private void cbxOdontologoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxOdontologoActionPerformed
@@ -397,7 +427,11 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new F_Nuevo_Tratamiento().setVisible(true);
+                try {
+                    new F_Nuevo_Tratamiento().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(F_Nuevo_Tratamiento.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -439,17 +473,19 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
     public javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 
-    private void Cargar_PrecioTratamiento(String nombreTratamiento) {
+    private void Cargar_PrecioTratamiento(String nombreTratamiento) throws SQLException {
         // Conecta a la base de datos
         String query = "SELECT costo_tratamiento FROM TB_LISTA_TRATAMIENTOS WHERE nombre_tratamiento = ?";
         Connection c = null;
         PreparedStatement ps = null;
+        ResultSet rs = null;
 
         try {
             c = Conexion.getConnection();
             ps = c.prepareStatement(query);
             ps.setString(1, nombreTratamiento);
-            try (ResultSet rs = ps.executeQuery()) {
+            try {
+                rs = ps.executeQuery();
                 if (rs.next()) {
                     double costo = rs.getDouble("costo_tratamiento");
                     txtCosto.setText(String.valueOf(costo));
@@ -457,22 +493,34 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
                     // Si no se encuentra el precio, puedes manejarlo de alguna manera (por ejemplo, establecerlo en blanco)
                     txtCosto.setText("");
                 }
+            } catch (SQLException eq) {
+                eq.printStackTrace();
             }
         } catch (SQLException e) {
             e.printStackTrace();
             // Maneja cualquier error que ocurra durante la consulta
             JOptionPane.showMessageDialog(this, "Error al obtener el precio del tratamiento.");
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
         }
     }
 
-    private void cbxTratamientoItemStateChanged(java.awt.event.ItemEvent evt) {
+    private void cbxTratamientoItemStateChanged(java.awt.event.ItemEvent evt) throws SQLException {
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             String nombreTratamiento = cbxTratamiento.getSelectedItem().toString();
             Cargar_PrecioTratamiento(nombreTratamiento);
         }
     }
 
-    private void Cargar_Combos_Tratamientos(JComboBox c) {
+    private void Cargar_Combos_Tratamientos(JComboBox c) throws SQLException {
         DefaultComboBoxModel box_Tratamiento = new DefaultComboBoxModel();
         c.setModel(box_Tratamiento);
         Lista_Tratamientos lista = new Lista_Tratamientos();
@@ -488,15 +536,24 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
                 trata.setNombre_tratamiento(rs.getString(1));
                 lista.AgregarTratamiento(trata);
                 box_Tratamiento.addElement(trata.getNombre_tratamiento());
-                System.out.println("Exito");
             }
 
         } catch (Exception e) {
             System.out.println("Error" + e);;
+        } finally {
+            if (connect != null) {
+                connect.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
         }
     }
 
-    private void Cargar_Combos_Odontologos(JComboBox c) {
+    private void Cargar_Combos_Odontologos(JComboBox c) throws SQLException {
         DefaultComboBoxModel box_Odontologos = new DefaultComboBoxModel();
         c.setModel(box_Odontologos);
         Lista_Odontologos lista = new Lista_Odontologos();
@@ -512,10 +569,19 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
                 odontologos.setNombre_odontologo(rs.getString(1));
                 lista.Agregar_Odontologos(odontologos);
                 box_Odontologos.addElement(odontologos.getNombre_odontologo());
-                System.out.println("Exito");
             }
         } catch (Exception e) {
             System.out.println("Error" + e);
+        } finally {
+            if (connect != null) {
+                connect.close();
+            }
+            if (s != null) {
+                s.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
         }
     }
 }

@@ -74,6 +74,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
         citas.abrirConexion();
         pagos.abrirConexion();
         proformas.abrirConexion();
+        login.cerrarRecursos();
 
         lblLogo.requestFocusInWindow();
 

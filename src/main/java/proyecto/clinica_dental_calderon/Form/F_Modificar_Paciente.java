@@ -18,22 +18,22 @@ public class F_Modificar_Paciente extends javax.swing.JFrame {
         initComponents();
 
         //Restricciones
-        // Validación para Nombre (solo letras, máximo 100 caracteres)
+        // Validación para Nombre (solo letras y espacios, máximo 100 caracteres)
         txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 char c = evt.getKeyChar();
-                if (!(Character.isLetter(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE)
+                if (!(Character.isLetter(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE || c == KeyEvent.VK_SPACE)
                         || txtNombre.getText().length() >= 100) {
                     evt.consume();
                 }
             }
         });
 
-// Validación para Apellido (solo letras, máximo 100 caracteres)
+// Validación para Apellido (solo letras y espacios, máximo 100 caracteres)
         txtApellidos.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 char c = evt.getKeyChar();
-                if (!(Character.isLetter(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE)
+                if (!(Character.isLetter(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE || c == KeyEvent.VK_SPACE)
                         || txtApellidos.getText().length() >= 100) {
                     evt.consume();
                 }
@@ -66,12 +66,11 @@ public class F_Modificar_Paciente extends javax.swing.JFrame {
         txaDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 char c = evt.getKeyChar();
-                if (!(Character.isLetterOrDigit(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE)) {
+                if (!(Character.isLetterOrDigit(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE || c == KeyEvent.VK_SPACE)) {
                     evt.consume();
                 }
             }
         });
-
     }
 
     public void txtDni(String dni) {
@@ -260,23 +259,23 @@ public class F_Modificar_Paciente extends javax.swing.JFrame {
             int rowsUpdatedPacientes = ps.executeUpdate();
 
             if (rowsUpdatedPacientes > 0) {
-                // Actualizar TB_TRATAMIENTOS
+                // Actualizar TB_TRATAMIENTOS solo si se actualizó la enfermedad del paciente
                 String queryTratamientos = "UPDATE TB_TRATAMIENTOS SET nombre_paciente=?, apellido_paciente=? WHERE dni_paciente=?";
                 PreparedStatement psTratamientos = c.prepareStatement(queryTratamientos);
                 psTratamientos.setString(1, nuevoNombre);
                 psTratamientos.setString(2, nuevoApellido);
                 psTratamientos.setString(3, nuevoDNI);
 
-                int rowsUpdatedTratamientos = ps.executeUpdate();
+                int rowsUpdatedTratamientos = psTratamientos.executeUpdate();
 
-                // Actualizar TB_CITAS
+                // Actualizar TB_CITAS solo si se actualizó la enfermedad del paciente
                 String queryCitas = "UPDATE TB_CITAS SET nombre_paciente=?, apellido_paciente=? WHERE dni_paciente=?";
                 PreparedStatement psCitas = c.prepareStatement(queryCitas);
                 psCitas.setString(1, nuevoNombre);
                 psCitas.setString(2, nuevoApellido);
                 psCitas.setString(3, nuevoDNI);
 
-                int rowsUpdatedCitas = ps.executeUpdate();
+                int rowsUpdatedCitas = psCitas.executeUpdate();
 
                 if (rowsUpdatedTratamientos > 0 && rowsUpdatedCitas > 0) {
                     c.commit(); // Confirmar la transacción
@@ -286,7 +285,7 @@ public class F_Modificar_Paciente extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Hubo un problema al actualizar los tratamientos o las citas.");
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "No se pudieron guardar los cambios en pacientes.");
+                JOptionPane.showMessageDialog(this, "No se realizaron cambios para actualizar.");
             }
         } catch (SQLException e) {
             try {
