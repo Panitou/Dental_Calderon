@@ -35,6 +35,12 @@ import okhttp3.Response;
  * GitHub https://github.com/Panitou
  */
 public class Panel_Pacientes extends javax.swing.JPanel {
+    
+    String casa = "/images/casa.png";
+    String actualizar = "/images/actualizar.png";
+    
+    ImageIcon casaImagen = new ImageIcon(F_Sistema.class.getResource(casa));
+    ImageIcon actualizarImagen = new ImageIcon(F_Sistema.class.getResource(actualizar));
 
     private final OkHttpClient client = new OkHttpClient();
 
@@ -64,6 +70,11 @@ public class Panel_Pacientes extends javax.swing.JPanel {
 
     public Panel_Pacientes() throws SQLException {
         initComponents();
+        
+        //imagenes
+        btnActualizar.setIcon(actualizarImagen);
+        btnCasa.setIcon(casaImagen);
+        
         JTableHeader header = table_Pacientes.getTableHeader();
         header.setFont(new Font("Microsoft JhengHei UI", Font.BOLD, 12));
         table_Pacientes.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
@@ -146,12 +157,13 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         table_Pacientes = new javax.swing.JTable();
         btnAgregarPaciente = new javax.swing.JButton();
         btnEditar_Datos_Paciente = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
         btnCopiar_Dni = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         txtBuscar = new javax.swing.JTextField();
         btnLimpiar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        btnCasa = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(1365, 770));
         setPreferredSize(new java.awt.Dimension(1365, 770));
@@ -214,17 +226,16 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         });
         jPanel1.add(btnEditar_Datos_Paciente, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 210, 260, 40));
 
-        jButton1.setBackground(new java.awt.Color(62, 134, 203));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("ACTUALIZAR DATOS");
-        jButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnActualizar.setBackground(new java.awt.Color(255, 255, 255));
+        btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
+        btnActualizar.setBorder(null);
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnActualizarActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 20, 150, 30));
+        jPanel1.add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 20, 32, 32));
 
         btnCopiar_Dni.setBackground(new java.awt.Color(62, 134, 203));
         btnCopiar_Dni.setFont(new java.awt.Font("Microsoft YaHei", 1, 14)); // NOI18N
@@ -262,6 +273,15 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         });
         jPanel1.add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1300, 210, 40, 40));
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 210, 270, 40));
+
+        btnCasa.setBackground(new java.awt.Color(255, 255, 255));
+        btnCasa.setBorder(null);
+        btnCasa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCasaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(1260, 20, 32, 32));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -317,9 +337,9 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnEditar_Datos_PacienteActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         actualizarDatos_Paciente();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnCopiar_DniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopiar_DniActionPerformed
         int selectedRow = table_Pacientes.getSelectedRow();
@@ -377,6 +397,10 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         Limpiar();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
+    private void btnCasaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCasaActionPerformed
+        
+    }//GEN-LAST:event_btnCasaActionPerformed
+
     void Limpiar() {
         DefaultTableModel model = (DefaultTableModel) table_Pacientes.getModel();
         TableRowSorter<DefaultTableModel> rowSorter = new TableRowSorter<>(model);
@@ -419,12 +443,13 @@ public class Panel_Pacientes extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnAgregarPaciente;
     public javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnCasa;
     private javax.swing.JButton btnCopiar_Dni;
     private javax.swing.JButton btnEditar_Datos_Paciente;
     public javax.swing.JButton btnLimpiar;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

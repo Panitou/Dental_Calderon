@@ -18,6 +18,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
 
     //ICONO DEL SISTEMA
     String logo = "/images/diente.png";
+    String casa = "/images/casa.png";
 
     //IMAGENES
     String logoimagencircle = "/images/LogoDentalCircle.png";
@@ -36,6 +37,10 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
     ImageIcon proformasImagen = new ImageIcon(F_Sistema.class.getResource(Proforma));
     ImageIcon sesionImagen = new ImageIcon(F_Sistema.class.getResource(CerrarSesion));
 
+    ImageIcon casaImagen = new ImageIcon(F_Sistema.class.getResource(casa));
+
+    Panel_Inicio inicio = new Panel_Inicio();
+
     Panel_Pacientes pacientes = new Panel_Pacientes();
     Panel_Citas citas = new Panel_Citas();
     Panel_Tratamientos tratamientos = new Panel_Tratamientos();
@@ -47,6 +52,8 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
 
         initComponents();
 
+        PanelSistema.add(inicio);
+
         this.setIconImage(new ImageIcon(F_Sistema.class.getResource(logo)).getImage());
 
         lblLogo.setIcon(iconImagen);
@@ -56,6 +63,8 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
         lblPagos.setIcon(pagosImagen);
         lblProforma.setIcon(proformasImagen);
         lblCerrarSs.setIcon(sesionImagen);
+
+        lblCasa.setIcon(casaImagen);
 
         this.setResizable(false);
         this.setLocationRelativeTo(null);
@@ -91,7 +100,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
             login.cerrarRecursos();
             try {
                 // Cierra todas las conexiones al inicio de cada acción
-                
+
                 // Abre la conexión correspondiente al botón presionado
                 if (evt.equals(btnPacientes)) {
                     pacientes.abrirConexion();
@@ -101,14 +110,16 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
                     pagos.cerrarRecursos();
                     proformas.cerrarRecursos();
                     login.cerrarRecursos();
-                    
+
                     // Resto del código para mostrar el panel de pacientes
+                    inicio.setVisible(false);
+
                     citas.setVisible(false);
                     tratamientos.setVisible(false);
                     proformas.setVisible(false);
                     pagos.setVisible(false);
                     pacientes.setVisible(true);
-                    
+
                     PanelSistema.add(pacientes);
                     PanelSistema.validate();
                     deshabilitar_Boton_Pacientes();
@@ -121,13 +132,15 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
                     pagos.cerrarRecursos();
                     proformas.cerrarRecursos();
                     login.cerrarRecursos();
-                    
+
+                    inicio.setVisible(false);
+
                     citas.setVisible(false);
                     pacientes.setVisible(false);
                     proformas.setVisible(false);
                     pagos.setVisible(false);
                     tratamientos.setVisible(true);
-                    
+
                     PanelSistema.add(tratamientos);
                     PanelSistema.validate();
                     deshabilitar_Boton_Tratamientos();
@@ -140,13 +153,15 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
                     pagos.cerrarRecursos();
                     proformas.cerrarRecursos();
                     login.cerrarRecursos();
-                    
+
+                    inicio.setVisible(false);
+
                     pacientes.setVisible(false);
                     tratamientos.setVisible(false);
                     proformas.setVisible(false);
                     pagos.setVisible(false);
                     citas.setVisible(true);
-                    
+
                     PanelSistema.add(citas);
                     PanelSistema.validate();
                     deshabilitar_Boton_Citas();
@@ -159,13 +174,15 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
                     citas.cerrarRecursos();
                     proformas.cerrarRecursos();
                     login.cerrarRecursos();
-                    
+
+                    inicio.setVisible(false);
+
                     citas.setVisible(false);
                     pacientes.setVisible(false);
                     tratamientos.setVisible(false);
                     proformas.setVisible(false);
                     pagos.setVisible(true);
-                    
+
                     PanelSistema.add(pagos);
                     PanelSistema.validate();
                     deshabilitar_Boton_Pagos();
@@ -178,13 +195,15 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
                     citas.cerrarRecursos();
                     pagos.cerrarRecursos();
                     login.cerrarRecursos();
-                    
+
+                    inicio.setVisible(false);
+
                     pacientes.setVisible(false);
                     citas.setVisible(false);
                     tratamientos.setVisible(false);
                     pagos.setVisible(false);
                     proformas.setVisible(true);
-                    
+
                     PanelSistema.add(proformas);
                     PanelSistema.validate();
                     deshabilitar_Boton_Reportes();
@@ -195,17 +214,28 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
                     tratamientos.cerrarRecursos();
                     pagos.cerrarRecursos();
                     proformas.cerrarRecursos();
-                    
+                    login.cerrarRecursos();
                     dispose();
-                    
+
                     login.show();
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(F_Sistema.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                pacientes.cerrarRecursos();
+                citas.cerrarRecursos();
+                tratamientos.cerrarRecursos();
+                pagos.cerrarRecursos();
+                proformas.cerrarRecursos();
+                login.cerrarRecursos();
+            } catch (SQLException ex) {
+                Logger.getLogger(F_Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
     }
@@ -216,6 +246,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
 
         PanelSistema = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        lblCasa = new javax.swing.JLabel();
         btnPacientes = new javax.swing.JButton();
         btnTratamientos = new javax.swing.JButton();
         btnReportes = new javax.swing.JButton();
@@ -246,6 +277,17 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
         jPanel2.setMinimumSize(new java.awt.Dimension(290, 450));
         jPanel2.setPreferredSize(new java.awt.Dimension(290, 450));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblCasa.setText("jLabel1");
+        lblCasa.setMaximumSize(new java.awt.Dimension(32, 32));
+        lblCasa.setMinimumSize(new java.awt.Dimension(32, 32));
+        lblCasa.setPreferredSize(new java.awt.Dimension(32, 32));
+        lblCasa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblCasaMouseClicked(evt);
+            }
+        });
+        jPanel2.add(lblCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 10, 32, 32));
 
         btnPacientes.setBackground(new java.awt.Color(60, 133, 203));
         btnPacientes.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -372,9 +414,48 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
     }//GEN-LAST:event_btnCitasActionPerformed
 
     private void btnCerrarSsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSsActionPerformed
+        try {
+            pacientes.cerrarRecursos();
+            citas.cerrarRecursos();
+            tratamientos.cerrarRecursos();
+            pagos.cerrarRecursos();
+            proformas.cerrarRecursos();
+            dispose();
+            login.show();
 
+        } catch (SQLException ex) {
+            Logger.getLogger(F_Sistema.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }//GEN-LAST:event_btnCerrarSsActionPerformed
+
+    private void lblCasaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCasaMouseClicked
+        try {
+            pacientes.setVisible(false);
+            citas.setVisible(false);
+            tratamientos.setVisible(false);
+            proformas.setVisible(false);
+            pagos.setVisible(false);
+
+            inicio.setVisible(true);
+            PanelSistema.add(inicio);
+
+            pacientes.cerrarRecursos();
+            citas.cerrarRecursos();
+            tratamientos.cerrarRecursos();
+            pagos.cerrarRecursos();
+            proformas.cerrarRecursos();
+
+            btnPacientes.setEnabled(true);
+            btnTratamientos.setEnabled(true);
+            btnCitas.setEnabled(true);
+            btnPagos.setEnabled(true);
+            btnReportes.setEnabled(true);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(F_Sistema.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_lblCasaMouseClicked
 
     public static void main(String args[]) {
 
@@ -398,6 +479,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JButton btnReportes;
     private javax.swing.JButton btnTratamientos;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblCasa;
     private javax.swing.JLabel lblCerrarSs;
     private javax.swing.JLabel lblCitas;
     private javax.swing.JLabel lblLogo;

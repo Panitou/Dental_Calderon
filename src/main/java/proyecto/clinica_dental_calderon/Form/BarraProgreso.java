@@ -14,11 +14,6 @@ import javax.swing.ImageIcon;
  * @author Yber-M;
  */
 public class BarraProgreso extends javax.swing.JFrame {
-
-    /**
-     * Creates new form BarraProgreso
-     */
-    
     
     String diente = "/images/diente.png";
     String logo = "/images/LogoDentalCircle.png";
@@ -92,7 +87,7 @@ public class BarraProgreso extends javax.swing.JFrame {
 
     public void AbrirSistema() throws SQLException {
         F_Sistema sistema = new F_Sistema();
-
+        
         sistema.setVisible(true);
 
         this.dispose();

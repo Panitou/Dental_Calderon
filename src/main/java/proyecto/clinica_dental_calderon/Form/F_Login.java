@@ -1,6 +1,7 @@
 package proyecto.clinica_dental_calderon.Form;
 
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -55,6 +56,51 @@ public final class F_Login extends javax.swing.JFrame {
         initComponents();
 
         abrirConexion();
+
+        //Validar user
+        txtUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+                if (!Character.isLetter(c) && c != KeyEvent.VK_SPACE) {
+                    evt.consume();
+                }
+            }
+        });
+
+        txtUsuario.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                if (txtUsuario.getText().isEmpty() || txtUsuario.getText().equals("Ingrese su nombre de usuario")) {
+                    txtUsuario.setText("Ingrese su nombre de usuario");
+                    txtUsuario.setForeground(new Color(204, 204, 204));
+                }
+            }
+        });
+
+        txtUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                if (evt.getKeyCode() == KeyEvent.VK_TAB) {
+                    txtPass.requestFocus();
+                }
+            }
+        });
+
+        txtPass.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                if (String.valueOf(txtPass.getPassword()).equals("************")) {
+                    txtPass.setText("");
+                    txtPass.setForeground(Color.black);
+                }
+            }
+        });
+
+        txtPass.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+                if (!Character.isLetter(c) && c != KeyEvent.VK_SPACE) {
+                    evt.consume();
+                }
+            }
+        });
 
         this.setIconImage(new ImageIcon(F_Sistema.class.getResource(logo)).getImage());
 
@@ -187,10 +233,11 @@ public final class F_Login extends javax.swing.JFrame {
         PanelLogin.add(lblOjo1);
         lblOjo1.setBounds(370, 480, 40, 40);
 
-        btnIngresar.setBackground(new java.awt.Color(0, 204, 204));
+        btnIngresar.setBackground(new java.awt.Color(62, 134, 203));
         btnIngresar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnIngresar.setForeground(new java.awt.Color(255, 255, 255));
         btnIngresar.setText("ENTRAR");
+        btnIngresar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnIngresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnIngresarActionPerformed(evt);
@@ -204,6 +251,7 @@ public final class F_Login extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    int intentosFallidos = 0;
 
     void validarPass() {
         String username = txtUsuario.getText();
@@ -222,7 +270,12 @@ public final class F_Login extends javax.swing.JFrame {
                 CerrarFrame();
                 ProgresoBar();
             } else {
-                JOptionPane.showMessageDialog(null, "Credenciales incorrectas");
+                intentosFallidos++;
+                if (intentosFallidos >= 3) {
+                    mostrarAyuda();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Credenciales incorrectas. Intentos restantes: " + (3 - intentosFallidos));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -233,6 +286,56 @@ public final class F_Login extends javax.swing.JFrame {
                 Logger.getLogger(F_Login.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    void mostrarAyuda() {
+        int opcion = JOptionPane.showOptionDialog(null, "¿Necesitas ayuda para iniciar sesión?", "Ayuda",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Sí", "No"}, "No");
+
+        if (opcion == JOptionPane.YES_OPTION) {
+            validarRespuestaOdontologo();
+        } else {
+            reiniciarIntentos();
+        }
+    }
+
+    void validarRespuestaOdontologo() {
+        String respuesta = JOptionPane.showInputDialog(null, "Escribe el nombre de un odontólogo de la clínica:");
+
+        if (respuesta != null) {
+            respuesta = respuesta.toLowerCase(); // Convertir la respuesta a minúsculas para comparar
+
+            // Nombres permitidos para la validación
+            String[] nombresPermitidos = {"oswaldo", "victor", "alexis"};
+
+            boolean nombreValido = false;
+            for (String nombre : nombresPermitidos) {
+                if (respuesta.equals(nombre)) {
+                    nombreValido = true;
+                    break;
+                }
+            }
+
+            if (nombreValido) {
+                JOptionPane.showMessageDialog(null, "Acceso concedido."
+                        + "\nUser: admin"
+                        + "\nPassword: admin");
+                reiniciarIntentos();
+            } else {
+                JOptionPane.showMessageDialog(null, "Nombre incorrecto. Intenta de nuevo.");
+                validarRespuestaOdontologo(); // Volver a pedir el nombre
+            }
+        } else {
+            reiniciarIntentos();
+        }
+    }
+
+    void reiniciarIntentos() {
+        intentosFallidos = 0;
+        txtUsuario.setText("Ingrese su nombre de usuario");
+        txtUsuario.setForeground(new Color(204, 204, 204));
+        txtPass.setText("************");
+        txtPass.setForeground(new Color(204, 204, 204));
     }
 
     private void txtUsuarioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtUsuarioMousePressed
@@ -280,6 +383,7 @@ public final class F_Login extends javax.swing.JFrame {
     }//GEN-LAST:event_lblOjo1MouseClicked
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
+
         validarPass();
     }//GEN-LAST:event_btnIngresarActionPerformed
 
