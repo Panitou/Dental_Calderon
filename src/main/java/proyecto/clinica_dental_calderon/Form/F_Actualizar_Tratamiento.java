@@ -7,9 +7,7 @@ import javax.swing.JOptionPane;
 import proyecto.clinica_dental_calderon.DB.Conexion;
 
 public class F_Actualizar_Tratamiento extends javax.swing.JFrame {
-    
-    Connection connect = Conexion.getConnection();
-    
+
     public F_Actualizar_Tratamiento() {
         initComponents();
         setVisible(true);
@@ -129,13 +127,17 @@ public class F_Actualizar_Tratamiento extends javax.swing.JFrame {
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         int id_tratamiento = Integer.parseInt(txtN_Tratamiento.getText());
-        
+
         String seleccion_update = cbxEstado.getSelectedItem().toString();
-        
+
+        Connection c = null;
+        PreparedStatement ps = null;
+        String actualizarEstadoQuery = "UPDATE TB_TRATAMIENTOS SET estado_tratamiento = ? WHERE id_tratamiento = ?";
         try {
+            c = Conexion.getConnection();
             // Actualizar el estado de la cita en la base de datos
-            String actualizarEstadoQuery = "UPDATE TB_TRATAMIENTOS SET estado_tratamiento = ? WHERE id_tratamiento = ?";
-            PreparedStatement ps = connect.prepareStatement(actualizarEstadoQuery);
+
+            ps = c.prepareStatement(actualizarEstadoQuery);
             ps.setString(1, seleccion_update);
             ps.setInt(2, id_tratamiento);
 
@@ -151,9 +153,25 @@ public class F_Actualizar_Tratamiento extends javax.swing.JFrame {
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al actualizar el estado del tratamiento.");
+        } finally {
+            // Cerrar recursos (PreparedStatement, Connection, etc.)
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (c != null) {
+                try {
+                    c.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        
-        
+
+
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void cbxEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxEstadoActionPerformed

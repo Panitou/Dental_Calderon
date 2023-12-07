@@ -208,6 +208,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
         String query = "SELECT id_proforma, telefono_paciente, nombre_paciente, apellido_paciente, fecha_registro, hora_registro FROM TB_PROFORMAS";
 
         try {
+            abrirConexion();
             ps = connection.prepareStatement(query);
             rs = ps.executeQuery();
 
@@ -222,9 +223,6 @@ public class Panel_Proformas extends javax.swing.JPanel {
                 };
                 tableModel.addRow(rowData);
             }
-
-            rs.close();
-            ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al cargar los datos de la tabla.");

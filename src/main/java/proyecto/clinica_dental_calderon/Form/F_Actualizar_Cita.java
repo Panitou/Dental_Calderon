@@ -11,9 +11,7 @@ import proyecto.clinica_dental_calderon.DB.Conexion;
  * GitHub https://github.com/Panitou
  */
 public class F_Actualizar_Cita extends javax.swing.JFrame {
-    
-    Connection connect = Conexion.getConnection();
-    
+
     private int idCita;
 
     public F_Actualizar_Cita() {
@@ -142,13 +140,16 @@ public class F_Actualizar_Cita extends javax.swing.JFrame {
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         int idCita = Integer.parseInt(txtNumeroCita.getText());
 
+        Connection c = null;
+        PreparedStatement ps = null;
+
         // Obtener el nuevo estado de la cita desde el ComboBox
         String nuevoEstado = cbxEstado_Cita.getSelectedItem().toString();
-
+        String actualizarEstadoQuery = "UPDATE TB_CITAS SET estado_cita = ? WHERE id_cita = ?";
         try {
+            c = Conexion.getConnection();
             // Actualizar el estado de la cita en la base de datos
-            String actualizarEstadoQuery = "UPDATE TB_CITAS SET estado_cita = ? WHERE id_cita = ?";
-            PreparedStatement ps = connect.prepareStatement(actualizarEstadoQuery);
+            ps = c.prepareStatement(actualizarEstadoQuery);
             ps.setString(1, nuevoEstado);
             ps.setInt(2, idCita);
 
@@ -160,11 +161,19 @@ public class F_Actualizar_Cita extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "No se pudo actualizar el estado de la cita.");
             }
 
-            ps.close();
-            connect.close();
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al actualizar el estado de la cita.");
+        } finally {
+            try {
+                if (c != null) {
+                    c.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (Exception e) {
+            }
         }
     }//GEN-LAST:event_btnActualizarActionPerformed
 

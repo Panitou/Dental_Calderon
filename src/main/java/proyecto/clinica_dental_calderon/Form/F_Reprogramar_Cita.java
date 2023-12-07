@@ -17,7 +17,6 @@ import proyecto.clinica_dental_calderon.DB.Conexion;
 public class F_Reprogramar_Cita extends javax.swing.JFrame {
 
     private int idCita; // Agregar un campo para almacenar el ID de la cita
-    Connection connect = Conexion.getConnection();
 
     public F_Reprogramar_Cita() {
         initComponents();
@@ -234,6 +233,7 @@ public class F_Reprogramar_Cita extends javax.swing.JFrame {
     private void btnReprogramarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReprogramarActionPerformed
         // Obtener el ID de la cita seleccionada
         int idCita;
+        Connection c = null;
         PreparedStatement ps = null;
         idCita = Integer.parseInt(txtNumeroCita.getText());
 
@@ -307,7 +307,8 @@ public class F_Reprogramar_Cita extends javax.swing.JFrame {
         parameters.add(idCita);
 
         try {
-            ps = connect.prepareStatement(updateQuery);
+            c = Conexion.getConnection();
+            ps = c.prepareStatement(updateQuery);
 
             // Establecer los parámetros dinámicos
             int parameterIndex = 1;
@@ -332,8 +333,8 @@ public class F_Reprogramar_Cita extends javax.swing.JFrame {
                 if (ps != null) {
                     ps.close();
                 }
-                if (connect != null) {
-                    connect.close();
+                if (c != null) {
+                    c.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();

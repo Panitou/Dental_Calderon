@@ -35,10 +35,10 @@ import okhttp3.Response;
  * GitHub https://github.com/Panitou
  */
 public class Panel_Pacientes extends javax.swing.JPanel {
-    
+
     String casa = "/images/casa.png";
     String actualizar = "/images/actualizar.png";
-    
+
     ImageIcon casaImagen = new ImageIcon(F_Sistema.class.getResource(casa));
     ImageIcon actualizarImagen = new ImageIcon(F_Sistema.class.getResource(actualizar));
 
@@ -70,11 +70,11 @@ public class Panel_Pacientes extends javax.swing.JPanel {
 
     public Panel_Pacientes() throws SQLException {
         initComponents();
-        
+
         //imagenes
         btnActualizar.setIcon(actualizarImagen);
         btnCasa.setIcon(casaImagen);
-        
+
         JTableHeader header = table_Pacientes.getTableHeader();
         header.setFont(new Font("Microsoft JhengHei UI", Font.BOLD, 12));
         table_Pacientes.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
@@ -112,7 +112,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
 
     public void Mostrar_Datos_Tabla_Pacientes(JTable tablePaciente) throws SQLException {
         DefaultTableModel tableModel = (DefaultTableModel) tablePaciente.getModel();
-        
+
         // Limpia la tabla para asegurarte de que no haya datos anteriores
         tableModel.setRowCount(0);
 
@@ -120,7 +120,6 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         String query = "SELECT id_paciente, nombre_paciente, apellido_paciente, dni_paciente, edad_paciente, enfermedad_paciente, celular_paciente, fecha_inscripcion FROM TB_PACIENTES";
 
         try { // Reemplaza esto con tu lógica real de conexión a la base de datos
-
             ps = connection.prepareStatement(query);
             rs = ps.executeQuery();
 
@@ -398,7 +397,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btnCasaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCasaActionPerformed
-        
+
     }//GEN-LAST:event_btnCasaActionPerformed
 
     void Limpiar() {
@@ -416,6 +415,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         String query = "SELECT * FROM TB_PACIENTES";
 
         try {
+            abrirConexion();
             ps = connection.prepareStatement(query);
             rs = ps.executeQuery();
 
@@ -432,9 +432,6 @@ public class Panel_Pacientes extends javax.swing.JPanel {
                 };
                 tableModel.addRow(rowData);
             }
-
-            rs.close();
-            ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al cargar los datos de la tabla.");

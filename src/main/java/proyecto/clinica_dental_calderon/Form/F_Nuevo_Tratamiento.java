@@ -22,8 +22,6 @@ import proyecto.clinica_dental_calderon.controlador_Tratamiento.Tratamientos;
  */
 public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
 
-    Connection connection = Conexion.getConnection();
-
     public F_Nuevo_Tratamiento() {
         initComponents();
         this.setResizable(false);
@@ -300,11 +298,13 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
         //Establecer deuda inicial
         Double deuda = Double.valueOf(txtCosto.getText());
 
+        Connection c = null;
         PreparedStatement ps = null;
         String query = "INSERT INTO TB_TRATAMIENTOS (dni_paciente, nombre_paciente, apellido_paciente, odontologo, tratamiento, descripcion, fecha_creacion, citas, costo, deuda) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
-            ps = connection.prepareStatement(query);
+            c = Conexion.getConnection();
+            ps = c.prepareStatement(query);
             ps.setString(1, dni);
             ps.setString(2, nombre);
             ps.setString(3, apellidos);
@@ -327,15 +327,20 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            try {
-                if (ps != null) {
+            // Cerrar recursos (PreparedStatement, Connection, etc.)
+            if (ps != null) {
+                try {
                     ps.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
-                if (connection != null) {
-                    connection.close();
+            }
+            if (c != null) {
+                try {
+                    c.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
         }
     }//GEN-LAST:event_btn_Crear_TratamientoActionPerformed
@@ -343,12 +348,14 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
     private void btnCompletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompletarActionPerformed
 
         String dni = txtDni.getText();
+        Connection c = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         String query = "SELECT * FROM TB_PACIENTES WHERE dni_paciente = ?";
 
         try {
-            ps = connection.prepareStatement(query);
+            c = Conexion.getConnection();
+            ps = c.prepareStatement(query);
             ps.setString(1, dni);
             rs = ps.executeQuery();
 
@@ -373,7 +380,7 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
     }//GEN-LAST:event_cbxOdontologoActionPerformed
 
     private void checkEditarPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkEditarPrecioActionPerformed
-        
+
     }//GEN-LAST:event_checkEditarPrecioActionPerformed
 
     private void checkEditarPrecioItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkEditarPrecioItemStateChanged
@@ -433,10 +440,14 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void Cargar_PrecioTratamiento(String nombreTratamiento) {
-        Connection connection = Conexion.getConnection(); // Conecta a la base de datos
+        // Conecta a la base de datos
         String query = "SELECT costo_tratamiento FROM TB_LISTA_TRATAMIENTOS WHERE nombre_tratamiento = ?";
+        Connection c = null;
+        PreparedStatement ps = null;
 
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try {
+            c = Conexion.getConnection();
+            ps = c.prepareStatement(query);
             ps.setString(1, nombreTratamiento);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -465,10 +476,12 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
         DefaultComboBoxModel box_Tratamiento = new DefaultComboBoxModel();
         c.setModel(box_Tratamiento);
         Lista_Tratamientos lista = new Lista_Tratamientos();
+        Connection connect = null;
         Statement ps = null;
         ResultSet rs = null;
         try {
-            ps = connection.createStatement();
+            connect = Conexion.getConnection();
+            ps = connect.createStatement();
             rs = ps.executeQuery("SELECT nombre_tratamiento FROM TB_LISTA_TRATAMIENTOS");
             while (rs.next()) {
                 Tratamientos trata = new Tratamientos();
@@ -487,10 +500,12 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
         DefaultComboBoxModel box_Odontologos = new DefaultComboBoxModel();
         c.setModel(box_Odontologos);
         Lista_Odontologos lista = new Lista_Odontologos();
+        Connection connect = null;
         Statement s = null;
         ResultSet rs = null;
         try {
-            s = connection.createStatement();
+            connect = Conexion.getConnection();
+            s = connect.createStatement();
             rs = s.executeQuery("SELECT nombre_odontologo FROM TB_ODONTOLOGOS");
             while (rs.next()) {
                 Odontologos odontologos = new Odontologos();

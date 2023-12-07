@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import proyecto.clinica_dental_calderon.DB.Conexion;
@@ -14,14 +15,18 @@ import proyecto.clinica_dental_calderon.DB.Conexion;
  * GitHub https://github.com/Panitou
  */
 public class Panel_Tratamientos extends javax.swing.JPanel {
-    
+
     public Connection connection;
     public PreparedStatement ps;
     public ResultSet rs;
-    
+
+    String actualizar = "/images/actualizar.png";
+
+    ImageIcon actualizarImagen = new ImageIcon(F_Sistema.class.getResource(actualizar));
+
     public Panel_Tratamientos() throws SQLException {
         initComponents();
-        abrirConexion();
+        btnActualizar.setIcon(actualizarImagen);
         Mostrar_Datos_Tabla();
     }
 
@@ -34,13 +39,13 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
         }
         // Resto del código para usar la conexión en el panel de pacientes...
     }
-    
+
     public void cerrarRecursos() throws SQLException {
         if (connection != null && !connection.isClosed()) {
             connection.close(); // Cierra la conexión si está abierta
         }
     }
-    
+
     public void Mostrar_Datos_Tabla() {
         DefaultTableModel dt = (DefaultTableModel) tableTratamientos.getModel();
 
@@ -49,6 +54,7 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
         String query = "SELECT id_tratamiento, dni_paciente, nombre_paciente, apellido_paciente, odontologo, tratamiento, fecha_creacion, costo, estado_pago, estado_tratamiento FROM TB_TRATAMIENTOS";
 
         try {
+            abrirConexion();
             ps = connection.prepareStatement(query);
             rs = ps.executeQuery();
 
@@ -66,6 +72,8 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
 
                 dt.addRow(new Object[]{idTratamiento, dni, nombre, apellido, odontologo, tratamiento, fecha_creacion, costo, estado_pago, estado_tratamiento});
             }
+            rs.close();
+            ps.close();
 
         } catch (SQLException esql) {
             esql.printStackTrace();
@@ -85,11 +93,10 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         btn_VistaGeneral = new javax.swing.JButton();
         btn_ActualizarEstado = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableTratamientos = new javax.swing.JTable();
         btnLimpiarFiltro = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(1365, 770));
         setPreferredSize(new java.awt.Dimension(1365, 770));
@@ -163,17 +170,16 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
         });
         jPanel1.add(btn_ActualizarEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 210, 200, 40));
 
-        jButton1.setBackground(new java.awt.Color(62, 134, 203));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("ACTUALIZAR DATOS");
-        jButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnActualizar.setBackground(new java.awt.Color(255, 255, 255));
+        btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
+        btnActualizar.setBorder(null);
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnActualizarActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 20, 150, 30));
+        jPanel1.add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 20, 32, 32));
 
         tableTratamientos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -201,13 +207,6 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
             }
         });
         jPanel1.add(btnLimpiarFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(819, 210, 160, 40));
-
-        jButton2.setBackground(new java.awt.Color(62, 202, 151));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("ELIMINAR TRATAMIENTO");
-        jButton2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 160, 200, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -331,9 +330,9 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
         actualizar_tratamiento.txtTratamiento.setText(tratamiento);
     }//GEN-LAST:event_btn_ActualizarEstadoActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         actualizarTablaTratamientos();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnAplicarFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAplicarFiltroActionPerformed
         String filtroSeleccionado = (String) cbxBusquedaTratamientos.getSelectedItem();
@@ -383,6 +382,7 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
         String query = "SELECT * FROM TB_TRATAMIENTOS";
 
         try {
+            abrirConexion();
             ps = connection.prepareStatement(query);
             rs = ps.executeQuery();
 
@@ -401,9 +401,6 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
                 };
                 tableModel.addRow(rowData);
             }
-
-            rs.close();
-            ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al cargar los datos de la tabla.");
@@ -412,14 +409,13 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnAplicarFiltro;
     private javax.swing.JButton btnLimpiarFiltro;
     private javax.swing.JButton btnNuevo_Tratamiento;
     private javax.swing.JButton btn_ActualizarEstado;
     private javax.swing.JButton btn_VistaGeneral;
     private javax.swing.JComboBox<String> cbxBusquedaTratamientos;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

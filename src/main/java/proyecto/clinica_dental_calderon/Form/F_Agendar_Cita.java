@@ -22,7 +22,6 @@ import proyecto.clinica_dental_calderon.controlador_Odontologos.Odontologos;
  */
 public class F_Agendar_Cita extends javax.swing.JFrame {
 
-    Connection connect = Conexion.getConnection();
     // Crear el modelo de tabla para los tratamientos
     DefaultTableModel tableModel = new DefaultTableModel();
 
@@ -48,11 +47,13 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
         DefaultComboBoxModel box_Odontologos = new DefaultComboBoxModel();
         c.setModel(box_Odontologos);
         Lista_Odontologos lista = new Lista_Odontologos();
-        Statement s = null;
+        Connection connect = null;
+        Statement ps = null;
         ResultSet rs = null;
         try {
-            s = connect.createStatement();
-            rs = s.executeQuery("SELECT nombre_odontologo FROM TB_ODONTOLOGOS");
+            connect = Conexion.getConnection();
+            ps = connect.createStatement();
+            rs = ps.executeQuery("SELECT nombre_odontologo FROM TB_ODONTOLOGOS");
             while (rs.next()) {
                 Odontologos odontologos = new Odontologos();
                 odontologos.setNombre_odontologo(rs.getString(1));
@@ -289,6 +290,8 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
 
         String dni = txtDni.getText();
 
+        Connection c = null;
+
         PreparedStatement psPacientes = null;
         ResultSet rsPacientes = null;
         String queryPacientes = "SELECT * FROM TB_PACIENTES WHERE dni_paciente = ?";
@@ -298,7 +301,8 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
         String queryTratamientos = "SELECT id_tratamiento, tratamiento, descripcion, fecha_creacion, costo, estado_pago, estado_tratamiento FROM TB_TRATAMIENTOS WHERE dni_paciente = ?";
 
         try {
-            psPacientes = connect.prepareStatement(queryPacientes);
+            c = Conexion.getConnection();
+            psPacientes = c.prepareStatement(queryPacientes);
             psPacientes.setString(1, dni);
             rsPacientes = psPacientes.executeQuery();
 
@@ -312,7 +316,7 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
                 dateFecha_Ingreso.setDate(rsPacientes.getTimestamp("fecha_inscripcion"));
 
                 // Consultar tratamientos del paciente
-                psTratamientos = connect.prepareStatement(queryTratamientos);
+                psTratamientos = c.prepareStatement(queryTratamientos);
                 psTratamientos.setString(1, dni);
                 rsTratamientos = psTratamientos.executeQuery();
 
@@ -352,12 +356,28 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (c != null) {
+                    c.close();
+                }
+                if (psPacientes != null) {
+                    psPacientes.close();
+                }
+                if (psTratamientos != null) {
+                    psTratamientos.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }//GEN-LAST:event_btnCompletarActionPerformed
 
     private void btnAgregar_CitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar_CitaActionPerformed
         java.util.Date currentDate = new java.util.Date();
         Date selectedDate = new java.sql.Date(dateCita.getDate().getTime());
+        Connection c = null;
+        PreparedStatement ps = null;
 
         if (txtDni.getText().isEmpty() || txtNombre.getText().isEmpty() || txtApellidos.getText().isEmpty() || dateCita.getDate() == null
                 || SpinnerHora.getValue() == null || SpinnerMinuto.getValue() == null) {
@@ -378,11 +398,12 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
                 if (tableTratamiento.getSelectedRow() == -1) {
                     JOptionPane.showMessageDialog(this, "Por favor, seleccione un tratamiento de la tabla.");
                 } else {
-                    PreparedStatement ps = null;
+                    
                     String query = "INSERT INTO TB_CITAS (id_tratamiento, dni_paciente, nombre_paciente, apellido_paciente, fecha, hora, odontologo, descripcion, estado_cita) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'PENDIENTE')";
 
                     try {
-                        ps = connect.prepareStatement(query);
+                        c = Conexion.getConnection();
+                        ps = c.prepareStatement(query);
 
                         // Obtener el ID del tratamiento seleccionado
                         int filaSeleccionada = tableTratamiento.getSelectedRow();
@@ -405,7 +426,7 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
 
                             // Actualizar la columna citas en la tabla TB_TRATAMIENTOS
                             String updateQuery = "UPDATE TB_TRATAMIENTOS SET citas = citas + 1 WHERE id_tratamiento = ?";
-                            ps = connect.prepareStatement(updateQuery);
+                            ps = c.prepareStatement(updateQuery);
                             ps.setInt(1, idTratamientoSeleccionado);
                             ps.executeUpdate();
 
@@ -423,8 +444,8 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
                             if (ps != null) {
                                 ps.close();
                             }
-                            if (connect != null) {
-                                connect.close();
+                            if (c != null) {
+                                c.close();
                             }
                         } catch (SQLException e) {
                             e.printStackTrace();

@@ -1,5 +1,6 @@
 package proyecto.clinica_dental_calderon.Form;
 
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -13,10 +14,64 @@ import proyecto.clinica_dental_calderon.DB.Conexion;
  */
 public class F_Modificar_Paciente extends javax.swing.JFrame {
 
-    Connection connect = Conexion.getConnection();
-
     public F_Modificar_Paciente() {
         initComponents();
+
+        //Restricciones
+        // Validación para Nombre (solo letras, máximo 100 caracteres)
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+                if (!(Character.isLetter(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE)
+                        || txtNombre.getText().length() >= 100) {
+                    evt.consume();
+                }
+            }
+        });
+
+// Validación para Apellido (solo letras, máximo 100 caracteres)
+        txtApellidos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+                if (!(Character.isLetter(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE)
+                        || txtApellidos.getText().length() >= 100) {
+                    evt.consume();
+                }
+            }
+        });
+
+// Validación para Celular (solo números, máximo 15 dígitos)
+        txtCelular.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+                if (!(Character.isDigit(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE)
+                        || txtCelular.getText().length() >= 15) {
+                    evt.consume();
+                }
+            }
+        });
+
+// Validación para Edad (solo números, máximo 4 dígitos)
+        txtEdad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+                if (!(Character.isDigit(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE)
+                        || txtEdad.getText().length() >= 4) {
+                    evt.consume();
+                }
+            }
+        });
+
+// Validación para Enfermedad (letras y números, no signos)
+        txaDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+                if (!(Character.isLetterOrDigit(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE)) {
+                    evt.consume();
+                }
+            }
+        });
+
     }
 
     public void txtDni(String dni) {
@@ -176,7 +231,8 @@ public class F_Modificar_Paciente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        // Obtener los datos editados desde los campos de texto y otros controles
+
+// Obtener los datos editados desde los campos de texto y otros controles
         String nuevoNombre = txtNombre.getText();
         String nuevoApellido = txtApellidos.getText();
         String nuevoDNI = txtDni.getText(); // DNI del paciente que quieres actualizar
@@ -184,59 +240,78 @@ public class F_Modificar_Paciente extends javax.swing.JFrame {
         String nuevaEnfermedad = txaDescripcion.getText();
         String nuevoCelular = txtCelular.getText();
         java.util.Date nuevaFechaInscripcion = dateFecha_Ingreso.getDate();
-
+        Connection c = null;
+        PreparedStatement ps = null;
+        String queryPacientes = "UPDATE TB_PACIENTES SET nombre_paciente=?, apellido_paciente=?, edad_paciente=?, enfermedad_paciente=?, celular_paciente=?, fecha_inscripcion=? WHERE dni_paciente=?";
         try {
-            String queryPacientes = "UPDATE TB_PACIENTES SET nombre_paciente=?, apellido_paciente=?, edad_paciente=?, enfermedad_paciente=?, celular_paciente=?, fecha_inscripcion=? WHERE dni_paciente=?";
-            PreparedStatement psPacientes = connect.prepareStatement(queryPacientes);
-            psPacientes.setString(1, nuevoNombre);
-            psPacientes.setString(2, nuevoApellido);
-            psPacientes.setString(3, nuevaEdad);
-            psPacientes.setString(4, nuevaEnfermedad);
-            psPacientes.setString(5, nuevoCelular);
-            psPacientes.setDate(6, new java.sql.Date(nuevaFechaInscripcion.getTime()));
-            psPacientes.setString(7, nuevoDNI); // Usar el DNI para identificar al paciente
 
-            int rowsUpdatedPacientes = psPacientes.executeUpdate();
+            c = Conexion.getConnection();
+            c.setAutoCommit(false);
+
+            ps = c.prepareStatement(queryPacientes);
+            ps.setString(1, nuevoNombre);
+            ps.setString(2, nuevoApellido);
+            ps.setString(3, nuevaEdad);
+            ps.setString(4, nuevaEnfermedad);
+            ps.setString(5, nuevoCelular);
+            ps.setDate(6, new java.sql.Date(nuevaFechaInscripcion.getTime()));
+            ps.setString(7, nuevoDNI); // Usar el DNI para identificar al paciente
+
+            int rowsUpdatedPacientes = ps.executeUpdate();
 
             if (rowsUpdatedPacientes > 0) {
                 // Actualizar TB_TRATAMIENTOS
                 String queryTratamientos = "UPDATE TB_TRATAMIENTOS SET nombre_paciente=?, apellido_paciente=? WHERE dni_paciente=?";
-                PreparedStatement psTratamientos = connect.prepareStatement(queryTratamientos);
+                PreparedStatement psTratamientos = c.prepareStatement(queryTratamientos);
                 psTratamientos.setString(1, nuevoNombre);
                 psTratamientos.setString(2, nuevoApellido);
                 psTratamientos.setString(3, nuevoDNI);
 
-                int rowsUpdatedTratamientos = psTratamientos.executeUpdate();
+                int rowsUpdatedTratamientos = ps.executeUpdate();
 
                 // Actualizar TB_CITAS
                 String queryCitas = "UPDATE TB_CITAS SET nombre_paciente=?, apellido_paciente=? WHERE dni_paciente=?";
-                PreparedStatement psCitas = connect.prepareStatement(queryCitas);
+                PreparedStatement psCitas = c.prepareStatement(queryCitas);
                 psCitas.setString(1, nuevoNombre);
                 psCitas.setString(2, nuevoApellido);
                 psCitas.setString(3, nuevoDNI);
 
-                int rowsUpdatedCitas = psCitas.executeUpdate();
+                int rowsUpdatedCitas = ps.executeUpdate();
 
                 if (rowsUpdatedTratamientos > 0 && rowsUpdatedCitas > 0) {
+                    c.commit(); // Confirmar la transacción
                     JOptionPane.showMessageDialog(this, "Los cambios se guardaron exitosamente.");
                 } else {
+                    c.rollback(); // Revertir la transacción si hay algún problema
                     JOptionPane.showMessageDialog(this, "Hubo un problema al actualizar los tratamientos o las citas.");
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "No se pudieron guardar los cambios en pacientes.");
             }
         } catch (SQLException e) {
+            try {
+                if (c != null) {
+                    c.rollback(); // Revertir la transacción en caso de excepción
+                }
+            } catch (SQLException rollbackException) {
+                rollbackException.printStackTrace();
+            }
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al guardar los cambios: " + e.getMessage());
-        }finally {
-        try {
-            if (connect != null) {
-                connect.close();
+        } finally {
+            // Cerrar recursos y restaurar configuración de auto-commit
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (c != null) {
+                    c.setAutoCommit(true); // Restaurar auto-commit a su valor predeterminado
+                    c.close();
+                }
+            } catch (SQLException closeException) {
+                closeException.printStackTrace();
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
         }
-    }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     public static void main(String args[]) {

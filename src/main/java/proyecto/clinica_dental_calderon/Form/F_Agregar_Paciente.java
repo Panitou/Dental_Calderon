@@ -1,5 +1,6 @@
 package proyecto.clinica_dental_calderon.Form;
 
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -19,8 +20,73 @@ public class F_Agregar_Paciente extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         setDateToCurrent();
         dateFecha_Ingreso.setEnabled(false);
+
+        //Restricciones
+        txtDni.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+                if (!(Character.isDigit(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE) || txtDni.getText().length() >= 10) {
+                    evt.consume();
+                }
+            }
+        });
+
+        // Validación para Nombre (solo letras, máximo 100 caracteres)
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+                if (!(Character.isLetter(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE)
+                        || txtNombre.getText().length() >= 100) {
+                    evt.consume();
+                }
+            }
+        });
+
+// Validación para Apellido (solo letras, máximo 100 caracteres)
+        txtApellido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+                if (!(Character.isLetter(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE)
+                        || txtApellido.getText().length() >= 100) {
+                    evt.consume();
+                }
+            }
+        });
+
+// Validación para Celular (solo números, máximo 15 dígitos)
+        txtCelular.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+                if (!(Character.isDigit(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE)
+                        || txtCelular.getText().length() >= 15) {
+                    evt.consume();
+                }
+            }
+        });
+
+// Validación para Edad (solo números, máximo 4 dígitos)
+        txtEdad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+                if (!(Character.isDigit(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE)
+                        || txtEdad.getText().length() >= 4) {
+                    evt.consume();
+                }
+            }
+        });
+
+// Validación para Enfermedad (letras y números, no signos)
+        txaEnfermedad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+                if (!(Character.isLetterOrDigit(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE)) {
+                    evt.consume();
+                }
+            }
+        });
+
     }
-    int a;
+
     private void setDateToCurrent() {
         Date currentDate = new Date(); // Obtener la fecha actual
         dateFecha_Ingreso.setDate(currentDate); // Establecer la fecha actual en el JDateChooser
@@ -255,7 +321,7 @@ public class F_Agregar_Paciente extends javax.swing.JFrame {
         txtApellido.setText("");
         txtCelular.setText("");
         txtEdad.setText("");
-        txaEnfermedad.setText("");   
+        txaEnfermedad.setText("");
     }
 
 }
