@@ -187,7 +187,7 @@ public class Panel_Citas extends javax.swing.JPanel {
                 btnActualizar_CitaActionPerformed(evt);
             }
         });
-        jPanel1.add(btnActualizar_Cita, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 210, 270, 40));
+        jPanel1.add(btnActualizar_Cita, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 210, 270, 40));
 
         btnBusquedaCitas.setBackground(new java.awt.Color(62, 134, 203));
         btnBusquedaCitas.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -248,15 +248,24 @@ public class Panel_Citas extends javax.swing.JPanel {
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Por favor, seleccione un registro de la tabla para actualizar el estado de la cita.");
         } else {
-            int idCitaSeleccionada = (int) tableCitas.getValueAt(selectedRow, 0);
 
-            String numeroCita = tableCitas.getValueAt(selectedRow, 0).toString();
-            int numeroTratamiento = (int) tableCitas.getValueAt(selectedRow, 1);
+            int numeroCita = Integer.parseInt(tableCitas.getValueAt(selectedRow, 0).toString());
+            int numeroTratamiento;
+            Object value = tableCitas.getValueAt(selectedRow, 1);
+
+            if (value instanceof Integer) {
+                numeroTratamiento = (int) value;
+            } else if (value instanceof String) {
+                numeroTratamiento = Integer.parseInt((String) value);
+            } else {
+                // Manejar el caso en el que no sea ni Integer ni String
+                numeroTratamiento = 0; // O cualquier valor predeterminado que desees
+            }
 
             // Realizar una consulta a la base de datos para obtener el nombre del tratamiento
             String nombreTratamiento = obtenerNombreTratamiento(numeroTratamiento);
 
-            F_Actualizar_Cita actualizarCita = new F_Actualizar_Cita(idCitaSeleccionada);
+            F_Actualizar_Cita actualizarCita = new F_Actualizar_Cita(numeroCita);
 
             actualizarCita.setVisible(true);
             actualizarCita.setResizable(false);
@@ -266,7 +275,7 @@ public class Panel_Citas extends javax.swing.JPanel {
             actualizarCita.txtNumeroTratamiento.setEditable(false);
             actualizarCita.txtTratamiento.setEditable(false);
 
-            actualizarCita.txtNumeroCita.setText(numeroCita);
+            actualizarCita.txtNumeroCita.setText(String.valueOf(numeroCita));
             actualizarCita.txtNumeroTratamiento.setText(String.valueOf(numeroTratamiento));
             actualizarCita.txtTratamiento.setText(nombreTratamiento);
 
@@ -288,12 +297,20 @@ public class Panel_Citas extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "No se puede reprogramar una cita que ya ha sido cancelada.");
         } else {
             // Obtener el ID de la cita seleccionada
-            int idCitaSeleccionada = (int) tableCitas.getValueAt(selectedRow, 0);
+            Object value = tableCitas.getValueAt(selectedRow, 1);
+            int numeroTratamiento;
+            if (value instanceof Integer) {
+                numeroTratamiento = (int) value;
+            } else if (value instanceof String) {
+                numeroTratamiento = Integer.parseInt((String) value);
+            } else {
+                // Manejo de error o valor predeterminado si el tipo no es Integer o String
+                numeroTratamiento = 0; // Por ejemplo, aquí podrías establecer un valor predeterminado
+            }
 
             // Obtener los datos de la cita desde la tabla
-            String numeroCita = tableCitas.getValueAt(selectedRow, 0).toString();
+            int numeroCita = Integer.parseInt(tableCitas.getValueAt(selectedRow, 0).toString());
 
-            int numeroTratamiento = (int) tableCitas.getValueAt(selectedRow, 1);
             String dni = tableCitas.getValueAt(selectedRow, 2).toString();
             String odontologo = tableCitas.getValueAt(selectedRow, 5).toString();
             Date fecha_actual = (Date) tableCitas.getValueAt(selectedRow, 3);
@@ -310,7 +327,7 @@ public class Panel_Citas extends javax.swing.JPanel {
             String nombreTratamiento = obtenerNombreTratamiento(numeroTratamiento);
 
             // Pasar los datos a la ventana de reprogramación
-            F_Reprogramar_Cita reprogramarCita = new F_Reprogramar_Cita(idCitaSeleccionada);
+            F_Reprogramar_Cita reprogramarCita = new F_Reprogramar_Cita(numeroCita);
 
             // Crear un SpinnerNumberModel para el Spinner de Horas
             SpinnerNumberModel hourSpinnerModel = new SpinnerNumberModel(0, 0, 23, 1);
@@ -334,7 +351,7 @@ public class Panel_Citas extends javax.swing.JPanel {
             reprogramarCita.setLocationRelativeTo(null);
 
             // Configurar los campos en la ventana de reprogramación
-            reprogramarCita.txtNumeroCita.setText(numeroCita);
+            reprogramarCita.txtNumeroCita.setText(String.valueOf(numeroCita));
             // Configurar el campo de texto con el nombre del tratamiento
             reprogramarCita.txtTratamiento.setText(nombreTratamiento);
             reprogramarCita.txtNumeroTratamiento.setText(String.valueOf(numeroTratamiento));
