@@ -12,9 +12,19 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.DocumentFilter;
+import javax.swing.text.PlainDocument;
 import proyecto.clinica_dental_calderon.DB.Conexion;
 import proyecto.clinica_dental_calderon.controlador_Odontologos.Lista_Odontologos;
 import proyecto.clinica_dental_calderon.controlador_Odontologos.Odontologos;
+import javax.swing.JFormattedTextField;
+import javax.swing.JSpinner;
+import javax.swing.text.MaskFormatter;
+import javax.swing.text.NumberFormatter;
 
 /*
  * @author Panito
@@ -30,6 +40,8 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
 
+        dateCita.getDateEditor().setEnabled(false);
+
         // Asignar el modelo de tabla al JTable
         tableTratamiento.setModel(tableModel);
         Deshabilitar_Campos();
@@ -41,6 +53,73 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
         // Crear un SpinnerNumberModel para el Spinner de Minuto
         SpinnerNumberModel minuteSpinnerModel = new SpinnerNumberModel(0, 0, 59, 1);
         SpinnerMinuto.setModel(minuteSpinnerModel);
+
+        // Restricciones para el campo txtDni
+        txtDni.setDocument(new F_Agendar_Cita.JTextFieldLimit(15)); // Limita la cantidad máxima de caracteres
+        ((AbstractDocument) txtDni.getDocument()).setDocumentFilter(new F_Agendar_Cita.NumberFilter()); // Aplica el filtro de solo números
+        
+        
+        JSpinner.NumberEditor editorHora = new JSpinner.NumberEditor(SpinnerHora, "00");
+        JFormattedTextField txtFieldHora = editorHora.getTextField();
+        ((NumberFormatter) txtFieldHora.getFormatter()).setAllowsInvalid(false);
+        SpinnerHora.setEditor(editorHora);
+
+        JSpinner.NumberEditor editorMinuto = new JSpinner.NumberEditor(SpinnerMinuto, "00");
+        JFormattedTextField txtFieldMinuto = editorMinuto.getTextField();
+        ((NumberFormatter) txtFieldMinuto.getFormatter()).setAllowsInvalid(false);
+        SpinnerMinuto.setEditor(editorMinuto);
+
+    }
+
+    // Clase para limitar la cantidad máxima de caracteres en el campo
+    private class JTextFieldLimit extends PlainDocument {
+
+        private int limit;
+
+        JTextFieldLimit(int limit) {
+            super();
+            this.limit = limit;
+        }
+
+        @Override
+        public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
+            if (str == null) {
+                return;
+            }
+
+            if ((getLength() + str.length()) <= limit) {
+                super.insertString(offset, str, attr);
+            }
+        }
+    }
+
+    private class NumberFilter extends DocumentFilter {
+
+        @Override
+        public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr)
+                throws BadLocationException {
+            Document doc = fb.getDocument();
+            StringBuilder sb = new StringBuilder();
+            sb.append(doc.getText(0, doc.getLength()));
+            sb.insert(offset, string);
+
+            if (sb.toString().matches("\\d{1,15}")) {
+                super.insertString(fb, offset, string, attr);
+            }
+        }
+
+        @Override
+        public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+                throws BadLocationException {
+            Document doc = fb.getDocument();
+            StringBuilder sb = new StringBuilder();
+            sb.append(doc.getText(0, doc.getLength()));
+            sb.replace(offset, offset + length, text);
+
+            if (sb.toString().matches("\\d{1,15}")) {
+                super.replace(fb, offset, length, text, attrs);
+            }
+        }
     }
 
     private void Cargar_Combos_Odontologos(JComboBox c) {
@@ -287,172 +366,205 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnCompletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompletarActionPerformed
-
         String dni = txtDni.getText();
-
         Connection c = null;
 
-        PreparedStatement psPacientes = null;
-        ResultSet rsPacientes = null;
-        String queryPacientes = "SELECT * FROM TB_PACIENTES WHERE dni_paciente = ?";
+        // Verificar si el campo txtDni está vacío
+        if (dni.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El campo DNI está vacío. Por favor, ingrese un número de DNI.");
+            return; // Detener la ejecución del método si el campo está vacío
+        } else if (!dni.isEmpty()) {
+            PreparedStatement psTratamientosCount = null;
+            ResultSet rsTratamientosCount = null;
+            String queryVerificacion = "SELECT COUNT(*) AS count_rows FROM TB_TRATAMIENTOS WHERE dni_paciente = ?";
 
-        PreparedStatement psTratamientos = null;
-        ResultSet rsTratamientos = null;
-        String queryTratamientos = "SELECT id_tratamiento, tratamiento, descripcion, fecha_creacion, costo, estado_pago, estado_tratamiento FROM TB_TRATAMIENTOS WHERE dni_paciente = ?";
-
-        try {
-            c = Conexion.getConnection();
-            psPacientes = c.prepareStatement(queryPacientes);
-            psPacientes.setString(1, dni);
-            rsPacientes = psPacientes.executeQuery();
-
-            if (rsPacientes.next()) {
-                // Si se encontró un paciente, llenar los campos de datos de la cita
-                txtNombre.setText(rsPacientes.getString("nombre_paciente"));
-                txtApellidos.setText(rsPacientes.getString("apellido_paciente"));
-                txtEdad.setText(rsPacientes.getString("edad_paciente"));
-                txaEnfermedad.setText(rsPacientes.getString("enfermedad_paciente"));
-                txtCelular.setText(rsPacientes.getString("celular_paciente"));
-                dateFecha_Ingreso.setDate(rsPacientes.getTimestamp("fecha_inscripcion"));
-
-                // Consultar tratamientos del paciente
-                psTratamientos = c.prepareStatement(queryTratamientos);
-                psTratamientos.setString(1, dni);
-                rsTratamientos = psTratamientos.executeQuery();
-
-                tableModel.addColumn("N°");
-                tableModel.addColumn("Tratamiento");
-                tableModel.addColumn("Descripción");
-                tableModel.addColumn("Fecha De Creación");
-                tableModel.addColumn("Costo");
-                tableModel.addColumn("Estado deuda");
-                tableModel.addColumn("Estado del tratamiento");
-
-                // Ajustar la longitud preferida de las columnas
-                tableTratamiento.getColumnModel().getColumn(0).setPreferredWidth(30); // N°
-                tableTratamiento.getColumnModel().getColumn(1).setPreferredWidth(100); // Tratamiento
-                tableTratamiento.getColumnModel().getColumn(2).setPreferredWidth(220); // Descripción
-                tableTratamiento.getColumnModel().getColumn(3).setPreferredWidth(70); // Fecha De Creación
-                tableTratamiento.getColumnModel().getColumn(4).setPreferredWidth(50); // Costo
-                tableTratamiento.getColumnModel().getColumn(5).setPreferredWidth(80); //Estado de la deuda
-                tableTratamiento.getColumnModel().getColumn(6).setPreferredWidth(80); //Estado del tratamiento
-
-                while (rsTratamientos.next()) {
-                    Object[] rowData = {
-                        rsTratamientos.getInt("id_tratamiento"),
-                        rsTratamientos.getString("tratamiento"),
-                        rsTratamientos.getString("descripcion"),
-                        rsTratamientos.getDate("fecha_creacion"),
-                        rsTratamientos.getDouble("costo"),
-                        rsTratamientos.getString("estado_pago"),
-                        rsTratamientos.getString("estado_tratamiento")
-                    };
-                    tableModel.addRow(rowData);
-                }
-
-            } else {
-                JOptionPane.showMessageDialog(this, "No se encontró un paciente con el DNI proporcionado.");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
             try {
-                if (c != null) {
-                    c.close();
+                c = Conexion.getConnection();
+                psTratamientosCount = c.prepareStatement(queryVerificacion);
+                psTratamientosCount.setString(1, dni);
+
+                rsTratamientosCount = psTratamientosCount.executeQuery();
+                if (rsTratamientosCount.next()) {
+                    int countRows = rsTratamientosCount.getInt("count_rows");
+                    if (countRows > 1) {
+                        PreparedStatement psPacientes = null;
+                        ResultSet rsPacientes = null;
+                        String queryPacientes = "SELECT * FROM TB_PACIENTES WHERE dni_paciente = ?";
+
+                        PreparedStatement psTratamientos = null;
+                        ResultSet rsTratamientos = null;
+                        String queryTratamientos = "SELECT id_tratamiento, tratamiento, descripcion, fecha_creacion, costo, estado_pago, estado_tratamiento FROM TB_TRATAMIENTOS WHERE dni_paciente = ?";
+
+                        try {
+                            psPacientes = c.prepareStatement(queryPacientes);
+                            psPacientes.setString(1, dni);
+                            rsPacientes = psPacientes.executeQuery();
+
+                            if (rsPacientes.next()) {
+                                // Si se encontró un paciente, llenar los campos de datos de la cita
+                                txtNombre.setText(rsPacientes.getString("nombre_paciente"));
+                                txtApellidos.setText(rsPacientes.getString("apellido_paciente"));
+                                txtEdad.setText(rsPacientes.getString("edad_paciente"));
+                                txaEnfermedad.setText(rsPacientes.getString("enfermedad_paciente"));
+                                txtCelular.setText(rsPacientes.getString("celular_paciente"));
+                                dateFecha_Ingreso.setDate(rsPacientes.getTimestamp("fecha_inscripcion"));
+
+                                // Consultar tratamientos del paciente
+                                psTratamientos = c.prepareStatement(queryTratamientos);
+                                psTratamientos.setString(1, dni);
+                                rsTratamientos = psTratamientos.executeQuery();
+
+                                tableModel.addColumn("N°");
+                                tableModel.addColumn("Tratamiento");
+                                tableModel.addColumn("Descripción");
+                                tableModel.addColumn("Fecha De Creación");
+                                tableModel.addColumn("Costo");
+                                tableModel.addColumn("Estado deuda");
+                                tableModel.addColumn("Estado del tratamiento");
+
+                                // Ajustar la longitud preferida de las columnas
+                                tableTratamiento.getColumnModel().getColumn(0).setPreferredWidth(30); // N°
+                                tableTratamiento.getColumnModel().getColumn(1).setPreferredWidth(100); // Tratamiento
+                                tableTratamiento.getColumnModel().getColumn(2).setPreferredWidth(220); // Descripción
+                                tableTratamiento.getColumnModel().getColumn(3).setPreferredWidth(70); // Fecha De Creación
+                                tableTratamiento.getColumnModel().getColumn(4).setPreferredWidth(50); // Costo
+                                tableTratamiento.getColumnModel().getColumn(5).setPreferredWidth(80); //Estado de la deuda
+                                tableTratamiento.getColumnModel().getColumn(6).setPreferredWidth(80); //Estado del tratamiento
+
+                                while (rsTratamientos.next()) {
+                                    Object[] rowData = {
+                                        rsTratamientos.getInt("id_tratamiento"),
+                                        rsTratamientos.getString("tratamiento"),
+                                        rsTratamientos.getString("descripcion"),
+                                        rsTratamientos.getDate("fecha_creacion"),
+                                        rsTratamientos.getDouble("costo"),
+                                        rsTratamientos.getString("estado_pago"),
+                                        rsTratamientos.getString("estado_tratamiento")
+                                    };
+                                    tableModel.addRow(rowData);
+                                }
+
+                            } else {
+                                JOptionPane.showMessageDialog(this, "No se encontró un paciente con el DNI proporcionado.");
+                            }
+
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    } else if (countRows < 1) {
+                        JOptionPane.showMessageDialog(this, "Este paciente no tiene tratamientos pendientes");
+                        dispose();
+                    }
                 }
-                if (psPacientes != null) {
-                    psPacientes.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } finally {
+                // Asegúrate de cerrar las conexiones y recursos en el bloque finally
+                try {
+                    if (rsTratamientosCount != null) {
+                        rsTratamientosCount.close();
+                    }
+                    if (psTratamientosCount != null) {
+                        psTratamientosCount.close();
+                    }
+                    if (c != null) {
+                        c.close();
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
-                if (psTratamientos != null) {
-                    psTratamientos.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+
         }
+
+
     }//GEN-LAST:event_btnCompletarActionPerformed
 
     private void btnAgregar_CitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar_CitaActionPerformed
         java.util.Date currentDate = new java.util.Date();
-        Date selectedDate = new java.sql.Date(dateCita.getDate().getTime());
+
         Connection c = null;
         PreparedStatement ps = null;
+        String dni = txtDni.getText();
 
-        if (txtDni.getText().isEmpty() || txtNombre.getText().isEmpty() || txtApellidos.getText().isEmpty() || dateCita.getDate() == null
-                || SpinnerHora.getValue() == null || SpinnerMinuto.getValue() == null) {
-            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos obligatorios.");
+        if (dni.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese el DNI del paciente.");
         } else {
-            int selectedHour = (int) SpinnerHora.getValue();
-            int selectedMinute = (int) SpinnerMinuto.getValue();
-            if (selectedDate.before(currentDate)) {
-                JOptionPane.showMessageDialog(this, "La fecha de la cita no puede ser en días anteriores.");
-            } else if (selectedHour == 0) {
-                JOptionPane.showMessageDialog(this, "La hora no puede ser 0. Por favor, seleccione una hora válida.");
+            if (dateCita.getDate() == null) {
+                JOptionPane.showMessageDialog(this, "Por favor, ingrese una fecha");
             } else {
-                String dni = txtDni.getText();
-                Time selectedTime = new java.sql.Time(selectedHour, selectedMinute, 0);
-                String odontologo = cbxOdontologo.getSelectedItem().toString();
-                String descripcion = txaDescripcion.getText();
-
-                if (tableTratamiento.getSelectedRow() == -1) {
-                    JOptionPane.showMessageDialog(this, "Por favor, seleccione un tratamiento de la tabla.");
+                Date selectedDate = new java.sql.Date(dateCita.getDate().getTime());
+                int selectedHour = (int) SpinnerHora.getValue();
+                int selectedMinute = (int) SpinnerMinuto.getValue();
+                if (selectedDate.before(currentDate)) {
+                    JOptionPane.showMessageDialog(this, "La fecha de la cita no puede ser en días anteriores.");
+                } else if (selectedHour == 0) {
+                    JOptionPane.showMessageDialog(this, "La hora no puede ser 0. Por favor, seleccione una hora válida.");
                 } else {
-                    
-                    String query = "INSERT INTO TB_CITAS (id_tratamiento, dni_paciente, nombre_paciente, apellido_paciente, fecha, hora, odontologo, descripcion, estado_cita) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'PENDIENTE')";
+                    Time selectedTime = new java.sql.Time(selectedHour, selectedMinute, 0);
+                    String odontologo = cbxOdontologo.getSelectedItem().toString();
+                    String descripcion = txaDescripcion.getText();
 
-                    try {
-                        c = Conexion.getConnection();
-                        ps = c.prepareStatement(query);
+                    if (tableTratamiento.getSelectedRow() == -1) {
+                        JOptionPane.showMessageDialog(this, "Por favor, seleccione un tratamiento de la tabla.");
+                    } else {
 
-                        // Obtener el ID del tratamiento seleccionado
-                        int filaSeleccionada = tableTratamiento.getSelectedRow();
-                        int idTratamientoSeleccionado = (int) tableModel.getValueAt(filaSeleccionada, 0);
+                        String query = "INSERT INTO TB_CITAS (id_tratamiento, dni_paciente, nombre_paciente, apellido_paciente, fecha, hora, odontologo, descripcion, estado_cita) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'PENDIENTE')";
 
-                        // Establecer los parámetros en la cita
-                        ps.setInt(1, idTratamientoSeleccionado);
-                        ps.setString(2, dni);
-                        ps.setString(3, txtNombre.getText());
-                        ps.setString(4, txtApellidos.getText());
-                        ps.setDate(5, selectedDate);
-                        ps.setTime(6, selectedTime);
-                        ps.setString(7, odontologo);
-                        ps.setString(8, descripcion);
-
-                        int rowsAffected = ps.executeUpdate();
-
-                        if (rowsAffected > 0) {
-                            JOptionPane.showMessageDialog(this, "Cita agregada exitosamente.");
-
-                            // Actualizar la columna citas en la tabla TB_TRATAMIENTOS
-                            String updateQuery = "UPDATE TB_TRATAMIENTOS SET citas = citas + 1 WHERE id_tratamiento = ?";
-                            ps = c.prepareStatement(updateQuery);
-                            ps.setInt(1, idTratamientoSeleccionado);
-                            ps.executeUpdate();
-
-                            // Limpieza o acciones adicionales
-                            // ...
-                        } else {
-                            JOptionPane.showMessageDialog(this, "Error al agregar la cita.");
-                        }
-
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        JOptionPane.showMessageDialog(this, "Error al agregar la cita.");
-                    } finally {
                         try {
-                            if (ps != null) {
-                                ps.close();
+                            c = Conexion.getConnection();
+                            ps = c.prepareStatement(query);
+
+                            // Obtener el ID del tratamiento seleccionado
+                            int filaSeleccionada = tableTratamiento.getSelectedRow();
+                            int idTratamientoSeleccionado = (int) tableModel.getValueAt(filaSeleccionada, 0);
+
+                            // Establecer los parámetros en la cita
+                            ps.setInt(1, idTratamientoSeleccionado);
+                            ps.setString(2, dni);
+                            ps.setString(3, txtNombre.getText());
+                            ps.setString(4, txtApellidos.getText());
+                            ps.setDate(5, selectedDate);
+                            ps.setTime(6, selectedTime);
+                            ps.setString(7, odontologo);
+                            ps.setString(8, descripcion);
+
+                            int rowsAffected = ps.executeUpdate();
+
+                            if (rowsAffected > 0) {
+                                JOptionPane.showMessageDialog(this, "Cita agregada exitosamente.");
+
+                                // Actualizar la columna citas en la tabla TB_TRATAMIENTOS
+                                String updateQuery = "UPDATE TB_TRATAMIENTOS SET citas = citas + 1 WHERE id_tratamiento = ?";
+                                ps = c.prepareStatement(updateQuery);
+                                ps.setInt(1, idTratamientoSeleccionado);
+                                ps.executeUpdate();
+
+                                // Limpieza o acciones adicionales
+                                // ...
+                            } else {
+                                JOptionPane.showMessageDialog(this, "Error al agregar la cita.");
                             }
-                            if (c != null) {
-                                c.close();
-                            }
+
                         } catch (SQLException e) {
                             e.printStackTrace();
+                            JOptionPane.showMessageDialog(this, "Error al agregar la cita.");
+                        } finally {
+                            try {
+                                if (ps != null) {
+                                    ps.close();
+                                }
+                                if (c != null) {
+                                    c.close();
+                                }
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
             }
+
         }
     }//GEN-LAST:event_btnAgregar_CitaActionPerformed
 

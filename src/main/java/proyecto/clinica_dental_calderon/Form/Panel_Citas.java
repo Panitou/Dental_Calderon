@@ -275,12 +275,17 @@ public class Panel_Citas extends javax.swing.JPanel {
 
     private void btnReprogramar_CitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReprogramar_CitaActionPerformed
         int selectedRow = tableCitas.getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione un registro de la tabla para reprogramar la cita.");
+            return;
+        }
         String Estado = tableCitas.getValueAt(selectedRow, 7).toString();
 
-        if (Estado.equals("COMPLETADO") || Estado.equals("CANCELADO")) {
+        if (Estado.equals("COMPLETADO")) {
             JOptionPane.showMessageDialog(this, "No se puede reprogramar una cita que ya ha sido completada.");
-        } else if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Por favor, seleccione un registro de la tabla para reprogramar la cita.");
+        } else if (Estado.equals("CANCELADO")) {
+            JOptionPane.showMessageDialog(this, "No se puede reprogramar una cita que ya ha sido cancelada.");
         } else {
             // Obtener el ID de la cita seleccionada
             int idCitaSeleccionada = (int) tableCitas.getValueAt(selectedRow, 0);
