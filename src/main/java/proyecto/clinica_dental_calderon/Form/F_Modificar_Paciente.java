@@ -242,11 +242,17 @@ public class F_Modificar_Paciente extends javax.swing.JFrame {
         Connection c = null;
         PreparedStatement ps = null;
         String queryPacientes = "UPDATE TB_PACIENTES SET nombre_paciente=?, apellido_paciente=?, edad_paciente=?, enfermedad_paciente=?, celular_paciente=?, fecha_inscripcion=? WHERE dni_paciente=?";
-        try {
+        String queryTratamientos = "UPDATE TB_TRATAMIENTOS SET nombre_paciente=?, apellido_paciente=? WHERE dni_paciente=?";
+        String queryCitas = "UPDATE TB_CITAS SET nombre_paciente=?, apellido_paciente=? WHERE dni_paciente=?";
 
+        try {
             c = Conexion.getConnection();
             c.setAutoCommit(false);
 
+            // Verificar si los nombres y apellidos han cambiado
+            boolean nombresCambiados = !nuevoNombre.equals(txtNombre.getText()) || !nuevoApellido.equals(txtApellidos.getText());
+
+            // Preparar la consulta para la actualización en la tabla de pacientes
             ps = c.prepareStatement(queryPacientes);
             ps.setString(1, nuevoNombre);
             ps.setString(2, nuevoApellido);
@@ -254,43 +260,53 @@ public class F_Modificar_Paciente extends javax.swing.JFrame {
             ps.setString(4, nuevaEnfermedad);
             ps.setString(5, nuevoCelular);
             ps.setDate(6, new java.sql.Date(nuevaFechaInscripcion.getTime()));
-            ps.setString(7, nuevoDNI); // Usar el DNI para identificar al paciente
+            ps.setString(7, nuevoDNI);
+
+            // Si los nombres y apellidos no han cambiado, actualizar igualmente
+            if (!nombresCambiados) {
+                ps.setString(1, txtNombre.getText());
+                ps.setString(2, txtApellidos.getText());
+            }
 
             int rowsUpdatedPacientes = ps.executeUpdate();
 
+            // Si se actualizaron los datos en la tabla de pacientes
             if (rowsUpdatedPacientes > 0) {
-                // Actualizar TB_TRATAMIENTOS solo si se actualizó la enfermedad del paciente
-                String queryTratamientos = "UPDATE TB_TRATAMIENTOS SET nombre_paciente=?, apellido_paciente=? WHERE dni_paciente=?";
+                // Actualizar en TB_TRATAMIENTOS
                 PreparedStatement psTratamientos = c.prepareStatement(queryTratamientos);
                 psTratamientos.setString(1, nuevoNombre);
                 psTratamientos.setString(2, nuevoApellido);
                 psTratamientos.setString(3, nuevoDNI);
-
                 int rowsUpdatedTratamientos = psTratamientos.executeUpdate();
 
-                // Actualizar TB_CITAS solo si se actualizó la enfermedad del paciente
-                String queryCitas = "UPDATE TB_CITAS SET nombre_paciente=?, apellido_paciente=? WHERE dni_paciente=?";
+                if (rowsUpdatedTratamientos <= 0) {
+                    c.rollback();
+                    JOptionPane.showMessageDialog(this, "Hubo un problema al actualizar los tratamientos.");
+                    return;
+                }
+
+                // Actualizar en TB_CITAS
                 PreparedStatement psCitas = c.prepareStatement(queryCitas);
                 psCitas.setString(1, nuevoNombre);
                 psCitas.setString(2, nuevoApellido);
                 psCitas.setString(3, nuevoDNI);
-
                 int rowsUpdatedCitas = psCitas.executeUpdate();
 
-                if (rowsUpdatedTratamientos > 0 && rowsUpdatedCitas > 0) {
-                    c.commit(); // Confirmar la transacción
-                    JOptionPane.showMessageDialog(this, "Los cambios se guardaron exitosamente.");
-                } else {
-                    c.rollback(); // Revertir la transacción si hay algún problema
-                    JOptionPane.showMessageDialog(this, "Hubo un problema al actualizar los tratamientos o las citas.");
+                if (rowsUpdatedCitas <= 0) {
+                    c.rollback();
+                    JOptionPane.showMessageDialog(this, "Hubo un problema al actualizar las citas.");
+                    return;
                 }
+
+                c.commit();
+                JOptionPane.showMessageDialog(this, "Los cambios se guardaron exitosamente.");
             } else {
                 JOptionPane.showMessageDialog(this, "No se realizaron cambios para actualizar.");
             }
         } catch (SQLException e) {
             try {
                 if (c != null) {
-                    c.rollback(); // Revertir la transacción en caso de excepción
+                    c.rollback();
                 }
             } catch (SQLException rollbackException) {
                 rollbackException.printStackTrace();
@@ -298,13 +314,12 @@ public class F_Modificar_Paciente extends javax.swing.JFrame {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al guardar los cambios: " + e.getMessage());
         } finally {
-            // Cerrar recursos y restaurar configuración de auto-commit
             try {
                 if (ps != null) {
                     ps.close();
                 }
                 if (c != null) {
-                    c.setAutoCommit(true); // Restaurar auto-commit a su valor predeterminado
+                    c.setAutoCommit(true);
                     c.close();
                 }
             } catch (SQLException closeException) {

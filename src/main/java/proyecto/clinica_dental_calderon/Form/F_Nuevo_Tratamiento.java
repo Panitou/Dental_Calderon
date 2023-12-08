@@ -13,6 +13,12 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.DocumentFilter;
+import javax.swing.text.PlainDocument;
 import proyecto.clinica_dental_calderon.DB.Conexion;
 import proyecto.clinica_dental_calderon.controlador_Odontologos.Lista_Odontologos;
 import proyecto.clinica_dental_calderon.controlador_Odontologos.Odontologos;
@@ -34,6 +40,7 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
         Deshabilitar_Campos();
         Cargar_Combos_Tratamientos(cbxTratamiento);
         Cargar_Combos_Odontologos(cbxOdontologo);
+
         cbxTratamiento.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 try {
@@ -44,6 +51,20 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
             }
         });
 
+        txtCosto.setDocument(new CostoFilter());
+
+        // Restricciones para el campo txtDni
+        txtDni.setDocument(new JTextFieldLimit(15)); // Limita la cantidad máxima de caracteres
+        ((AbstractDocument) txtDni.getDocument()).setDocumentFilter(new NumberFilter()); // Aplica el filtro de solo números
+
+        // Ahora, carga el precio del tratamiento inicialmente seleccionado
+        try {
+            String tratamientoSeleccionado = cbxTratamiento.getSelectedItem().toString();
+            Cargar_PrecioTratamiento(tratamientoSeleccionado);
+        } catch (SQLException ex) {
+            Logger.getLogger(F_Nuevo_Tratamiento.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         txaDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 char c = evt.getKeyChar();
@@ -52,6 +73,82 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
                 }
             }
         });
+
+    }
+
+    private class CostoFilter extends PlainDocument {
+
+        @Override
+        public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
+            String text = getText(0, getLength());
+            if ((text + str).matches("\\d*\\.?\\d{0,2}")) {
+                super.insertString(offset, str, attr);
+            }
+        }
+
+        @Override
+        public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+            String currentText = getText(0, getLength());
+            String beforeOffset = currentText.substring(0, offset);
+            String afterOffset = currentText.substring(offset + length);
+
+            String resultText = beforeOffset + text + afterOffset;
+            if (resultText.matches("\\d*\\.?\\d{0,2}")) {
+                super.replace(offset, length, text, attrs);
+            }
+        }
+    }
+
+    // Clase para limitar la cantidad máxima de caracteres en el campo
+    private class JTextFieldLimit extends PlainDocument {
+
+        private int limit;
+
+        JTextFieldLimit(int limit) {
+            super();
+            this.limit = limit;
+        }
+
+        @Override
+        public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
+            if (str == null) {
+                return;
+            }
+
+            if ((getLength() + str.length()) <= limit) {
+                super.insertString(offset, str, attr);
+            }
+        }
+    }
+
+    // Clase para filtrar solo números en el campo txtDni
+    private class NumberFilter extends DocumentFilter {
+
+        @Override
+        public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
+                throws BadLocationException {
+            Document doc = fb.getDocument();
+            StringBuilder sb = new StringBuilder();
+            sb.append(doc.getText(0, doc.getLength()));
+            sb.insert(offset, string);
+
+            if (sb.toString().matches("\\d{1,15}")) {
+                super.insertString(fb, offset, string, attr);
+            }
+        }
+
+        @Override
+        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+                throws BadLocationException {
+            Document doc = fb.getDocument();
+            StringBuilder sb = new StringBuilder();
+            sb.append(doc.getText(0, doc.getLength()));
+            sb.replace(offset, offset + length, text);
+
+            if (sb.toString().matches("\\d{1,15}")) {
+                super.replace(fb, offset, length, text, attrs);
+            }
+        }
     }
 
     private void setDateToCurrent() {
@@ -200,9 +297,9 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
                 cbxOdontologoActionPerformed(evt);
             }
         });
-        jPanel1.add(cbxOdontologo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 390, 190, 40));
+        jPanel1.add(cbxOdontologo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 390, 210, 40));
 
-        jPanel1.add(cbxTratamiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 190, 40));
+        jPanel1.add(cbxTratamiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 210, 40));
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(51, 51, 51));
@@ -254,7 +351,7 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
         jScrollPane3.setViewportView(txaDescripcion);
 
         jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 320, 390, 110));
-        jPanel1.add(dateFecha_Creacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 460, 190, 40));
+        jPanel1.add(dateFecha_Creacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 460, 210, 40));
 
         jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(51, 51, 51));
@@ -300,62 +397,66 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
 
     private void btn_Crear_TratamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_Crear_TratamientoActionPerformed
         String dni = txtDni.getText();
-        String nombre = txtNombre.getText();
-        String apellidos = txtApellidos.getText();
-        String odontologo = cbxOdontologo.getSelectedItem().toString();
-        String tratamiento = cbxTratamiento.getSelectedItem().toString();
-        String descripcion = txaDescripcion.getText();
-        Date fecha_creacion_tratamiento = dateFecha_Creacion.getDate();
-        //  //
-        int citas = 0;
-        //  //
-        Double costo = Double.valueOf(txtCosto.getText());
+        if (dni.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese el DNI del paciente.");
+        } else {
+            String nombre = txtNombre.getText();
+            String apellidos = txtApellidos.getText();
+            String odontologo = cbxOdontologo.getSelectedItem().toString();
+            String tratamiento = cbxTratamiento.getSelectedItem().toString();
+            String descripcion = txaDescripcion.getText();
+            Date fecha_creacion_tratamiento = dateFecha_Creacion.getDate();
+            //  //
+            int citas = 0;
+            //  //
+            Double costo = Double.valueOf(txtCosto.getText());
 
-        //Establecer deuda inicial
-        Double deuda = Double.valueOf(txtCosto.getText());
+            //Establecer deuda inicial
+            Double deuda = Double.valueOf(txtCosto.getText());
 
-        Connection c = null;
-        PreparedStatement ps = null;
-        String query = "INSERT INTO TB_TRATAMIENTOS (dni_paciente, nombre_paciente, apellido_paciente, odontologo, tratamiento, descripcion, fecha_creacion, citas, costo, deuda) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            Connection c = null;
+            PreparedStatement ps = null;
+            String query = "INSERT INTO TB_TRATAMIENTOS (dni_paciente, nombre_paciente, apellido_paciente, odontologo, tratamiento, descripcion, fecha_creacion, citas, costo, deuda) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try {
-            c = Conexion.getConnection();
-            ps = c.prepareStatement(query);
-            ps.setString(1, dni);
-            ps.setString(2, nombre);
-            ps.setString(3, apellidos);
-            ps.setString(4, odontologo);
-            ps.setString(5, tratamiento);
-            ps.setString(6, descripcion);
-            ps.setDate(7, new java.sql.Date(fecha_creacion_tratamiento.getTime()));
-            ps.setInt(8, citas);
-            ps.setDouble(9, costo);
-            ps.setDouble(10, deuda);
-            int rowsAffected = ps.executeUpdate();
+            try {
+                c = Conexion.getConnection();
+                ps = c.prepareStatement(query);
+                ps.setString(1, dni);
+                ps.setString(2, nombre);
+                ps.setString(3, apellidos);
+                ps.setString(4, odontologo);
+                ps.setString(5, tratamiento);
+                ps.setString(6, descripcion);
+                ps.setDate(7, new java.sql.Date(fecha_creacion_tratamiento.getTime()));
+                ps.setInt(8, citas);
+                ps.setDouble(9, costo);
+                ps.setDouble(10, deuda);
+                int rowsAffected = ps.executeUpdate();
 
-            if (rowsAffected > 0) {
-                JOptionPane.showMessageDialog(this, "Tratamiento agregado exitosamente.");
-                // Limpiar campos o realizar otras acciones necesarias
-            } else {
-                JOptionPane.showMessageDialog(this, "Error al agregar el tratamiento.");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            // Cerrar recursos (PreparedStatement, Connection, etc.)
-            if (ps != null) {
-                try {
-                    ps.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                if (rowsAffected > 0) {
+                    JOptionPane.showMessageDialog(this, "Tratamiento agregado exitosamente.");
+                    // Limpiar campos o realizar otras acciones necesarias
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al agregar el tratamiento.");
                 }
-            }
-            if (c != null) {
-                try {
-                    c.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                // Cerrar recursos (PreparedStatement, Connection, etc.)
+                if (ps != null) {
+                    try {
+                        ps.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (c != null) {
+                    try {
+                        c.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

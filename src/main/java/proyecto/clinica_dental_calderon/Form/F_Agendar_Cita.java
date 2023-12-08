@@ -123,8 +123,8 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(51, 51, 51));
         jLabel2.setText("DNI");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 110, 20));
-        jPanel1.add(txtDni, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 110, 30));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 110, 20));
+        jPanel1.add(txtDni, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 110, 30));
 
         btnAgregar_Cita.setBackground(new java.awt.Color(30, 85, 131));
         btnAgregar_Cita.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -148,7 +148,7 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
                 btnCompletarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCompletar, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 100, 110, 30));
+        jPanel1.add(btnCompletar, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 80, 110, 30));
         jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 80, 170, 30));
 
         btnCancelar.setBackground(new java.awt.Color(30, 85, 131));

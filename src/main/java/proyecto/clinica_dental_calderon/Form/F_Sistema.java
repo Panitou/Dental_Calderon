@@ -399,31 +399,24 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
     }//GEN-LAST:event_btnCerrarSsActionPerformed
 
     private void lblCasaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCasaMouseClicked
-        try {
-            pacientes.setVisible(false);
-            citas.setVisible(false);
-            tratamientos.setVisible(false);
-            proformas.setVisible(false);
-            pagos.setVisible(false);
+        pacientes.setVisible(false);
+        citas.setVisible(false);
+        tratamientos.setVisible(false);
+        proformas.setVisible(false);
+        pagos.setVisible(false);
+        inicio.setVisible(true);
+        PanelSistema.add(inicio);
+        //            pacientes.cerrarRecursos();
+//            citas.cerrarRecursos();
+//            tratamientos.cerrarRecursos();
+//            pagos.cerrarRecursos();
+//            proformas.cerrarRecursos();
 
-            inicio.setVisible(true);
-            PanelSistema.add(inicio);
-
-            pacientes.cerrarRecursos();
-            citas.cerrarRecursos();
-            tratamientos.cerrarRecursos();
-            pagos.cerrarRecursos();
-            proformas.cerrarRecursos();
-
-            btnPacientes.setEnabled(true);
-            btnTratamientos.setEnabled(true);
-            btnCitas.setEnabled(true);
-            btnPagos.setEnabled(true);
-            btnReportes.setEnabled(true);
-
-        } catch (SQLException ex) {
-            Logger.getLogger(F_Sistema.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        btnPacientes.setEnabled(true);
+        btnTratamientos.setEnabled(true);
+        btnCitas.setEnabled(true);
+        btnPagos.setEnabled(true);
+        btnReportes.setEnabled(true);
     }//GEN-LAST:event_lblCasaMouseClicked
 
     public static void main(String args[]) {

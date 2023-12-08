@@ -8,7 +8,7 @@ import javax.swing.ImageIcon;
  */
 public class Panel_Inicio extends javax.swing.JPanel {
 
-    String fondo = "/images/Equipo_DentalCalderonxFondo.png";
+    String fondo = "/images/Opacidad.png";
 
     ImageIcon fondoImagen = new ImageIcon(F_Sistema.class.getResource(fondo));
 

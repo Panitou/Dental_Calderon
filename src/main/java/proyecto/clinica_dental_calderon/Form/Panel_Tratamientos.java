@@ -238,7 +238,7 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Por favor, selecciona un registro de la tabla para ver los detalles del tratamiento.");
         } else {
-            int idTratamiento = (int) tableTratamientos.getValueAt(selectedRow, 0);
+            int idTratamiento = Integer.parseInt(tableTratamientos.getValueAt(selectedRow, 0).toString());
 
             // Realiza una consulta SQL para obtener los detalles del tratamiento con el ID seleccionado
             String query = "SELECT dni_paciente, nombre_paciente, apellido_paciente, tratamiento, odontologo, descripcion, fecha_creacion, citas, costo, deuda, estado_pago, estado_tratamiento FROM TB_TRATAMIENTOS WHERE id_tratamiento = ?";
@@ -330,6 +330,10 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
         actualizar_tratamiento.setVisible(true);
         actualizar_tratamiento.setResizable(false);
         actualizar_tratamiento.setLocationRelativeTo(null);
+
+        actualizar_tratamiento.txtN_Tratamiento.setEditable(false);
+        actualizar_tratamiento.txtDni.setEditable(false);
+        actualizar_tratamiento.txtTratamiento.setEditable(false);
 
         actualizar_tratamiento.txtN_Tratamiento.setText(nu_tratamiento);
         actualizar_tratamiento.txtDni.setText(dni);
