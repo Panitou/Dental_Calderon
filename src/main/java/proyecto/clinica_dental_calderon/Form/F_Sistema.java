@@ -225,7 +225,6 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
         btnCitas = new javax.swing.JButton();
         lblLogo = new javax.swing.JLabel();
         btnMenuPrincipal = new javax.swing.JButton();
-        lblCerrarSs = new javax.swing.JLabel();
         lblPacientes = new javax.swing.JLabel();
         lblTratamientos = new javax.swing.JLabel();
         lblCitas = new javax.swing.JLabel();
@@ -258,7 +257,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
                 lblCasaMouseClicked(evt);
             }
         });
-        jPanel2.add(lblCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 10, 32, 32));
+        jPanel2.add(lblCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, 50, 50));
 
         btnPacientes.setBackground(new java.awt.Color(60, 133, 203));
         btnPacientes.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -271,7 +270,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
                 btnPacientesActionPerformed(evt);
             }
         });
-        jPanel2.add(btnPacientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 290, 200, 70));
+        jPanel2.add(btnPacientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 400, 200, 70));
 
         btnTratamientos.setBackground(new java.awt.Color(60, 133, 203));
         btnTratamientos.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -284,7 +283,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
                 btnTratamientosActionPerformed(evt);
             }
         });
-        jPanel2.add(btnTratamientos, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 370, 200, 70));
+        jPanel2.add(btnTratamientos, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 470, 200, 70));
 
         btnReportes.setBackground(new java.awt.Color(60, 133, 203));
         btnReportes.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -297,7 +296,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
                 btnReportesActionPerformed(evt);
             }
         });
-        jPanel2.add(btnReportes, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 610, 200, 70));
+        jPanel2.add(btnReportes, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 680, 200, 70));
 
         btnPagos.setBackground(new java.awt.Color(60, 133, 203));
         btnPagos.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -310,7 +309,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
                 btnPagosActionPerformed(evt);
             }
         });
-        jPanel2.add(btnPagos, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 530, 200, 70));
+        jPanel2.add(btnPagos, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 610, 200, 70));
 
         btnCitas.setBackground(new java.awt.Color(60, 133, 203));
         btnCitas.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -323,7 +322,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
                 btnCitasActionPerformed(evt);
             }
         });
-        jPanel2.add(btnCitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 450, 200, 70));
+        jPanel2.add(btnCitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 540, 200, 70));
 
         lblLogo.setText("jLabel2");
         jPanel2.add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 270, 300));
@@ -331,7 +330,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
         btnMenuPrincipal.setBackground(new java.awt.Color(60, 133, 203));
         btnMenuPrincipal.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         btnMenuPrincipal.setForeground(new java.awt.Color(255, 255, 255));
-        btnMenuPrincipal.setText("CERRAR SESIÓN");
+        btnMenuPrincipal.setText("MENU PRINCIPAL");
         btnMenuPrincipal.setBorder(null);
         btnMenuPrincipal.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnMenuPrincipal.addActionListener(new java.awt.event.ActionListener() {
@@ -339,25 +338,22 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
                 btnMenuPrincipalActionPerformed(evt);
             }
         });
-        jPanel2.add(btnMenuPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 690, 200, 70));
-
-        lblCerrarSs.setText("jLabel3");
-        jPanel2.add(lblCerrarSs, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 700, 50, 50));
+        jPanel2.add(btnMenuPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 330, 210, 70));
 
         lblPacientes.setText("jLabel3");
-        jPanel2.add(lblPacientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 70, 70));
+        jPanel2.add(lblPacientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 400, 70, 70));
 
         lblTratamientos.setText("jLabel3");
-        jPanel2.add(lblTratamientos, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 380, 50, 50));
+        jPanel2.add(lblTratamientos, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 480, 50, 50));
 
         lblCitas.setText("jLabel3");
-        jPanel2.add(lblCitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 460, 50, 50));
+        jPanel2.add(lblCitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 550, 50, 50));
 
         lblPagos.setText("jLabel3");
-        jPanel2.add(lblPagos, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 540, 50, 50));
+        jPanel2.add(lblPagos, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 620, 50, 50));
 
         lblProforma.setText("jLabel3");
-        jPanel2.add(lblProforma, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 620, 50, 50));
+        jPanel2.add(lblProforma, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 690, 50, 50));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 290, 770));
 
@@ -444,7 +440,6 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JButton btnTratamientos;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblCasa;
-    private javax.swing.JLabel lblCerrarSs;
     private javax.swing.JLabel lblCitas;
     private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblPacientes;
