@@ -187,7 +187,7 @@ public class Panel_Citas extends javax.swing.JPanel {
                 btnActualizar_CitaActionPerformed(evt);
             }
         });
-        jPanel1.add(btnActualizar_Cita, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 210, 270, 40));
+        jPanel1.add(btnActualizar_Cita, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 210, 270, 40));
 
         btnBusquedaCitas.setBackground(new java.awt.Color(62, 134, 203));
         btnBusquedaCitas.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N

@@ -27,6 +27,10 @@ import proyecto.clinica_dental_calderon.DB.Conexion;
 //FILTROS DE BUSQUEDA
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableRowSorter;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -69,6 +73,22 @@ public class Panel_Pacientes extends javax.swing.JPanel {
 
     public Panel_Pacientes() throws SQLException {
         initComponents();
+
+        ((AbstractDocument) txtBuscar.getDocument()).setDocumentFilter(new DocumentFilter() {
+            @Override
+            public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
+                if (text.matches("\\d+") && (fb.getDocument().getLength() + text.length() <= 3)) {
+                    super.insertString(fb, offset, text, attr);
+                }
+            }
+
+            @Override
+            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                if (text.matches("\\d+") && (fb.getDocument().getLength() - length + text.length() <= 3)) {
+                    super.replace(fb, offset, length, text, attrs);
+                }
+            }
+        });
 
         //imagenes
         btnActualizar.setIcon(actualizarImagen);
@@ -160,6 +180,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         txtBuscar = new javax.swing.JTextField();
         btnLimpiar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(1365, 770));
         setPreferredSize(new java.awt.Dimension(1365, 770));
@@ -269,6 +290,11 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         });
         jPanel1.add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1300, 210, 40, 40));
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 210, 270, 40));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel3.setText("BUSCAR POR DNI");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1064, 190, 170, 20));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -489,6 +515,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
     public javax.swing.JButton btnLimpiar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     public javax.swing.JTable table_Pacientes;

@@ -33,6 +33,13 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
 
     public F_Nuevo_Tratamiento() throws SQLException {
         initComponents();
+
+        btn_Crear_Tratamiento.setEnabled(false);
+        checkEditarPrecio.setEnabled(false);
+        txaDescripcion.setEnabled(false);
+        cbxOdontologo.setEnabled(false);
+        cbxTratamiento.setEnabled(false);
+
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         setDateToCurrent();
@@ -477,6 +484,11 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
             rs = ps.executeQuery();
 
             if (rs.next()) {
+                btn_Crear_Tratamiento.setEnabled(true);
+                checkEditarPrecio.setEnabled(true);
+                txaDescripcion.setEnabled(true);
+                cbxOdontologo.setEnabled(true);
+                cbxTratamiento.setEnabled(true);
                 txtNombre.setText(rs.getString("nombre_paciente"));
                 txtApellidos.setText(rs.getString("apellido_paciente"));
                 txtEdad.setText(rs.getString("edad_paciente"));

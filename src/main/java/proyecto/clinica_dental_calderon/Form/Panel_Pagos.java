@@ -12,6 +12,9 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 import proyecto.clinica_dental_calderon.DB.Conexion;
 
 /*
@@ -238,7 +241,7 @@ public class Panel_Pagos extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "La deuda ya fue cancelada completamente.");
             } else {
                 // Obtener id
-                int id_tratamiento = (int) tablePagos.getValueAt(selectedRow, 0);
+                int id_tratamiento = Integer.parseInt(tablePagos.getValueAt(selectedRow, 0).toString());
 
                 // Obtener datos para colocarlos en los txtFields
                 String id = tablePagos.getValueAt(selectedRow, 0).toString();
@@ -253,6 +256,8 @@ public class Panel_Pagos extends javax.swing.JPanel {
                 cancelar_deuda.setVisible(true);
                 cancelar_deuda.setResizable(false);
                 cancelar_deuda.setLocationRelativeTo(null);
+
+                cancelar_deuda.txtACancelar.setDocument(new Panel_Pagos.CostoFilter());
 
                 // Deshabilitar campos
                 cancelar_deuda.txtId.setEditable(false);
@@ -286,6 +291,29 @@ public class Panel_Pagos extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_btnCancelar_DeudaActionPerformed
+
+    private class CostoFilter extends PlainDocument {
+
+        @Override
+        public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
+            String text = getText(0, getLength());
+            if ((text + str).matches("\\d*\\.?\\d{0,2}")) {
+                super.insertString(offset, str, attr);
+            }
+        }
+
+        @Override
+        public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+            String currentText = getText(0, getLength());
+            String beforeOffset = currentText.substring(0, offset);
+            String afterOffset = currentText.substring(offset + length);
+
+            String resultText = beforeOffset + text + afterOffset;
+            if (resultText.matches("\\d*\\.?\\d{0,2}")) {
+                super.replace(offset, length, text, attrs);
+            }
+        }
+    }
 
     private void Cargar_Metodos_Pago(JComboBox<String> c) {
         DefaultComboBoxModel<String> box_Metodos = new DefaultComboBoxModel<>();
@@ -322,7 +350,7 @@ public class Panel_Pagos extends javax.swing.JPanel {
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Por favor, seleccione un registro para ver el historial de pagos.");
         } else {
-            int idtratamiento = (int) tablePagos.getValueAt(selectedRow, 0);
+            int idtratamiento = Integer.parseInt(tablePagos.getValueAt(selectedRow, 0).toString());
 
             // Realizar la consulta a la base de datos
             String query = "SELECT id_pago, fecha_pago, hora_pago, dinero_ingresado, metodo_pago FROM TB_HISTORIAL_PAGOS WHERE id_tratamiento=?";

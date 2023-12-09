@@ -2,13 +2,13 @@ package proyecto.clinica_dental_calderon.Form;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-
 import java.sql.SQLException;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import javax.swing.JOptionPane;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 import proyecto.clinica_dental_calderon.DB.Conexion;
 
 /**
@@ -23,11 +23,33 @@ public class F_Cancelar_Deuda extends javax.swing.JFrame {
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        
-    }
-    
 
-    
+        txtACancelar.setDocument(new F_Cancelar_Deuda.CostoFilter());
+
+    }
+
+    private class CostoFilter extends PlainDocument {
+
+        @Override
+        public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
+            String text = getText(0, getLength());
+            if ((text + str).matches("\\d*\\.?\\d{0,2}")) {
+                super.insertString(offset, str, attr);
+            }
+        }
+
+        @Override
+        public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+            String currentText = getText(0, getLength());
+            String beforeOffset = currentText.substring(0, offset);
+            String afterOffset = currentText.substring(offset + length);
+
+            String resultText = beforeOffset + text + afterOffset;
+            if (resultText.matches("\\d*\\.?\\d{0,2}")) {
+                super.replace(offset, length, text, attrs);
+            }
+        }
+    }
 
     public F_Cancelar_Deuda(int id) {
         initComponents();
@@ -197,6 +219,11 @@ public class F_Cancelar_Deuda extends javax.swing.JFrame {
 
             // Deuda actual
             double deuda = Double.parseDouble(txtDeuda.getText());
+
+            if (a_pagar > deuda) {
+                JOptionPane.showMessageDialog(this, "El monto a cancelar no puede ser mayor que la deuda.");
+                return; // Detener el proceso si el monto es mayor que la deuda
+            }
 
             double cancelado = deuda - a_pagar;
 

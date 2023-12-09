@@ -7,7 +7,11 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.text.NumberFormatter;
 import proyecto.clinica_dental_calderon.DB.Conexion;
 
 /*
@@ -22,6 +26,24 @@ public class F_Reprogramar_Cita extends javax.swing.JFrame {
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(this);
+        
+        // Crear un SpinnerNumberModel para el Spinner de Hora
+        SpinnerNumberModel hourSpinnerModel = new SpinnerNumberModel(0, 0, 23, 1);
+        spinnerNueva_Hora.setModel(hourSpinnerModel);
+
+        // Crear un SpinnerNumberModel para el Spinner de Minuto
+        SpinnerNumberModel minuteSpinnerModel = new SpinnerNumberModel(0, 0, 59, 1);
+        spinnerNuevo_Minutos.setModel(minuteSpinnerModel);
+        
+        JSpinner.NumberEditor editorHora = new JSpinner.NumberEditor(spinnerNueva_Hora, "00");
+        JFormattedTextField txtFieldHora = editorHora.getTextField();
+        ((NumberFormatter) txtFieldHora.getFormatter()).setAllowsInvalid(false);
+        spinnerNueva_Hora.setEditor(editorHora);
+
+        JSpinner.NumberEditor editorMinuto = new JSpinner.NumberEditor(spinnerNuevo_Minutos, "00");
+        JFormattedTextField txtFieldMinuto = editorMinuto.getTextField();
+        ((NumberFormatter) txtFieldMinuto.getFormatter()).setAllowsInvalid(false);
+        spinnerNuevo_Minutos.setEditor(editorMinuto);
 
     }
 

@@ -23,7 +23,7 @@ import proyecto.clinica_dental_calderon.controlador_Odontologos.Lista_Odontologo
 import proyecto.clinica_dental_calderon.controlador_Odontologos.Odontologos;
 import javax.swing.JFormattedTextField;
 import javax.swing.JSpinner;
-import javax.swing.text.MaskFormatter;
+import javax.swing.JTable;
 import javax.swing.text.NumberFormatter;
 
 /*
@@ -40,12 +40,22 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
 
+        SpinnerHora.setEnabled(false);
+        SpinnerMinuto.setEnabled(false);
+        dateCita.setEnabled(false);
+        cbxOdontologo.setEnabled(false);
+        btnAgregar_Cita.setEnabled(false);
+        txaDescripcion.setEnabled(false);
+
+        deshabilitarEdicionTabla(tableTratamiento);
+
         dateCita.getDateEditor().setEnabled(false);
 
         // Asignar el modelo de tabla al JTable
         tableTratamiento.setModel(tableModel);
         Deshabilitar_Campos();
         Cargar_Combos_Odontologos(cbxOdontologo);
+
         // Crear un SpinnerNumberModel para el Spinner de Hora
         SpinnerNumberModel hourSpinnerModel = new SpinnerNumberModel(0, 0, 23, 1);
         SpinnerHora.setModel(hourSpinnerModel);
@@ -57,8 +67,7 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
         // Restricciones para el campo txtDni
         txtDni.setDocument(new F_Agendar_Cita.JTextFieldLimit(15)); // Limita la cantidad máxima de caracteres
         ((AbstractDocument) txtDni.getDocument()).setDocumentFilter(new F_Agendar_Cita.NumberFilter()); // Aplica el filtro de solo números
-        
-        
+
         JSpinner.NumberEditor editorHora = new JSpinner.NumberEditor(SpinnerHora, "00");
         JFormattedTextField txtFieldHora = editorHora.getTextField();
         ((NumberFormatter) txtFieldHora.getFormatter()).setAllowsInvalid(false);
@@ -69,6 +78,12 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
         ((NumberFormatter) txtFieldMinuto.getFormatter()).setAllowsInvalid(false);
         SpinnerMinuto.setEditor(editorMinuto);
 
+    }
+
+    private void deshabilitarEdicionTabla(JTable tabla) {
+        tabla.setDefaultEditor(Object.class, null); // Deshabilitar la edición
+        tabla.getTableHeader().setReorderingAllowed(false); // Evitar el movimiento de columnas
+        tabla.getTableHeader().setResizingAllowed(false);
     }
 
     // Clase para limitar la cantidad máxima de caracteres en el campo
@@ -387,6 +402,12 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
                 if (rsTratamientosCount.next()) {
                     int countRows = rsTratamientosCount.getInt("count_rows");
                     if (countRows > 1) {
+                        SpinnerHora.setEnabled(true);
+                        SpinnerMinuto.setEnabled(true);
+                        dateCita.setEnabled(true);
+                        cbxOdontologo.setEnabled(true);
+                        btnAgregar_Cita.setEnabled(true);
+                        txaDescripcion.setEnabled(true);
                         PreparedStatement psPacientes = null;
                         ResultSet rsPacientes = null;
                         String queryPacientes = "SELECT * FROM TB_PACIENTES WHERE dni_paciente = ?";

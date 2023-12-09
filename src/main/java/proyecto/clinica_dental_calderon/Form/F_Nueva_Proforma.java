@@ -32,6 +32,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
+import javax.swing.text.PlainDocument;
 import proyecto.clinica_dental_calderon.DB.Conexion;
 
 public class F_Nueva_Proforma extends javax.swing.JFrame {
@@ -41,11 +46,11 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
     private String tratamientoSeleccionado;
     private double costoUnitario;
     double total = 0;
-    
+
     String nombre = "/images/linea.png";
 
     ImageIcon LineaNombreImage = new ImageIcon(F_Nueva_Proforma.class.getResource(nombre));
-    
+
     String logoimagencirclex200 = "/images/LogoParaProforma.png";
     ImageIcon iconImagen = new ImageIcon(F_Nueva_Proforma.class.getResource(logoimagencirclex200));
 
@@ -58,6 +63,14 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
     public F_Nueva_Proforma() {
         initComponents();
         
+        btnEliminarTratamiento.setEnabled(false);
+
+        txtCostoUnitario.setEditable(false);
+
+        txtCosto.setDocument(new F_Nueva_Proforma.CostoFilter());
+
+        checkEditar_Precio.setEnabled(false);
+
         //Lineas para los campos de texto
         lblLineaNombre.setIcon(LineaNombreImage);
         lblLineaApellido.setIcon(LineaNombreImage);
@@ -221,6 +234,77 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
             }
         });
 
+        ((AbstractDocument) txtNombres.getDocument()).setDocumentFilter(new DocumentFilter() {
+            @Override
+            public void insertString(FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
+                if (text.matches("[a-zA-Z\\s]+") && (fb.getDocument().getLength() + text.length() <= 100)) {
+                    super.insertString(fb, offset, text, attr);
+                }
+            }
+
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                if (text.matches("[a-zA-Z\\s]+") && (fb.getDocument().getLength() - length + text.length() <= 100)) {
+                    super.replace(fb, offset, length, text, attrs);
+                }
+            }
+        });
+
+        ((AbstractDocument) txtApellidos.getDocument()).setDocumentFilter(new DocumentFilter() {
+            @Override
+            public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
+                if (text.matches("[a-zA-Z\\s]+") && (fb.getDocument().getLength() + text.length() <= 100)) {
+                    super.insertString(fb, offset, text, attr);
+                }
+            }
+
+            @Override
+            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                if (text.matches("[a-zA-Z\\s]+") && (fb.getDocument().getLength() - length + text.length() <= 100)) {
+                    super.replace(fb, offset, length, text, attrs);
+                }
+            }
+        });
+
+        ((AbstractDocument) txtEdad.getDocument()).setDocumentFilter(new DocumentFilter() {
+            @Override
+            public void insertString(FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
+                if (text.matches("\\d+") && (fb.getDocument().getLength() + text.length() <= 3)) {
+                    super.insertString(fb, offset, text, attr);
+                }
+            }
+
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                if (text.matches("\\d+") && (fb.getDocument().getLength() - length + text.length() <= 3)) {
+                    super.replace(fb, offset, length, text, attrs);
+                }
+            }
+        });
+
+        txtDireccion.setDocument(new PlainDocument() {
+            @Override
+            public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+                if (getLength() + str.length() <= 100) {
+                    super.insertString(offs, str, a);
+                }
+            }
+        });
+
+        txtTelefono.setDocument(new PlainDocument() {
+            @Override
+            public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+                if (str == null) {
+                    return;
+                }
+                if ((getLength() + str.length()) <= 15) {
+                    if (str.matches("[0-9]+")) {
+                        super.insertString(offs, str, a);
+                    }
+                }
+            }
+        });
+
         limpiarCampos();
 
         TextPaneVistaPrevia.setEditable(false);
@@ -278,6 +362,29 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
                 }
             }
         });
+    }
+
+    private class CostoFilter extends PlainDocument {
+
+        @Override
+        public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
+            String text = getText(0, getLength());
+            if ((text + str).matches("\\d*\\.?\\d{0,2}")) {
+                super.insertString(offset, str, attr);
+            }
+        }
+
+        @Override
+        public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+            String currentText = getText(0, getLength());
+            String beforeOffset = currentText.substring(0, offset);
+            String afterOffset = currentText.substring(offset + length);
+
+            String resultText = beforeOffset + text + afterOffset;
+            if (resultText.matches("\\d*\\.?\\d{0,2}")) {
+                super.replace(offset, length, text, attrs);
+            }
+        }
     }
 
     void limpiarCampos() {
@@ -897,17 +1004,34 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         String motivo = jtxaMotivo.getText();
         Date fechaRegistro = dateFecha.getDate();
         String horaRegistro = txtHora.getText();
-        double totalProforma = Double.parseDouble(txtCosto.getText());
+        String Costo = txtCosto.getText();
+
+        int cantidadTratamientos = tblTratamiento.getRowCount();
+        if (cantidadTratamientos == 0) {
+            JOptionPane.showMessageDialog(this, "Por favor, añada al menos un tratamiento antes de guardar la proforma.");
+            return; // Salir del método si la tabla está vacía
+        }
+
+        if (Costo.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese un valor para el costo.");
+            return; // Salir del método si el campo está vacío
+        }
+
+        double totalProforma = 0.0;
+
+        try {
+            totalProforma = Double.parseDouble(Costo);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Ingrese un valor numérico válido para el costo.");
+            return; // Salir del método si no se puede convertir a número
+        }
 
         // Tratamientos
         StringBuilder tratamientosBuilder = new StringBuilder();
         StringBuilder cantidadesBuilder = new StringBuilder();
         StringBuilder costosUnitariosBuilder = new StringBuilder();
         StringBuilder subtotalesBuilder = new StringBuilder();
-        double costoTotalTratamientos = 0.0;
 
-        // Iterar sobre las filas de la tabla de tratamientos
-        int cantidadTratamientos = tblTratamiento.getRowCount();
         for (int i = 0; i < cantidadTratamientos; i++) {
             String tratamiento = tblTratamiento.getValueAt(i, 0).toString();
             String cantidad = tblTratamiento.getValueAt(i, 1).toString();
@@ -919,7 +1043,7 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
             costosUnitariosBuilder.append(costoUnitario).append(",");
             subtotalesBuilder.append(subtotal).append(",");
 
-            costoTotalTratamientos += subtotal;
+            totalProforma += subtotal;
         }
 
         // Eliminar la última coma de las cadenas
@@ -940,45 +1064,52 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
             subtotales = subtotales.substring(0, subtotales.length() - 1);
         }
 
-        try {
-            String query = "INSERT INTO TB_PROFORMAS "
-                    + "(nombre_paciente, apellido_paciente, edad_paciente, telefono_paciente, direccion_paciente, "
-                    + "antecedentes, motivo_consulta, fecha_registro, hora_registro, tratamientos, cantidades_tratamiento, "
-                    + "costos_unitarios, subtotales, total) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement ps = connection.prepareStatement(query);
+        // Verifica si algún campo obligatorio está vacío
+        if (nombres.isEmpty() || apellidos.isEmpty() || edad.isEmpty() || telefono.isEmpty() || direccion.isEmpty() || fechaRegistro == null || horaRegistro.isEmpty() || tratamientos.isEmpty() || cantidades.isEmpty() || costosUnitarios.isEmpty() || subtotales.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos antes de guardar la proforma.");
+        } else {
+            try {
+                String query = "INSERT INTO TB_PROFORMAS "
+                        + "(nombre_paciente, apellido_paciente, edad_paciente, telefono_paciente, direccion_paciente, "
+                        + "antecedentes, motivo_consulta, fecha_registro, hora_registro, tratamientos, cantidades_tratamiento, "
+                        + "costos_unitarios, subtotales, total) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                PreparedStatement ps = connection.prepareStatement(query);
 
-            ps.setString(1, nombres);
-            ps.setString(2, apellidos);
-            ps.setString(3, edad);
-            ps.setString(4, telefono);
-            ps.setString(5, direccion);
-            ps.setString(6, antecedentes);
-            ps.setString(7, motivo);
-            ps.setDate(8, new java.sql.Date(fechaRegistro.getTime()));
-            ps.setString(9, horaRegistro);
-            ps.setString(10, tratamientos);
-            ps.setString(11, cantidades);
-            ps.setString(12, costosUnitarios);
-            ps.setString(13, subtotales);
-            ps.setDouble(14, totalProforma);
+                ps.setString(1, nombres);
+                ps.setString(2, apellidos);
+                ps.setString(3, edad);
+                ps.setString(4, telefono);
+                ps.setString(5, direccion);
+                ps.setString(6, antecedentes);
+                ps.setString(7, motivo);
+                ps.setDate(8, new java.sql.Date(fechaRegistro.getTime()));
+                ps.setString(9, horaRegistro);
+                ps.setString(10, tratamientos);
+                ps.setString(11, cantidades);
+                ps.setString(12, costosUnitarios);
+                ps.setString(13, subtotales);
+                ps.setDouble(14, totalProforma);
 
-            int rowsInserted = ps.executeUpdate();
+                int rowsInserted = ps.executeUpdate();
 
-            if (rowsInserted > 0) {
-                JOptionPane.showMessageDialog(this, "Proforma guardada exitosamente.");
-                // Actualizar la vista previa
-                actualizarVistaPrevia();
-            } else {
+                if (rowsInserted > 0) {
+                    JOptionPane.showMessageDialog(this, "Proforma guardada exitosamente.");
+                    // Actualizar la vista previa
+                    actualizarVistaPrevia();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al guardar la proforma.");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Error al guardar la proforma.");
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error al guardar la proforma.");
         }
     }//GEN-LAST:event_btnGuardar_ProformaActionPerformed
 
     private void btnAgregarTratamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarTratamientoActionPerformed
+        checkEditar_Precio.setEnabled(true);
+
         String tratamientoseleccionado = cbxTratamientos.getSelectedItem().toString();
         double costoUnitario = Double.parseDouble(txtCostoUnitario.getText());
         int cantidadSeleccionada = (int) spnCantidad.getValue();
@@ -1001,13 +1132,15 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         // Reiniciar txtCostoUnitario
         // Puedes establecerlo a un valor predeterminado si es necesario
         // Habilitar el botón eliminar
-        btnEliminarTratamiento.setEnabled(true);
+
     }//GEN-LAST:event_btnAgregarTratamientoActionPerformed
 
     private void btnEliminarTratamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarTratamientoActionPerformed
         int selectedRow = tblTratamiento.getSelectedRow();
 
-        if (selectedRow != -1) {
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Por favor, selecciona un registro para eliminar.");
+        } else if (selectedRow != -1) {
             // Restar el costo del tratamiento eliminado al total
             double costoTotalEliminado = (double) tblTratamiento.getValueAt(selectedRow, 3);
             total -= costoTotalEliminado;
@@ -1021,7 +1154,8 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
 
             // Deshabilitar el botón eliminar si no hay filas seleccionadas
             if (model.getRowCount() == 0) {
-                btnEliminarTratamiento.setEnabled(false);
+                // Si la tabla está vacía, deshabilitar el checkbox también
+                checkEditar_Precio.setEnabled(false);
             }
         }
     }//GEN-LAST:event_btnEliminarTratamientoActionPerformed
@@ -1081,7 +1215,7 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
     public javax.swing.JTextPane TextPaneVistaPrevia;
     private javax.swing.JButton btnAgregarTratamiento;
     private javax.swing.JButton btnEliminarTratamiento;
-    private javax.swing.JButton btnGuardar_Proforma;
+    public javax.swing.JButton btnGuardar_Proforma;
     private javax.swing.JButton btnImprimir;
     public javax.swing.JComboBox cbxTratamientos;
     public javax.swing.JCheckBox checkEditar_Precio;
