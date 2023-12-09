@@ -18,7 +18,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
 
     //ICONO DEL SISTEMA
     String logo = "/images/diente.png";
-    String casa = "/images/casa.png";
+    String casa = "/images/menu-principal.png";
 
     //IMAGENES
     String logoimagencircle = "/images/LogoDentalCircle.png";
@@ -39,20 +39,19 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
 
     ImageIcon casaImagen = new ImageIcon(F_Sistema.class.getResource(casa));
 
-    Panel_Inicio inicio = new Panel_Inicio();
-
     Panel_Pacientes pacientes = new Panel_Pacientes();
     Panel_Citas citas = new Panel_Citas();
     Panel_Tratamientos tratamientos = new Panel_Tratamientos();
     Panel_Pagos pagos = new Panel_Pagos();
     Panel_Proformas proformas = new Panel_Proformas();
+    Panel_Inicio inicioMenu = new Panel_Inicio();
     F_Login login = new F_Login();
 
     public F_Sistema() throws SQLException {
 
         initComponents();
 
-        PanelSistema.add(inicio);
+        PanelSistema.add(inicioMenu);
 
         this.setIconImage(new ImageIcon(F_Sistema.class.getResource(logo)).getImage());
 
@@ -62,9 +61,10 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
         lblCitas.setIcon(citasImagen);
         lblPagos.setIcon(pagosImagen);
         lblProforma.setIcon(proformasImagen);
-        lblCerrarSs.setIcon(sesionImagen);
 
         lblCasa.setIcon(casaImagen);
+
+        btnMenuPrincipal.setEnabled(false);
 
         this.setResizable(false);
         this.setLocationRelativeTo(null);
@@ -83,7 +83,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
         btnCitas.addActionListener(this);
         btnPagos.addActionListener(this);
         btnReportes.addActionListener(this);
-        btnCerrarSs.addActionListener(this);
+        btnMenuPrincipal.addActionListener(this);
 
     }
 
@@ -99,7 +99,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
             proformas.actualizarTablaProformas();
 
             // Resto del código para mostrar el panel de pacientes
-            inicio.setVisible(false);
+            inicioMenu.setVisible(false);
 
             citas.setVisible(false);
             tratamientos.setVisible(false);
@@ -119,7 +119,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
             pagos.actualizarTablaPagos();
             proformas.actualizarTablaProformas();
 
-            inicio.setVisible(false);
+            inicioMenu.setVisible(false);
 
             citas.setVisible(false);
             pacientes.setVisible(false);
@@ -139,7 +139,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
             pagos.actualizarTablaPagos();
             proformas.actualizarTablaProformas();
 
-            inicio.setVisible(false);
+            inicioMenu.setVisible(false);
 
             pacientes.setVisible(false);
             tratamientos.setVisible(false);
@@ -159,7 +159,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
             pagos.actualizarTablaPagos();
             proformas.actualizarTablaProformas();
 
-            inicio.setVisible(false);
+            inicioMenu.setVisible(false);
 
             citas.setVisible(false);
             pacientes.setVisible(false);
@@ -179,7 +179,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
             pagos.actualizarTablaPagos();
             proformas.actualizarTablaProformas();
 
-            inicio.setVisible(false);
+            inicioMenu.setVisible(false);
 
             pacientes.setVisible(false);
             citas.setVisible(false);
@@ -191,20 +191,22 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
             PanelSistema.validate();
             deshabilitar_Boton_Reportes();
             // Resto de tu código para el botón Reportes
-        } else if (evt.equals(btnCerrarSs)) {
-            try {
-                pacientes.cerrarRecursos();
-                citas.cerrarRecursos();
-                tratamientos.cerrarRecursos();
-                pagos.cerrarRecursos();
-                proformas.cerrarRecursos();
-                login.cerrarRecursos();
-                dispose();
+        } else if (evt.equals(btnMenuPrincipal)) {
 
-                login.show();
-            } catch (SQLException ex) {
-                Logger.getLogger(F_Sistema.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            pacientes.actualizarDatos_Paciente();
+            tratamientos.actualizarTablaTratamientos();
+            citas.actualizarTablaCitas();
+            pagos.actualizarTablaPagos();
+            proformas.actualizarTablaProformas();
+
+            inicioMenu.setVisible(true);
+
+            pacientes.setVisible(false);
+            citas.setVisible(false);
+            tratamientos.setVisible(false);
+            pagos.setVisible(false);
+            proformas.setVisible(false);
+            deshabilitar_Boton_Menu();
         }
 
     }
@@ -222,7 +224,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
         btnPagos = new javax.swing.JButton();
         btnCitas = new javax.swing.JButton();
         lblLogo = new javax.swing.JLabel();
-        btnCerrarSs = new javax.swing.JButton();
+        btnMenuPrincipal = new javax.swing.JButton();
         lblCerrarSs = new javax.swing.JLabel();
         lblPacientes = new javax.swing.JLabel();
         lblTratamientos = new javax.swing.JLabel();
@@ -326,18 +328,18 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
         lblLogo.setText("jLabel2");
         jPanel2.add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 270, 300));
 
-        btnCerrarSs.setBackground(new java.awt.Color(60, 133, 203));
-        btnCerrarSs.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        btnCerrarSs.setForeground(new java.awt.Color(255, 255, 255));
-        btnCerrarSs.setText("CERRAR SESIÓN");
-        btnCerrarSs.setBorder(null);
-        btnCerrarSs.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btnCerrarSs.addActionListener(new java.awt.event.ActionListener() {
+        btnMenuPrincipal.setBackground(new java.awt.Color(60, 133, 203));
+        btnMenuPrincipal.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnMenuPrincipal.setForeground(new java.awt.Color(255, 255, 255));
+        btnMenuPrincipal.setText("CERRAR SESIÓN");
+        btnMenuPrincipal.setBorder(null);
+        btnMenuPrincipal.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnMenuPrincipal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCerrarSsActionPerformed(evt);
+                btnMenuPrincipalActionPerformed(evt);
             }
         });
-        jPanel2.add(btnCerrarSs, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 690, 200, 70));
+        jPanel2.add(btnMenuPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 690, 200, 70));
 
         lblCerrarSs.setText("jLabel3");
         jPanel2.add(lblCerrarSs, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 700, 50, 50));
@@ -382,7 +384,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCitasActionPerformed
 
-    private void btnCerrarSsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSsActionPerformed
+    private void btnMenuPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuPrincipalActionPerformed
         try {
             pacientes.cerrarRecursos();
             citas.cerrarRecursos();
@@ -396,7 +398,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
             Logger.getLogger(F_Sistema.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-    }//GEN-LAST:event_btnCerrarSsActionPerformed
+    }//GEN-LAST:event_btnMenuPrincipalActionPerformed
 
     private void lblCasaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCasaMouseClicked
         pacientes.setVisible(false);
@@ -404,8 +406,8 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
         tratamientos.setVisible(false);
         proformas.setVisible(false);
         pagos.setVisible(false);
-        inicio.setVisible(true);
-        PanelSistema.add(inicio);
+        inicioMenu.setVisible(true);
+        PanelSistema.add(inicioMenu);
         //            pacientes.cerrarRecursos();
 //            citas.cerrarRecursos();
 //            tratamientos.cerrarRecursos();
@@ -434,8 +436,8 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelSistema;
-    private javax.swing.JButton btnCerrarSs;
     private javax.swing.JButton btnCitas;
+    private javax.swing.JButton btnMenuPrincipal;
     private javax.swing.JButton btnPacientes;
     private javax.swing.JButton btnPagos;
     private javax.swing.JButton btnReportes;
@@ -511,6 +513,18 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
             btnReportes.setEnabled(false);
         } else if (!proformas.isVisible()) {
             btnReportes.setEnabled(true);
+        }
+    }
+
+    public void deshabilitar_Boton_Menu() {
+        if (inicioMenu.isVisible()) {
+            btnPacientes.setEnabled(true);
+            btnTratamientos.setEnabled(true);
+            btnCitas.setEnabled(true);
+            btnPagos.setEnabled(true);
+            btnMenuPrincipal.setEnabled(false);
+        } else if (!inicioMenu.isVisible()) {
+            btnMenuPrincipal.setEnabled(true);
         }
     }
 
