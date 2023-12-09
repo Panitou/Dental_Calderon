@@ -248,7 +248,6 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
         jPanel2.setPreferredSize(new java.awt.Dimension(290, 450));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lblCasa.setText("jLabel1");
         lblCasa.setMaximumSize(new java.awt.Dimension(32, 32));
         lblCasa.setMinimumSize(new java.awt.Dimension(32, 32));
         lblCasa.setPreferredSize(new java.awt.Dimension(32, 32));
@@ -260,7 +259,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
         jPanel2.add(lblCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, 50, 50));
 
         btnPacientes.setBackground(new java.awt.Color(60, 133, 203));
-        btnPacientes.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnPacientes.setFont(new java.awt.Font("Segoe UI", 1, 23)); // NOI18N
         btnPacientes.setForeground(new java.awt.Color(255, 255, 255));
         btnPacientes.setText("PACIENTES");
         btnPacientes.setBorder(null);
@@ -270,10 +269,10 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
                 btnPacientesActionPerformed(evt);
             }
         });
-        jPanel2.add(btnPacientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 400, 200, 70));
+        jPanel2.add(btnPacientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 400, 200, 70));
 
         btnTratamientos.setBackground(new java.awt.Color(60, 133, 203));
-        btnTratamientos.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnTratamientos.setFont(new java.awt.Font("Segoe UI", 1, 23)); // NOI18N
         btnTratamientos.setForeground(new java.awt.Color(255, 255, 255));
         btnTratamientos.setText("TRATAMIENTOS");
         btnTratamientos.setBorder(null);
@@ -283,10 +282,10 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
                 btnTratamientosActionPerformed(evt);
             }
         });
-        jPanel2.add(btnTratamientos, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 470, 200, 70));
+        jPanel2.add(btnTratamientos, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 470, 200, 70));
 
         btnReportes.setBackground(new java.awt.Color(60, 133, 203));
-        btnReportes.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnReportes.setFont(new java.awt.Font("Segoe UI", 1, 23)); // NOI18N
         btnReportes.setForeground(new java.awt.Color(255, 255, 255));
         btnReportes.setText("PROFORMA");
         btnReportes.setBorder(null);
@@ -296,10 +295,10 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
                 btnReportesActionPerformed(evt);
             }
         });
-        jPanel2.add(btnReportes, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 680, 200, 70));
+        jPanel2.add(btnReportes, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 680, 200, 70));
 
         btnPagos.setBackground(new java.awt.Color(60, 133, 203));
-        btnPagos.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnPagos.setFont(new java.awt.Font("Segoe UI", 1, 23)); // NOI18N
         btnPagos.setForeground(new java.awt.Color(255, 255, 255));
         btnPagos.setText("PAGOS");
         btnPagos.setBorder(null);
@@ -309,10 +308,10 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
                 btnPagosActionPerformed(evt);
             }
         });
-        jPanel2.add(btnPagos, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 610, 200, 70));
+        jPanel2.add(btnPagos, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 610, 200, 70));
 
         btnCitas.setBackground(new java.awt.Color(60, 133, 203));
-        btnCitas.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnCitas.setFont(new java.awt.Font("Segoe UI", 1, 23)); // NOI18N
         btnCitas.setForeground(new java.awt.Color(255, 255, 255));
         btnCitas.setText("CITAS");
         btnCitas.setBorder(null);
@@ -322,13 +321,13 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
                 btnCitasActionPerformed(evt);
             }
         });
-        jPanel2.add(btnCitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 540, 200, 70));
+        jPanel2.add(btnCitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 540, 200, 70));
 
         lblLogo.setText("jLabel2");
         jPanel2.add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 270, 300));
 
         btnMenuPrincipal.setBackground(new java.awt.Color(60, 133, 203));
-        btnMenuPrincipal.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnMenuPrincipal.setFont(new java.awt.Font("Segoe UI", 1, 23)); // NOI18N
         btnMenuPrincipal.setForeground(new java.awt.Color(255, 255, 255));
         btnMenuPrincipal.setText("MENU PRINCIPAL");
         btnMenuPrincipal.setBorder(null);
@@ -338,7 +337,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
                 btnMenuPrincipalActionPerformed(evt);
             }
         });
-        jPanel2.add(btnMenuPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 330, 210, 70));
+        jPanel2.add(btnMenuPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 330, 210, 70));
 
         lblPacientes.setText("jLabel3");
         jPanel2.add(lblPacientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 400, 70, 70));
@@ -455,6 +454,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
             btnTratamientos.setEnabled(true);
             btnPagos.setEnabled(true);
             btnReportes.setEnabled(true);
+            btnMenuPrincipal.setEnabled(true);
 
         } else if (!pacientes.isVisible()) {
             btnPacientes.setEnabled(true);
@@ -468,6 +468,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
             btnTratamientos.setEnabled(true);
             btnPagos.setEnabled(true);
             btnReportes.setEnabled(true);
+            btnMenuPrincipal.setEnabled(true);
 
         } else if (!citas.isVisible()) {
             btnCitas.setEnabled(true);
@@ -480,6 +481,8 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
             btnCitas.setEnabled(true);
             btnPacientes.setEnabled(true);
             btnPagos.setEnabled(true);
+            btnMenuPrincipal.setEnabled(true);
+
             btnReportes.setEnabled(true);
 
         } else if (!tratamientos.isVisible()) {
@@ -493,6 +496,8 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
             btnCitas.setEnabled(true);
             btnTratamientos.setEnabled(true);
             btnReportes.setEnabled(true);
+            btnMenuPrincipal.setEnabled(true);
+
             btnPagos.setEnabled(false);
         } else {
             btnPagos.setEnabled(true);
@@ -505,6 +510,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
             btnTratamientos.setEnabled(true);
             btnCitas.setEnabled(true);
             btnPagos.setEnabled(true);
+            btnMenuPrincipal.setEnabled(true);
             btnReportes.setEnabled(false);
         } else if (!proformas.isVisible()) {
             btnReportes.setEnabled(true);
