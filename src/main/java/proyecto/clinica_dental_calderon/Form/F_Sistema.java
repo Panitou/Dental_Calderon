@@ -206,6 +206,8 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
             tratamientos.setVisible(false);
             pagos.setVisible(false);
             proformas.setVisible(false);
+            PanelSistema.add(inicioMenu);
+            PanelSistema.validate();
             deshabilitar_Boton_Menu();
         }
 
@@ -380,19 +382,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
     }//GEN-LAST:event_btnCitasActionPerformed
 
     private void btnMenuPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuPrincipalActionPerformed
-        try {
-            pacientes.cerrarRecursos();
-            citas.cerrarRecursos();
-            tratamientos.cerrarRecursos();
-            pagos.cerrarRecursos();
-            proformas.cerrarRecursos();
-            dispose();
-            login.show();
-
-        } catch (SQLException ex) {
-            Logger.getLogger(F_Sistema.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        
     }//GEN-LAST:event_btnMenuPrincipalActionPerformed
 
     private void lblCasaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCasaMouseClicked
