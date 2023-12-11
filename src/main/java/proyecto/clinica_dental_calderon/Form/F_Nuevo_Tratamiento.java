@@ -85,10 +85,15 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
 
     private class CostoFilter extends PlainDocument {
 
+        private static final int MAX_DIGITS_BEFORE_DECIMAL = 7; // Máximo de dígitos antes del punto
+        private static final int MAX_DECIMAL_PLACES = 2; // Máximo de decimales permitidos
+
         @Override
         public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
             String text = getText(0, getLength());
-            if ((text + str).matches("\\d*\\.?\\d{0,2}")) {
+            String result = text.substring(0, offset) + str + text.substring(offset);
+
+            if (isValidInput(result)) {
                 super.insertString(offset, str, attr);
             }
         }
@@ -100,9 +105,27 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
             String afterOffset = currentText.substring(offset + length);
 
             String resultText = beforeOffset + text + afterOffset;
-            if (resultText.matches("\\d*\\.?\\d{0,2}")) {
+            if (isValidInput(resultText)) {
                 super.replace(offset, length, text, attrs);
             }
+        }
+
+        private boolean isValidInput(String input) {
+            // Verifica si el texto ingresado es un número válido con las restricciones
+            if (input.isEmpty()) {
+                return true;
+            }
+
+            if (input.equals(".")) {
+                return false; // Evita que se ingrese solo el punto decimal
+            }
+
+            if (input.matches("\\d{1," + MAX_DIGITS_BEFORE_DECIMAL + "}\\.?\\d{0," + MAX_DECIMAL_PLACES + "}")) {
+                double value = Double.parseDouble(input);
+                return value <= Double.MAX_VALUE && value >= -Double.MAX_VALUE; // Verifica el rango de Double
+            }
+
+            return false;
         }
     }
 
@@ -163,7 +186,7 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
         dateFecha_Creacion.setDate(currentDate); // Establecer la fecha actual en el JDateChooser
     }
 
-    public void Deshabilitar_Campos() {
+    private void Deshabilitar_Campos() {
         txtNombre.setEditable(false);
         txtApellidos.setEditable(false);
         txtEdad.setEditable(false);

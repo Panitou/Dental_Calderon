@@ -32,6 +32,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -58,9 +60,23 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         tabla.getTableHeader().setResizingAllowed(false);
     }
 
+    private void actualizarCamposSecundarios() {
+        txtDireccionPane.setText(txtDireccion.getText());
+        txtTelefonoPane.setText(txtTelefono.getText());
+    }
 
-    public F_Nueva_Proforma() {
+    public F_Nueva_Proforma() throws SQLException {
         initComponents();
+
+        txtCosto.setDocument(new F_Nueva_Proforma.CostoFilter());
+
+        // Ahora, carga el precio del tratamiento inicialmente seleccionado
+        try {
+            String tratamientoSeleccionado = cbxTratamientos.getSelectedItem().toString();
+            obtenerCostoTratamiento(tratamientoSeleccionado);
+        } catch (SQLException ex) {
+            Logger.getLogger(F_Nueva_Proforma.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         txtNombres.setText("");
         txtApellidos.setText("");
@@ -112,6 +128,40 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
 
         //Logo a imprimir
         Lbllogo.setIcon(iconImagen);
+        //DocumentListener - Mostrar datos en tiempo real - Direccion
+        txtDireccion.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                actualizarVistaPrevia();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                actualizarVistaPrevia();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                actualizarVistaPrevia();
+            }
+        });
+        //DocumentListener - Mostrar datos en tiempo real - Telefono
+        txtTelefono.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                actualizarVistaPrevia();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                actualizarVistaPrevia();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                actualizarVistaPrevia();
+            }
+        });
 
         //DocumentListener - Mostrar datos en tiempo real - Nombres
         txtNombres.getDocument().addDocumentListener(new DocumentListener() {
@@ -164,40 +214,7 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
                 actualizarVistaPrevia();
             }
         });
-        //DocumentListener - Mostrar datos en tiempo real - Direccion
-        txtDireccion.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                actualizarVistaPrevia();
-            }
 
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                actualizarVistaPrevia();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                actualizarVistaPrevia();
-            }
-        });
-        //DocumentListener - Mostrar datos en tiempo real - Telefono
-        txtTelefono.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                actualizarVistaPrevia();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                actualizarVistaPrevia();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                actualizarVistaPrevia();
-            }
-        });
         //DocumentListener - Mostrar datos en tiempo real - Antecedentes
         jtxaAntecedentes.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -380,10 +397,15 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
 
     private class CostoFilter extends PlainDocument {
 
+        private static final int MAX_DIGITS_BEFORE_DECIMAL = 7; // Máximo de dígitos antes del punto
+        private static final int MAX_DECIMAL_PLACES = 2; // Máximo de decimales permitidos
+
         @Override
         public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
             String text = getText(0, getLength());
-            if ((text + str).matches("\\d*\\.?\\d{0,2}")) {
+            String result = text.substring(0, offset) + str + text.substring(offset);
+
+            if (isValidInput(result)) {
                 super.insertString(offset, str, attr);
             }
         }
@@ -395,25 +417,35 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
             String afterOffset = currentText.substring(offset + length);
 
             String resultText = beforeOffset + text + afterOffset;
-            if (resultText.matches("\\d*\\.?\\d{0,2}")) {
+            if (isValidInput(resultText)) {
                 super.replace(offset, length, text, attrs);
             }
         }
+
+        private boolean isValidInput(String input) {
+            // Verifica si el texto ingresado es un número válido con las restricciones
+            if (input.isEmpty()) {
+                return true;
+            }
+
+            if (input.equals(".")) {
+                return false; // Evita que se ingrese solo el punto decimal
+            }
+
+            if (input.matches("\\d{1," + MAX_DIGITS_BEFORE_DECIMAL + "}\\.?\\d{0," + MAX_DECIMAL_PLACES + "}")) {
+                double value = Double.parseDouble(input);
+                return value <= Double.MAX_VALUE && value >= -Double.MAX_VALUE; // Verifica el rango de Double
+            }
+
+            return false;
+        }
     }
 
-    private void Cargar_Combos_Tratamientos(JComboBox<String> c) {
+    private void Cargar_Combos_Tratamientos(JComboBox<String> c) throws SQLException {
         DefaultComboBoxModel<String> box_Tratamiento = new DefaultComboBoxModel<>();
         c.setModel(box_Tratamiento);
 
-        Connection cn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        String query = "SELECT nombre_tratamiento FROM TB_LISTA_TRATAMIENTOS";
-        try {
-            cn = Conexion.getConnection();
-            ps = cn.prepareStatement(query);
-            rs = ps.executeQuery();
+        try (Connection cn = Conexion.getConnection(); PreparedStatement ps = cn.prepareStatement("SELECT nombre_tratamiento FROM TB_LISTA_TRATAMIENTOS"); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 String nombreTratamiento = rs.getString("nombre_tratamiento");
@@ -423,64 +455,47 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al cargar tratamientos.");
-        } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (rs != null) {
-                    rs.close();
-                }
-                if (cn != null) {
-                    cn.close();
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
         }
 
         c.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tratamientoSeleccionado = (String) c.getSelectedItem();
-                costoUnitario = obtenerCostoTratamiento(tratamientoSeleccionado);
-                txtCostoUnitario.setText(String.valueOf(costoUnitario));
+                try {
+                    tratamientoSeleccionado = (String) c.getSelectedItem();
+                    costoUnitario = obtenerCostoTratamiento(tratamientoSeleccionado);
+                    txtCostoUnitario.setText(String.valueOf(costoUnitario));
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(F_Nueva_Proforma.this, "Error al obtener costo del tratamiento.");
+                }
             }
         });
+
+        // Obtener y mostrar el costo del primer tratamiento al iniciar el frame
+        if (box_Tratamiento.getSize() > 0) {
+            String primerTratamiento = box_Tratamiento.getElementAt(0);
+            try {
+                double costoPrimerTratamiento = obtenerCostoTratamiento(primerTratamiento);
+                txtCostoUnitario.setText(String.valueOf(costoPrimerTratamiento));
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error al obtener costo del primer tratamiento.");
+            }
+        }
     }
 
-    private double obtenerCostoTratamiento(String tratamiento) {
-        Connection c = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        String query = "SELECT costo_tratamiento FROM TB_LISTA_TRATAMIENTOS WHERE nombre_tratamiento = ?";
-        try {
-            c = Conexion.getConnection();
-            ps = c.prepareStatement(query);
-            ps.setString(1, tratamiento);
-            rs = ps.executeQuery();
+    private double obtenerCostoTratamiento(String tratamiento) throws SQLException {
+        try (Connection c = Conexion.getConnection(); PreparedStatement ps = c.prepareStatement("SELECT costo_tratamiento FROM TB_LISTA_TRATAMIENTOS WHERE nombre_tratamiento = ?")) {
 
-            if (rs.next()) {
-                return rs.getDouble("costo_tratamiento");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
+            ps.setString(1, tratamiento);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getDouble("costo_tratamiento");
                 }
-                if (rs != null) {
-                    rs.close();
-                }
-                if (c != null) {
-                    c.close();
-                }
-            } catch (SQLException ex) {
             }
         }
 
-        return 0.0;
+        return 0.0; // Devuelve un valor predeterminado si no se encuentra el costo del tratamiento
     }
 
     @SuppressWarnings("unchecked")
@@ -1250,7 +1265,11 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new F_Nueva_Proforma().setVisible(true);
+                try {
+                    new F_Nueva_Proforma().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(F_Nueva_Proforma.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

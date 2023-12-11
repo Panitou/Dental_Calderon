@@ -1,12 +1,6 @@
 package proyecto.clinica_dental_calderon.Form;
 
 //PDF
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
-import java.awt.Desktop;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +9,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
@@ -124,17 +120,17 @@ public class Panel_Proformas extends javax.swing.JPanel {
         jLabel1.setText("PROFORMAS DE SERVICIOS");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 840, 80));
 
-        jbtnVista_General.setBackground(new java.awt.Color(30, 85, 131));
+        jbtnVista_General.setBackground(new java.awt.Color(62, 134, 203));
         jbtnVista_General.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jbtnVista_General.setForeground(new java.awt.Color(255, 255, 255));
-        jbtnVista_General.setText("VISTA GENERAL ");
+        jbtnVista_General.setText("VER PROFORMA");
         jbtnVista_General.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jbtnVista_General.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnVista_GeneralActionPerformed(evt);
             }
         });
-        jPanel1.add(jbtnVista_General, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 720, 200, 40));
+        jPanel1.add(jbtnVista_General, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 220, 40));
 
         jtblProformas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -149,9 +145,9 @@ public class Panel_Proformas extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(jtblProformas);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 220, 1100, 540));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 220, 1090, 540));
 
-        jbtnNueva_Proforma.setBackground(new java.awt.Color(62, 202, 151));
+        jbtnNueva_Proforma.setBackground(new java.awt.Color(62, 134, 203));
         jbtnNueva_Proforma.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jbtnNueva_Proforma.setForeground(new java.awt.Color(255, 255, 255));
         jbtnNueva_Proforma.setText("NUEVA PROFORMA");
@@ -161,7 +157,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
                 jbtnNueva_ProformaActionPerformed(evt);
             }
         });
-        jPanel1.add(jbtnNueva_Proforma, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 200, 40));
+        jPanel1.add(jbtnNueva_Proforma, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 220, 40));
 
         jbtnActualizar.setBackground(new java.awt.Color(62, 134, 203));
         jbtnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -174,7 +170,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
             }
         });
         jPanel1.add(jbtnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 20, 150, 30));
-        jPanel1.add(dateChooserFechaFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 170, 190, 40));
+        jPanel1.add(dateChooserFechaFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(1160, 170, 190, 40));
 
         btnLimpiarFiltro.setBackground(new java.awt.Color(62, 202, 151));
         btnLimpiarFiltro.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -186,7 +182,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
                 btnLimpiarFiltroActionPerformed(evt);
             }
         });
-        jPanel1.add(btnLimpiarFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 170, 170, 40));
+        jPanel1.add(btnLimpiarFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 170, 170, 40));
 
         btnAplicarFiltro.setBackground(new java.awt.Color(62, 202, 151));
         btnAplicarFiltro.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -198,18 +194,18 @@ public class Panel_Proformas extends javax.swing.JPanel {
                 btnAplicarFiltroActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAplicarFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 170, 170, 40));
-        jPanel1.add(dateChooserFechaInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 170, 190, 40));
+        jPanel1.add(btnAplicarFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 170, 170, 40));
+        jPanel1.add(dateChooserFechaInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 170, 190, 40));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(51, 51, 51));
         jLabel2.setText("HASTA:");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 150, 190, 20));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1160, 150, 190, 20));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(51, 51, 51));
         jLabel3.setText("DE:");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 150, 190, 20));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 150, 190, 20));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -247,10 +243,13 @@ public class Panel_Proformas extends javax.swing.JPanel {
 
     }
     private void jbtnNueva_ProformaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnNueva_ProformaActionPerformed
-
-        nueva_proforma.setVisible(true);
-        nueva_proforma.btnGuardar_Proforma.setVisible(true);
-        limpiarCampos();
+        try {
+            F_Nueva_Proforma proforma = new F_Nueva_Proforma();
+            proforma.setVisible(true);
+            proforma.btnGuardar_Proforma.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(Panel_Proformas.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }//GEN-LAST:event_jbtnNueva_ProformaActionPerformed
 
@@ -286,9 +285,127 @@ public class Panel_Proformas extends javax.swing.JPanel {
         actualizarTablaProformas();
     }//GEN-LAST:event_jbtnActualizarActionPerformed
 
+    // Método para construir la tabla en HTML
+    private String construirTablaHTML(String tratamientos, String cantidades, String costosUnitarios, String subtotales) {
+        StringBuilder tablaHTML = new StringBuilder("<html><head><style>"
+                + "table {border-collapse: collapse; width: 100%;}"
+                + "th, td {text-align: left; padding: 2px; font-size: 9px; border-right: none; font-family: Arial;}"
+                + "th {background-color: #00A0E1; color: #ffffff;}"
+                + "td {border-bottom: 1px solid #00354B;}"
+                + "</style></head><body>");
+
+        tablaHTML.append("<table><tr><th>Tratamiento</th><th>Cantidad</th><th>Costo Unitario</th><th>Costo Total</th></tr>");
+
+        // Aquí debes procesar las cadenas separadas por comas y construir las filas de la tabla
+        String[] tratamientosArray = tratamientos.split(",");
+        String[] cantidadesArray = cantidades.split(",");
+        String[] costosUnitariosArray = costosUnitarios.split(",");
+        String[] subtotalesArray = subtotales.split(",");
+
+        // Suponiendo que todas las matrices tienen la misma longitud
+        for (int i = 0; i < tratamientosArray.length; i++) {
+            tablaHTML.append("<tr>")
+                    .append("<td>").append(tratamientosArray[i]).append("</td>")
+                    .append("<td>").append(cantidadesArray[i]).append("</td>")
+                    .append("<td>").append(costosUnitariosArray[i]).append("</td>")
+                    .append("<td>").append(subtotalesArray[i]).append("</td>")
+                    .append("</tr>");
+        }
+
+        tablaHTML.append("</table></body></html>");
+
+        return tablaHTML.toString();
+    }
+
     private void jbtnVista_GeneralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnVista_GeneralActionPerformed
-        nueva_proforma.setVisible(true);
-        nueva_proforma.btnGuardar_Proforma.setVisible(false);
+        int filaSeleccionada = jtblProformas.getSelectedRow();
+        F_VistaPrevia_Proforma vistaprevia_proforma = new F_VistaPrevia_Proforma();
+
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione una proforma.");
+        } else {
+            int numeroProforma = Integer.parseInt(jtblProformas.getValueAt(filaSeleccionada, 0).toString());
+
+            try {
+                connection = Conexion.getConnection();
+                String query = "SELECT * FROM TB_PROFORMAS WHERE id_proforma = ?";
+                PreparedStatement ps = connection.prepareStatement(query);
+                ps.setInt(1, numeroProforma);
+                rs = ps.executeQuery();
+
+                if (rs.next()) {
+                    // Obtener datos de la proforma desde la consulta
+                    String nombrePaciente = rs.getString("nombre_paciente");
+                    String apellidoPaciente = rs.getString("apellido_paciente");
+                    String edadPaciente = rs.getString("edad_paciente");
+                    String direccionPaciente = rs.getString("direccion_paciente");
+                    String telefonoPaciente = rs.getString("telefono_paciente");
+                    String antecedentesPaciente = rs.getString("antecedentes");
+                    String motivoPaciente = rs.getString("motivo_consulta");
+                    Date fechaRegistro = rs.getDate("fecha_registro");
+                    String horaRegistro = rs.getString("hora_registro");
+
+                    vistaprevia_proforma.setVisible(true);
+                    vistaprevia_proforma.setLocationRelativeTo(null);
+                    vistaprevia_proforma.setResizable(false);
+
+                    //Deshabilitar campos
+                    vistaprevia_proforma.txtNombres.setEditable(false);
+                    vistaprevia_proforma.txtApellidos.setEditable(false);
+                    vistaprevia_proforma.txtEdad.setEditable(false);
+                    vistaprevia_proforma.txtDireccion.setEditable(false);
+                    vistaprevia_proforma.txtTelefono.setEditable(false);
+                    vistaprevia_proforma.jtxaAntecedentes.setEditable(false);
+                    vistaprevia_proforma.jtxaMotivo.setEditable(false);
+                    vistaprevia_proforma.txtHora.setEditable(false);
+                    vistaprevia_proforma.dateFecha.setEnabled(false);
+                    vistaprevia_proforma.TxtPaneTabla.setEditable(false);
+
+                    // Continúa obteniendo los demás campos
+                    // Actualizar los campos con los datos de la proforma
+                    vistaprevia_proforma.txtNombres.setText(nombrePaciente);
+                    vistaprevia_proforma.txtApellidos.setText(apellidoPaciente);
+                    vistaprevia_proforma.txtEdad.setText(String.valueOf(edadPaciente));
+                    vistaprevia_proforma.txtDireccion.setText(direccionPaciente);
+                    vistaprevia_proforma.txtTelefono.setText(telefonoPaciente);
+                    vistaprevia_proforma.jtxaAntecedentes.setText(antecedentesPaciente);
+                    vistaprevia_proforma.jtxaMotivo.setText(motivoPaciente);
+                    vistaprevia_proforma.dateFecha.setDate(fechaRegistro);
+                    vistaprevia_proforma.txtHora.setText(horaRegistro);
+
+                    // Continúa actualizando los demás campos
+                    // Obtener los datos separados por comas desde la base de datos
+                    String tratamientos = rs.getString("tratamientos");
+                    String cantidades = rs.getString("cantidades_tratamiento");
+                    String costosUnitarios = rs.getString("costos_unitarios");
+                    String subtotales = rs.getString("subtotales");
+
+                    // Procesar los datos y construir la tabla en HTML
+                    String tablaHTML = construirTablaHTML(tratamientos, cantidades, costosUnitarios, subtotales);
+
+                    // Establecer el HTML en el TextPane
+                    vistaprevia_proforma.TxtPaneTabla.setContentType("text/html");
+                    vistaprevia_proforma.TxtPaneTabla.setText(tablaHTML);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                // Manejar cualquier excepción SQL aquí
+            } finally {
+                try {
+                    if (rs != null) {
+                        rs.close();
+                    }
+                    if (ps != null) {
+                        ps.close();
+                    }
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
     }//GEN-LAST:event_jbtnVista_GeneralActionPerformed
 
     private void btnAplicarFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAplicarFiltroActionPerformed
