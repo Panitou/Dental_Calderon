@@ -230,8 +230,7 @@ public class F_Modificar_Paciente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-
-// Obtener los datos editados desde los campos de texto y otros controles
+        // Obtener los datos editados desde los campos de texto y otros controles
         String nuevoNombre = txtNombre.getText();
         String nuevoApellido = txtApellidos.getText();
         String nuevoDNI = txtDni.getText(); // DNI del paciente que quieres actualizar
@@ -240,7 +239,9 @@ public class F_Modificar_Paciente extends javax.swing.JFrame {
         String nuevoCelular = txtCelular.getText();
         java.util.Date nuevaFechaInscripcion = dateFecha_Ingreso.getDate();
         Connection c = null;
-        PreparedStatement ps = null;
+        PreparedStatement psPacientes = null;
+        PreparedStatement psTratamientos = null;
+        PreparedStatement psCitas = null;
         String queryPacientes = "UPDATE TB_PACIENTES SET nombre_paciente=?, apellido_paciente=?, edad_paciente=?, enfermedad_paciente=?, celular_paciente=?, fecha_inscripcion=? WHERE dni_paciente=?";
         String queryTratamientos = "UPDATE TB_TRATAMIENTOS SET nombre_paciente=?, apellido_paciente=? WHERE dni_paciente=?";
         String queryCitas = "UPDATE TB_CITAS SET nombre_paciente=?, apellido_paciente=? WHERE dni_paciente=?";
@@ -249,60 +250,36 @@ public class F_Modificar_Paciente extends javax.swing.JFrame {
             c = Conexion.getConnection();
             c.setAutoCommit(false);
 
-            // Verificar si los nombres y apellidos han cambiado
-            boolean nombresCambiados = !nuevoNombre.equals(txtNombre.getText()) || !nuevoApellido.equals(txtApellidos.getText());
-
             // Preparar la consulta para la actualización en la tabla de pacientes
-            ps = c.prepareStatement(queryPacientes);
-            ps.setString(1, nuevoNombre);
-            ps.setString(2, nuevoApellido);
-            ps.setString(3, nuevaEdad);
-            ps.setString(4, nuevaEnfermedad);
-            ps.setString(5, nuevoCelular);
-            ps.setDate(6, new java.sql.Date(nuevaFechaInscripcion.getTime()));
-            ps.setString(7, nuevoDNI);
+            psPacientes = c.prepareStatement(queryPacientes);
+            psPacientes.setString(1, nuevoNombre);
+            psPacientes.setString(2, nuevoApellido);
+            psPacientes.setString(3, nuevaEdad);
+            psPacientes.setString(4, nuevaEnfermedad);
+            psPacientes.setString(5, nuevoCelular);
+            psPacientes.setDate(6, new java.sql.Date(nuevaFechaInscripcion.getTime()));
+            psPacientes.setString(7, nuevoDNI);
 
-            // Si los nombres y apellidos no han cambiado, actualizar igualmente
-            if (!nombresCambiados) {
-                ps.setString(1, txtNombre.getText());
-                ps.setString(2, txtApellidos.getText());
-            }
-
-            int rowsUpdatedPacientes = ps.executeUpdate();
+            int rowsUpdatedPacientes = psPacientes.executeUpdate();
 
             // Si se actualizaron los datos en la tabla de pacientes
-            if (rowsUpdatedPacientes > 0) {
-                // Actualizar en TB_TRATAMIENTOS
-                PreparedStatement psTratamientos = c.prepareStatement(queryTratamientos);
-                psTratamientos.setString(1, nuevoNombre);
-                psTratamientos.setString(2, nuevoApellido);
-                psTratamientos.setString(3, nuevoDNI);
-                int rowsUpdatedTratamientos = psTratamientos.executeUpdate();
+            // Actualizar en TB_TRATAMIENTOS
+            psTratamientos = c.prepareStatement(queryTratamientos);
+            psTratamientos.setString(1, nuevoNombre);
+            psTratamientos.setString(2, nuevoApellido);
+            psTratamientos.setString(3, nuevoDNI);
+            int rowsUpdatedTratamientos = psTratamientos.executeUpdate();
 
-                if (rowsUpdatedTratamientos <= 0) {
-                    c.rollback();
-                    JOptionPane.showMessageDialog(this, "Hubo un problema al actualizar los tratamientos.");
-                    return;
-                }
+            // Actualizar en TB_CITAS
+            psCitas = c.prepareStatement(queryCitas);
+            psCitas.setString(1, nuevoNombre);
+            psCitas.setString(2, nuevoApellido);
+            psCitas.setString(3, nuevoDNI);
+            int rowsUpdatedCitas = psCitas.executeUpdate();
 
-                // Actualizar en TB_CITAS
-                PreparedStatement psCitas = c.prepareStatement(queryCitas);
-                psCitas.setString(1, nuevoNombre);
-                psCitas.setString(2, nuevoApellido);
-                psCitas.setString(3, nuevoDNI);
-                int rowsUpdatedCitas = psCitas.executeUpdate();
+            c.commit();
+            JOptionPane.showMessageDialog(this, "Los cambios se guardaron exitosamente.");
 
-                if (rowsUpdatedCitas <= 0) {
-                    c.rollback();
-                    JOptionPane.showMessageDialog(this, "Hubo un problema al actualizar las citas.");
-                    return;
-                }
-
-                c.commit();
-                JOptionPane.showMessageDialog(this, "Los cambios se guardaron exitosamente.");
-            } else {
-                JOptionPane.showMessageDialog(this, "No se realizaron cambios para actualizar.");
-            }
         } catch (SQLException e) {
             try {
                 if (c != null) {
@@ -315,8 +292,14 @@ public class F_Modificar_Paciente extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al guardar los cambios: " + e.getMessage());
         } finally {
             try {
-                if (ps != null) {
-                    ps.close();
+                if (psPacientes != null) {
+                    psPacientes.close();
+                }
+                if (psTratamientos != null) {
+                    psTratamientos.close();
+                }
+                if (psCitas != null) {
+                    psCitas.close();
                 }
                 if (c != null) {
                     c.setAutoCommit(true);

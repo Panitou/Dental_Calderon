@@ -41,8 +41,6 @@ import proyecto.clinica_dental_calderon.DB.Conexion;
 
 public class F_Nueva_Proforma extends javax.swing.JFrame {
 
-    Connection connection = Conexion.getConnection();
-
     private String tratamientoSeleccionado;
     private double costoUnitario;
     double total = 0;
@@ -60,9 +58,27 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         tabla.getTableHeader().setResizingAllowed(false);
     }
 
+
     public F_Nueva_Proforma() {
         initComponents();
-        
+
+        txtNombres.setText("");
+        txtApellidos.setText("");
+        txtEdad.setText("");
+        jtxaAntecedentes.setText("");
+        jtxaMotivo.setText("");
+        txtDireccion.setText("");
+        txtTelefono.setText("");
+        txtCostoUnitario.setText("");
+        txtCosto.setText("");
+
+        cbxTratamientos.setSelectedIndex(0);
+
+        DefaultTableModel modelo = (DefaultTableModel) tblTratamiento.getModel();
+        modelo.setRowCount(0);
+
+        spnCantidad.setValue(0);
+
         btnEliminarTratamiento.setEnabled(false);
 
         txtCostoUnitario.setEditable(false);
@@ -305,8 +321,6 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
             }
         });
 
-        limpiarCampos();
-
         TextPaneVistaPrevia.setEditable(false);
 
         this.setResizable(false);
@@ -387,45 +401,42 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         }
     }
 
-    void limpiarCampos() {
-        txtNombres.setText("");
-        txtApellidos.setText("");
-        txtTelefono.setText("");
-        txtDireccion.setText("");
-        txtEdad.setText("");
-        jtxaAntecedentes.setText("");
-        jtxaMotivo.setText("");
-        txtCostoUnitario.setText("");
-        txtCosto.setText("");
-
-        cbxTratamientos.setSelectedIndex(0);
-
-        DefaultTableModel model = (DefaultTableModel) tblTratamiento.getModel();
-        model.setRowCount(0);
-
-        spnCantidad.setValue(0);
-
-    }
-
     private void Cargar_Combos_Tratamientos(JComboBox<String> c) {
         DefaultComboBoxModel<String> box_Tratamiento = new DefaultComboBoxModel<>();
         c.setModel(box_Tratamiento);
 
+        Connection cn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        String query = "SELECT nombre_tratamiento FROM TB_LISTA_TRATAMIENTOS";
         try {
-            String query = "SELECT nombre_tratamiento FROM TB_LISTA_TRATAMIENTOS";
-            PreparedStatement ps = connection.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
+            cn = Conexion.getConnection();
+            ps = cn.prepareStatement(query);
+            rs = ps.executeQuery();
 
             while (rs.next()) {
                 String nombreTratamiento = rs.getString("nombre_tratamiento");
                 box_Tratamiento.addElement(nombreTratamiento);
             }
 
-            rs.close();
-            ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al cargar tratamientos.");
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
 
         c.addActionListener(new ActionListener() {
@@ -439,15 +450,34 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
     }
 
     private double obtenerCostoTratamiento(String tratamiento) {
-        try (PreparedStatement ps = connection.prepareStatement("SELECT costo_tratamiento FROM TB_LISTA_TRATAMIENTOS WHERE nombre_tratamiento = ?")) {
+        Connection c = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String query = "SELECT costo_tratamiento FROM TB_LISTA_TRATAMIENTOS WHERE nombre_tratamiento = ?";
+        try {
+            c = Conexion.getConnection();
+            ps = c.prepareStatement(query);
             ps.setString(1, tratamiento);
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
 
             if (rs.next()) {
                 return rs.getDouble("costo_tratamiento");
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
+                if (c != null) {
+                    c.close();
+                }
+            } catch (SQLException ex) {
+            }
         }
 
         return 0.0;
@@ -1006,6 +1036,9 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         String horaRegistro = txtHora.getText();
         String Costo = txtCosto.getText();
 
+        Connection c = null;
+        PreparedStatement ps = null;
+
         int cantidadTratamientos = tblTratamiento.getRowCount();
         if (cantidadTratamientos == 0) {
             JOptionPane.showMessageDialog(this, "Por favor, añada al menos un tratamiento antes de guardar la proforma.");
@@ -1069,12 +1102,13 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos antes de guardar la proforma.");
         } else {
             try {
+                c = Conexion.getConnection();
                 String query = "INSERT INTO TB_PROFORMAS "
                         + "(nombre_paciente, apellido_paciente, edad_paciente, telefono_paciente, direccion_paciente, "
                         + "antecedentes, motivo_consulta, fecha_registro, hora_registro, tratamientos, cantidades_tratamiento, "
                         + "costos_unitarios, subtotales, total) "
                         + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                PreparedStatement ps = connection.prepareStatement(query);
+                ps = c.prepareStatement(query);
 
                 ps.setString(1, nombres);
                 ps.setString(2, apellidos);
@@ -1103,6 +1137,17 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
             } catch (SQLException e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Error al guardar la proforma.");
+            } finally {
+                try {
+                    if (ps != null) {
+                        ps.close();
+                    }
+                    if (c != null) {
+                        c.close();
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
     }//GEN-LAST:event_btnGuardar_ProformaActionPerformed
@@ -1196,7 +1241,7 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
             try {
                 printerJob.print();
             } catch (PrinterException e) {
-                // Manejo de excepciones
+                e.printStackTrace();
             }
         }
     }//GEN-LAST:event_btnImprimirActionPerformed
@@ -1276,18 +1321,18 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
     public javax.swing.JSpinner spnCantidad;
     public javax.swing.JTable tblTratamiento;
     private javax.swing.JTextField txtAntecedentesPane;
-    private javax.swing.JTextField txtApellidoPane;
+    public javax.swing.JTextField txtApellidoPane;
     public javax.swing.JTextField txtApellidos;
     public javax.swing.JTextField txtCosto;
     public javax.swing.JTextField txtCostoUnitario;
     public javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtDireccionPane;
     public javax.swing.JTextField txtEdad;
-    private javax.swing.JTextField txtEdadPane;
+    public javax.swing.JTextField txtEdadPane;
     private javax.swing.JTextField txtFechaPane;
     public javax.swing.JTextField txtHora;
     private javax.swing.JTextField txtMotivoPane;
-    private javax.swing.JTextField txtNombrePane;
+    public javax.swing.JTextField txtNombrePane;
     public javax.swing.JTextField txtNombres;
     public javax.swing.JTextField txtTelefono;
     private javax.swing.JTextField txtTelefonoPane;

@@ -17,8 +17,6 @@ import proyecto.clinica_dental_calderon.DB.Conexion;
  */
 public class F_Cancelar_Deuda extends javax.swing.JFrame {
 
-    Connection connect = Conexion.getConnection();
-
     public F_Cancelar_Deuda() {
         initComponents();
         this.setResizable(false);
@@ -206,10 +204,13 @@ public class F_Cancelar_Deuda extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagarActionPerformed
+
+        Connection c = null;
+        PreparedStatement ps = null;
+
         if (txtACancelar.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Ingresa un monto válido");
         } else {
-            PreparedStatement ps = null;
 
             // Obtener el id del tratamiento
             int id_tratamiento = Integer.parseInt(txtId.getText());
@@ -231,21 +232,34 @@ public class F_Cancelar_Deuda extends javax.swing.JFrame {
             if (cancelado == 0) {
                 // Si la deuda es menor o igual a cero, establece el estado de pago en 'PAGADO'
                 try {
+                    c = Conexion.getConnection();
                     String updateEstadoQuery = "UPDATE TB_TRATAMIENTOS SET estado_pago = 'PAGADO' WHERE id_tratamiento = ?";
-                    ps = connect.prepareStatement(updateEstadoQuery);
+                    ps = c.prepareStatement(updateEstadoQuery);
                     ps.setInt(1, id_tratamiento);
                     ps.executeUpdate();
                     ps.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                     JOptionPane.showMessageDialog(this, "Error al actualizar el estado de pago.");
+                } finally {
+                    try {
+                        if (ps != null) {
+                            ps.close();
+                        }
+                        if (c != null) {
+                            c.close();
+                        }
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
 
             try {
+                c = Conexion.getConnection();
                 // Actualizar la deuda
                 String updateDeudaQuery = "UPDATE TB_TRATAMIENTOS SET deuda = ? WHERE id_tratamiento = ?";
-                ps = connect.prepareStatement(updateDeudaQuery);
+                ps = c.prepareStatement(updateDeudaQuery);
                 ps.setDouble(1, cancelado);
                 ps.setInt(2, id_tratamiento);
 
@@ -258,10 +272,19 @@ public class F_Cancelar_Deuda extends javax.swing.JFrame {
                 } else {
                     JOptionPane.showMessageDialog(this, "No se pudo proceder con el pago.");
                 }
-                ps.close();
-                connect.close();
             } catch (SQLException e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    if (ps != null) {
+                        ps.close();
+                    }
+                    if (c != null) {
+                        c.close();
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
     }//GEN-LAST:event_btnPagarActionPerformed
@@ -274,10 +297,14 @@ public class F_Cancelar_Deuda extends javax.swing.JFrame {
         String fechaPago = dateFormat.format(fechaActual);
         String horaPago = timeFormat.format(fechaActual);
 
+        Connection c = null;
+        PreparedStatement ps = null;
+
         try {
+            c = Conexion.getConnection();
             // Insertar en la tabla de historial de pagos
             String insertQuery = "INSERT INTO TB_HISTORIAL_PAGOS (id_tratamiento, fecha_pago, hora_pago, dni_paciente, nombre_paciente, apellido_paciente, dinero_ingresado, metodo_pago) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement ps = connect.prepareStatement(insertQuery);
+            ps = c.prepareStatement(insertQuery);
             ps.setInt(1, id_tratamiento);
             ps.setString(2, fechaPago);
             ps.setString(3, horaPago);
@@ -288,10 +315,20 @@ public class F_Cancelar_Deuda extends javax.swing.JFrame {
             ps.setString(8, cbxMetodos.getSelectedItem().toString());
 
             ps.executeUpdate();
-            ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al insertar en el historial de pagos.");
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (c != null) {
+                    c.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 

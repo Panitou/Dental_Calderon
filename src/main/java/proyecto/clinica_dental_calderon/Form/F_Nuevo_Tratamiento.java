@@ -513,6 +513,7 @@ public class F_Nuevo_Tratamiento extends javax.swing.JFrame {
                     rs.close();
                 }
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 

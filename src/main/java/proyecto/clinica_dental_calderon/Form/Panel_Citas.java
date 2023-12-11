@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 import javax.swing.JTable;
@@ -238,8 +240,12 @@ public class Panel_Citas extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrear_CitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrear_CitaActionPerformed
+        try{
         F_Agendar_Cita agendar_cita = new F_Agendar_Cita();
         agendar_cita.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(Panel_Tratamientos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnCrear_CitaActionPerformed
 
     private void btnActualizar_CitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizar_CitaActionPerformed

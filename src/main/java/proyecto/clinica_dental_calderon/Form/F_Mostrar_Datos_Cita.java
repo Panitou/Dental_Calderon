@@ -3,7 +3,10 @@ package proyecto.clinica_dental_calderon.Form;
 
 import java.awt.Color;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.sql.Time;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
@@ -263,7 +266,11 @@ public class F_Mostrar_Datos_Cita extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new F_Agendar_Cita().setVisible(true);
+                try {
+                    new F_Agendar_Cita().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(F_Mostrar_Datos_Cita.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

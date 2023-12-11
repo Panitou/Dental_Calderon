@@ -8,6 +8,8 @@ import javax.swing.JOptionPane;
 import java.sql.Date;
 import java.sql.Statement;
 import java.sql.Time;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.SpinnerNumberModel;
@@ -35,7 +37,7 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
     // Crear el modelo de tabla para los tratamientos
     DefaultTableModel tableModel = new DefaultTableModel();
 
-    public F_Agendar_Cita() {
+    public F_Agendar_Cita() throws SQLException {
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(null);
@@ -156,6 +158,20 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
             }
         } catch (Exception e) {
             System.out.println("Error" + e);
+        }finally{
+            try {
+                if(rs != null){
+                    rs.close();
+                }
+                if(ps != null){
+                    ps.close();
+                }
+                if(connect != null){
+                    connect.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
 
     }
@@ -401,7 +417,7 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
                 rsTratamientosCount = psTratamientosCount.executeQuery();
                 if (rsTratamientosCount.next()) {
                     int countRows = rsTratamientosCount.getInt("count_rows");
-                    if (countRows > 1) {
+                    if (countRows > 0) {
                         SpinnerHora.setEnabled(true);
                         SpinnerMinuto.setEnabled(true);
                         dateCita.setEnabled(true);
@@ -472,7 +488,7 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
-                    } else if (countRows < 1) {
+                    } else if (countRows <= 0) {
                         JOptionPane.showMessageDialog(this, "Este paciente no tiene tratamientos pendientes");
                         dispose();
                     }
@@ -593,7 +609,11 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new F_Agendar_Cita().setVisible(true);
+                try {
+                    new F_Agendar_Cita().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(F_Agendar_Cita.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

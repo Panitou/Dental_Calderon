@@ -56,7 +56,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
         abrirConexion();
         Mostrar_Datos_Tabla();
         deshabilitarEdicionTabla(jtblProformas);
-        
+
         dateChooserFechaInicio.getDateEditor().setEnabled(false);
         dateChooserFechaFin.getDateEditor().setEnabled(false);
     }
@@ -223,12 +223,15 @@ public class Panel_Proformas extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    void limpiarCampos() {
+    private void limpiarCampos() {
         nueva_proforma.txtNombres.setText("");
         nueva_proforma.txtApellidos.setText("");
         nueva_proforma.txtTelefono.setText("");
         nueva_proforma.txtDireccion.setText("");
         nueva_proforma.txtEdad.setText("");
+        nueva_proforma.txtEdadPane.setText("");
+        nueva_proforma.txtApellidoPane.setText("");
+        nueva_proforma.txtNombrePane.setText("");
         nueva_proforma.jtxaAntecedentes.setText("");
         nueva_proforma.jtxaMotivo.setText("");
         nueva_proforma.txtCostoUnitario.setText("");
@@ -344,38 +347,6 @@ public class Panel_Proformas extends javax.swing.JPanel {
         jtblProformas.setRowSorter(sorter);
         sorter.setRowFilter(null);
     }//GEN-LAST:event_btnLimpiarFiltroActionPerformed
-
-    private void generarPDFVistaPrevia(String nombrePaciente, String apellidoPaciente) {
-        try {
-            // Crear un nuevo documento PDF
-            Document document = new Document();
-
-            // Ruta donde se guardará el PDF temporalmente (puedes cambiar esto según tus necesidades)
-            String rutaPDF = "vista_previa.pdf";
-
-            // Crear un escritor para el documento PDF
-            PdfWriter.getInstance(document, new FileOutputStream(rutaPDF));
-
-            // Abrir el documento para escribir en él
-            document.open();
-
-            // Agregar contenido al PDF
-            document.add(new Paragraph("Vista Previa de la Proforma"));
-            document.add(new Paragraph("Nombre del Paciente: " + nombrePaciente));
-            document.add(new Paragraph("Apellido del Paciente: " + apellidoPaciente));
-
-            // Cerrar el documento
-            document.close();
-
-            // Mostrar el PDF en la aplicación (puedes implementar esto según el entorno de tu aplicación)
-            // En este ejemplo, simplemente abrimos el PDF con el visor de PDF predeterminado en el sistema operativo
-            Desktop.getDesktop().open(new File(rutaPDF));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAplicarFiltro;
