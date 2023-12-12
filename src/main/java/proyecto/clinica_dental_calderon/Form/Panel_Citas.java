@@ -9,6 +9,7 @@ import java.sql.Time;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import javax.swing.JTable;
@@ -27,6 +28,10 @@ public class Panel_Citas extends javax.swing.JPanel {
     public Connection connection;
     public PreparedStatement ps = null;
     public ResultSet rs = null;
+
+    String actualizar = "/images/actualizar.png";
+
+    ImageIcon actualizarImagen = new ImageIcon(Panel_Citas.class.getResource(actualizar));
 
     public void abrirConexion() throws SQLException {
         // Verifica si ya hay una conexión abierta antes de abrir una nueva
@@ -49,6 +54,8 @@ public class Panel_Citas extends javax.swing.JPanel {
         abrirConexion();
         Mostrar_Datos_Tabla_Citas(tableCitas);
         deshabilitarEdicionTabla(tableCitas);
+        
+        btnActualizarDatos.setIcon(actualizarImagen);
     }
 
     private void deshabilitarEdicionTabla(JTable tabla) {
@@ -129,7 +136,7 @@ public class Panel_Citas extends javax.swing.JPanel {
                 btnCrear_CitaActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCrear_Cita, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 180, 40));
+        jPanel1.add(btnCrear_Cita, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 180, 40));
 
         tableCitas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -150,10 +157,10 @@ public class Panel_Citas extends javax.swing.JPanel {
         jLabel2.setForeground(new java.awt.Color(62, 134, 203));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("FILTROS DE BÚSQUEDA");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 180, 230, 30));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 190, 230, 30));
 
         cbxBusquedaCitas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PENDIENTE", "COMPLETADO", "CANCELADO" }));
-        jPanel1.add(cbxBusquedaCitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 210, 230, 40));
+        jPanel1.add(cbxBusquedaCitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 220, 230, 40));
 
         btnReprogramar_Cita.setBackground(new java.awt.Color(62, 202, 151));
         btnReprogramar_Cita.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -165,7 +172,7 @@ public class Panel_Citas extends javax.swing.JPanel {
                 btnReprogramar_CitaActionPerformed(evt);
             }
         });
-        jPanel1.add(btnReprogramar_Cita, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 210, 40));
+        jPanel1.add(btnReprogramar_Cita, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 210, 40));
 
         btnVista_General_Cita.setBackground(new java.awt.Color(62, 202, 151));
         btnVista_General_Cita.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -177,7 +184,7 @@ public class Panel_Citas extends javax.swing.JPanel {
                 btnVista_General_CitaActionPerformed(evt);
             }
         });
-        jPanel1.add(btnVista_General_Cita, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 160, 230, 40));
+        jPanel1.add(btnVista_General_Cita, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 170, 230, 40));
 
         btnActualizar_Cita.setBackground(new java.awt.Color(62, 202, 151));
         btnActualizar_Cita.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -189,7 +196,7 @@ public class Panel_Citas extends javax.swing.JPanel {
                 btnActualizar_CitaActionPerformed(evt);
             }
         });
-        jPanel1.add(btnActualizar_Cita, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 210, 270, 40));
+        jPanel1.add(btnActualizar_Cita, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 220, 270, 40));
 
         btnBusquedaCitas.setBackground(new java.awt.Color(62, 134, 203));
         btnBusquedaCitas.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -201,19 +208,18 @@ public class Panel_Citas extends javax.swing.JPanel {
                 btnBusquedaCitasActionPerformed(evt);
             }
         });
-        jPanel1.add(btnBusquedaCitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 210, 150, 40));
+        jPanel1.add(btnBusquedaCitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 220, 150, 40));
 
-        btnActualizarDatos.setBackground(new java.awt.Color(62, 134, 203));
+        btnActualizarDatos.setBackground(new java.awt.Color(255, 255, 255));
         btnActualizarDatos.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnActualizarDatos.setForeground(new java.awt.Color(255, 255, 255));
-        btnActualizarDatos.setText("ACTUALIZAR DATOS");
-        btnActualizarDatos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnActualizarDatos.setBorder(null);
         btnActualizarDatos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnActualizarDatosActionPerformed(evt);
             }
         });
-        jPanel1.add(btnActualizarDatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 20, 150, 30));
+        jPanel1.add(btnActualizarDatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 20, 32, 32));
 
         btnLimpiarFiltro.setBackground(new java.awt.Color(62, 134, 203));
         btnLimpiarFiltro.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -225,7 +231,7 @@ public class Panel_Citas extends javax.swing.JPanel {
                 btnLimpiarFiltroActionPerformed(evt);
             }
         });
-        jPanel1.add(btnLimpiarFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(779, 210, 160, 40));
+        jPanel1.add(btnLimpiarFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 220, 160, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -240,9 +246,9 @@ public class Panel_Citas extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrear_CitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrear_CitaActionPerformed
-        try{
-        F_Agendar_Cita agendar_cita = new F_Agendar_Cita();
-        agendar_cita.setVisible(true);
+        try {
+            F_Agendar_Cita agendar_cita = new F_Agendar_Cita();
+            agendar_cita.setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(Panel_Tratamientos.class.getName()).log(Level.SEVERE, null, ex);
         }

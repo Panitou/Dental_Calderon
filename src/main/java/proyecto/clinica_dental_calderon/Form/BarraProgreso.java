@@ -31,7 +31,6 @@ public class BarraProgreso extends javax.swing.JFrame {
     private int contadorPuntos = 0;
 
     public BarraProgreso() {
-
         ActionListener alProgreso = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -109,6 +108,7 @@ public class BarraProgreso extends javax.swing.JFrame {
         lblLogo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(51, 51, 51));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblCarga.setFont(new java.awt.Font("Lucida Sans", 1, 36)); // NOI18N
@@ -127,7 +127,6 @@ public class BarraProgreso extends javax.swing.JFrame {
         lblBievenido2.setText("BIENVENIDO");
         getContentPane().add(lblBievenido2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 30, 480, 110));
 
-        lblLogo.setIcon(new javax.swing.ImageIcon("E:\\RepositoriosGitHub\\Dental_Calderon\\iconos_clinica\\LogoDentalCircle.png")); // NOI18N
         lblLogo.setText("jLabel1");
         getContentPane().add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 269, 280));
 

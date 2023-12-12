@@ -24,7 +24,7 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
 
     String actualizar = "/images/actualizar.png";
 
-    ImageIcon actualizarImagen = new ImageIcon(F_Sistema.class.getResource(actualizar));
+    ImageIcon actualizarImagen = new ImageIcon(Panel_Tratamientos.class.getResource(actualizar));
 
     public Panel_Tratamientos() throws SQLException {
         initComponents();
@@ -125,7 +125,7 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
                 btnNuevo_TratamientoActionPerformed(evt);
             }
         });
-        jPanel1.add(btnNuevo_Tratamiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 210, 40));
+        jPanel1.add(btnNuevo_Tratamiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 210, 40));
 
         btnAplicarFiltro.setBackground(new java.awt.Color(62, 134, 203));
         btnAplicarFiltro.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -137,16 +137,16 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
                 btnAplicarFiltroActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAplicarFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 210, 170, 40));
+        jPanel1.add(btnAplicarFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 220, 170, 40));
 
         cbxBusquedaTratamientos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PENDIENTE", "COMPLETADO", "CANCELADO" }));
-        jPanel1.add(cbxBusquedaTratamientos, new org.netbeans.lib.awtextra.AbsoluteConstraints(1170, 210, 180, 40));
+        jPanel1.add(cbxBusquedaTratamientos, new org.netbeans.lib.awtextra.AbsoluteConstraints(1170, 220, 180, 40));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(30, 85, 131));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("ORDENAR POR");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1170, 180, 100, 30));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1170, 190, 100, 30));
 
         btn_VistaGeneral.setBackground(new java.awt.Color(62, 202, 151));
         btn_VistaGeneral.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -158,7 +158,7 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
                 btn_VistaGeneralActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_VistaGeneral, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 210, 170, 40));
+        jPanel1.add(btn_VistaGeneral, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 220, 170, 40));
 
         btn_ActualizarEstado.setBackground(new java.awt.Color(62, 202, 151));
         btn_ActualizarEstado.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -170,7 +170,7 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
                 btn_ActualizarEstadoActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_ActualizarEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 210, 200, 40));
+        jPanel1.add(btn_ActualizarEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 220, 200, 40));
 
         btnActualizar.setBackground(new java.awt.Color(255, 255, 255));
         btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -208,7 +208,7 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
                 btnLimpiarFiltroActionPerformed(evt);
             }
         });
-        jPanel1.add(btnLimpiarFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(819, 210, 160, 40));
+        jPanel1.add(btnLimpiarFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 220, 160, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

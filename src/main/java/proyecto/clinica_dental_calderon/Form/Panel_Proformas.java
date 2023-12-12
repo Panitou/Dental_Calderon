@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
@@ -28,6 +29,14 @@ public class Panel_Proformas extends javax.swing.JPanel {
     public Connection connection;
     public PreparedStatement ps;
     public ResultSet rs;
+    
+    String actualizar = "/images/actualizar.png";
+    ImageIcon actualizarImagen = new ImageIcon(Panel_Proformas.class.getResource(actualizar));
+
+    String nombre = "/images/linea.png";
+    ImageIcon LineaNombreImage = new ImageIcon(Panel_Proformas.class.getResource(nombre));
+    String logoimagencirclex200 = "/images/LogoParaProforma.png";
+    ImageIcon iconImagen = new ImageIcon(Panel_Proformas.class.getResource(logoimagencirclex200));
 
     F_Nueva_Proforma nueva_proforma = new F_Nueva_Proforma();
 
@@ -55,6 +64,8 @@ public class Panel_Proformas extends javax.swing.JPanel {
 
         dateChooserFechaInicio.getDateEditor().setEnabled(false);
         dateChooserFechaFin.getDateEditor().setEnabled(false);
+        
+        jbtnActualizar.setIcon(actualizarImagen);
     }
 
     private void deshabilitarEdicionTabla(JTable tabla) {
@@ -120,7 +131,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
         jLabel1.setText("PROFORMAS DE SERVICIOS");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 840, 80));
 
-        jbtnVista_General.setBackground(new java.awt.Color(62, 134, 203));
+        jbtnVista_General.setBackground(new java.awt.Color(62, 202, 151));
         jbtnVista_General.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jbtnVista_General.setForeground(new java.awt.Color(255, 255, 255));
         jbtnVista_General.setText("VER PROFORMA");
@@ -130,7 +141,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
                 jbtnVista_GeneralActionPerformed(evt);
             }
         });
-        jPanel1.add(jbtnVista_General, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 220, 40));
+        jPanel1.add(jbtnVista_General, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 220, 40));
 
         jtblProformas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -145,9 +156,9 @@ public class Panel_Proformas extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(jtblProformas);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 220, 1090, 540));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 220, 1100, 540));
 
-        jbtnNueva_Proforma.setBackground(new java.awt.Color(62, 134, 203));
+        jbtnNueva_Proforma.setBackground(new java.awt.Color(62, 202, 151));
         jbtnNueva_Proforma.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jbtnNueva_Proforma.setForeground(new java.awt.Color(255, 255, 255));
         jbtnNueva_Proforma.setText("NUEVA PROFORMA");
@@ -159,20 +170,19 @@ public class Panel_Proformas extends javax.swing.JPanel {
         });
         jPanel1.add(jbtnNueva_Proforma, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 220, 40));
 
-        jbtnActualizar.setBackground(new java.awt.Color(62, 134, 203));
+        jbtnActualizar.setBackground(new java.awt.Color(255, 255, 255));
         jbtnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jbtnActualizar.setForeground(new java.awt.Color(255, 255, 255));
-        jbtnActualizar.setText("ACTUALIZAR DATOS");
-        jbtnActualizar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jbtnActualizar.setBorder(null);
         jbtnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnActualizarActionPerformed(evt);
             }
         });
-        jPanel1.add(jbtnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 20, 150, 30));
+        jPanel1.add(jbtnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 20, 32, 32));
         jPanel1.add(dateChooserFechaFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(1160, 170, 190, 40));
 
-        btnLimpiarFiltro.setBackground(new java.awt.Color(62, 202, 151));
+        btnLimpiarFiltro.setBackground(new java.awt.Color(62, 134, 203));
         btnLimpiarFiltro.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnLimpiarFiltro.setForeground(new java.awt.Color(255, 255, 255));
         btnLimpiarFiltro.setText("LIMPIAR FILTRO");
@@ -184,7 +194,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
         });
         jPanel1.add(btnLimpiarFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 170, 170, 40));
 
-        btnAplicarFiltro.setBackground(new java.awt.Color(62, 202, 151));
+        btnAplicarFiltro.setBackground(new java.awt.Color(62, 134, 203));
         btnAplicarFiltro.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnAplicarFiltro.setForeground(new java.awt.Color(255, 255, 255));
         btnAplicarFiltro.setText("APLICAR FILTRO");
@@ -318,6 +328,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
     }
 
     private void jbtnVista_GeneralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnVista_GeneralActionPerformed
+
         int filaSeleccionada = jtblProformas.getSelectedRow();
         F_VistaPrevia_Proforma vistaprevia_proforma = new F_VistaPrevia_Proforma();
 
@@ -343,7 +354,6 @@ public class Panel_Proformas extends javax.swing.JPanel {
                     String antecedentesPaciente = rs.getString("antecedentes");
                     String motivoPaciente = rs.getString("motivo_consulta");
                     Date fechaRegistro = rs.getDate("fecha_registro");
-                    String horaRegistro = rs.getString("hora_registro");
 
                     vistaprevia_proforma.setVisible(true);
                     vistaprevia_proforma.setLocationRelativeTo(null);
@@ -357,9 +367,21 @@ public class Panel_Proformas extends javax.swing.JPanel {
                     vistaprevia_proforma.txtTelefono.setEditable(false);
                     vistaprevia_proforma.jtxaAntecedentes.setEditable(false);
                     vistaprevia_proforma.jtxaMotivo.setEditable(false);
-                    vistaprevia_proforma.txtHora.setEditable(false);
                     vistaprevia_proforma.dateFecha.setEnabled(false);
                     vistaprevia_proforma.TxtPaneTabla.setEditable(false);
+                    
+                    //Logo
+                    vistaprevia_proforma.Lbllogo.setIcon(iconImagen);
+
+                    //Lineas para los campos de texto
+                    vistaprevia_proforma.lblLineaNombre.setIcon(LineaNombreImage);
+                    vistaprevia_proforma.lblLineaApellido.setIcon(LineaNombreImage);
+                    vistaprevia_proforma.lblLineaDireccion.setIcon(LineaNombreImage);
+                    vistaprevia_proforma.lblLineaTelefono.setIcon(LineaNombreImage);
+                    vistaprevia_proforma.lblLineaEdad.setIcon(LineaNombreImage);
+                    vistaprevia_proforma.lblLineaAntecedentes.setIcon(LineaNombreImage);
+                    vistaprevia_proforma.lblLineaMotivo.setIcon(LineaNombreImage);
+                    vistaprevia_proforma.lblLineaFecha.setIcon(LineaNombreImage);
 
                     // Continúa obteniendo los demás campos
                     // Actualizar los campos con los datos de la proforma
@@ -370,8 +392,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
                     vistaprevia_proforma.txtTelefono.setText(telefonoPaciente);
                     vistaprevia_proforma.jtxaAntecedentes.setText(antecedentesPaciente);
                     vistaprevia_proforma.jtxaMotivo.setText(motivoPaciente);
-                    vistaprevia_proforma.dateFecha.setDate(fechaRegistro);
-                    vistaprevia_proforma.txtHora.setText(horaRegistro);
+                    vistaprevia_proforma.dateFecha.setText(fechaRegistro.toString());
 
                     // Continúa actualizando los demás campos
                     // Obtener los datos separados por comas desde la base de datos

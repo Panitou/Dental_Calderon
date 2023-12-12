@@ -40,21 +40,25 @@ import okhttp3.Response;
  * GitHub https://github.com/Panitou
  */
 public class Panel_Pacientes extends javax.swing.JPanel {
-
+    
     String actualizar = "/images/actualizar.png";
     String buscar = "/images/buscar.png";
     String limpiar = "/images/borrar.png";
-
+    
     ImageIcon actualizarImagen = new ImageIcon(Panel_Pacientes.class.getResource(actualizar));
     ImageIcon buscarImagen = new ImageIcon(Panel_Pacientes.class.getResource(buscar));
     ImageIcon limpiarImage = new ImageIcon(Panel_Pacientes.class.getResource(limpiar));
-
+    
+    String nombre = "/images/linea.png";
+    
+    ImageIcon LineaNombreImage = new ImageIcon(Panel_Pacientes.class.getResource(nombre));
+    
     private final OkHttpClient client = new OkHttpClient();
-
+    
     public Connection connection;
     public PreparedStatement ps;
     public ResultSet rs;
-
+    
     public void abrirConexion() throws SQLException {
         // Verifica si ya hay una conexión abierta antes de abrir una nueva
         if (connection == null || connection.isClosed()) {
@@ -64,16 +68,18 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         }
         // Resto del código para usar la conexión en el panel de pacientes...
     }
-
+    
     public void cerrarRecursos() throws SQLException {
         if (connection != null && !connection.isClosed()) {
             connection.close(); // Cierra la conexión si está abierta
         }
     }
-
+    
     public Panel_Pacientes() throws SQLException {
         initComponents();
-
+        
+        lblLineaBuscar.setIcon(LineaNombreImage);
+        
         ((AbstractDocument) txtBuscar.getDocument()).setDocumentFilter(new DocumentFilter() {
             @Override
             public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
@@ -81,7 +87,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
                     super.insertString(fb, offset, text, attr);
                 }
             }
-
+            
             @Override
             public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
                 if (text.matches("\\d+") && (fb.getDocument().getLength() - length + text.length() <= 3)) {
@@ -94,7 +100,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         btnActualizar.setIcon(actualizarImagen);
         btnBuscar.setIcon(buscarImagen);
         btnLimpiar.setIcon(limpiarImage);
-
+        
         JTableHeader header = table_Pacientes.getTableHeader();
         header.setFont(new Font("Microsoft JhengHei UI", Font.BOLD, 12));
         table_Pacientes.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
@@ -106,7 +112,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         Mostrar_Datos_Tabla_Pacientes(table_Pacientes);
         deshabilitarEdicionTabla(table_Pacientes);
     }
-
+    
     private void obtenerImagen(String url, JButton boton) {
         try {
             Request request = new Request.Builder().url(url).build();
@@ -121,13 +127,13 @@ public class Panel_Pacientes extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }
-
+    
     private void deshabilitarEdicionTabla(JTable tabla) {
         tabla.setDefaultEditor(Object.class, null); // Deshabilitar la edición
         tabla.getTableHeader().setReorderingAllowed(false); // Evitar el movimiento de columnas
         tabla.getTableHeader().setResizingAllowed(false);
     }
-
+    
     public void Mostrar_Datos_Tabla_Pacientes(JTable tablePaciente) throws SQLException {
         DefaultTableModel tableModel = (DefaultTableModel) tablePaciente.getModel();
 
@@ -136,11 +142,11 @@ public class Panel_Pacientes extends javax.swing.JPanel {
 
         // Realiza una consulta SQL para obtener los datos de TB_CITAS
         String query = "SELECT id_paciente, nombre_paciente, apellido_paciente, dni_paciente, edad_paciente, enfermedad_paciente, celular_paciente, fecha_inscripcion FROM TB_PACIENTES";
-
+        
         try { // Reemplaza esto con tu lógica real de conexión a la base de datos
             ps = connection.prepareStatement(query);
             rs = ps.executeQuery();
-
+            
             while (rs.next()) {
                 int idPaciente = rs.getInt("id_paciente");
                 String nombre_paciente = rs.getString("nombre_paciente");
@@ -163,7 +169,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Error al cargar los datos de la tabla de citas.");
         }
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -181,6 +187,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         btnLimpiar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        lblLineaBuscar = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(1365, 770));
         setPreferredSize(new java.awt.Dimension(1365, 770));
@@ -229,7 +236,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
                 btnAgregarPacienteActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAgregarPaciente, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 170, 40));
+        jPanel1.add(btnAgregarPaciente, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 170, 40));
 
         btnEditar_Datos_Paciente.setBackground(new java.awt.Color(62, 202, 151));
         btnEditar_Datos_Paciente.setFont(new java.awt.Font("Microsoft YaHei", 1, 14)); // NOI18N
@@ -241,7 +248,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
                 btnEditar_Datos_PacienteActionPerformed(evt);
             }
         });
-        jPanel1.add(btnEditar_Datos_Paciente, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 210, 260, 40));
+        jPanel1.add(btnEditar_Datos_Paciente, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 220, 260, 40));
 
         btnActualizar.setBackground(new java.awt.Color(255, 255, 255));
         btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -264,7 +271,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
                 btnCopiar_DniActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCopiar_Dni, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 210, 150, 40));
+        jPanel1.add(btnCopiar_Dni, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 220, 150, 40));
 
         btnBuscar.setBackground(new java.awt.Color(255, 255, 255));
         btnBuscar.setBorder(null);
@@ -273,14 +280,16 @@ public class Panel_Pacientes extends javax.swing.JPanel {
                 btnBuscarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1250, 210, 40, 40));
+        jPanel1.add(btnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1250, 220, 40, 40));
 
+        txtBuscar.setBackground(new java.awt.Color(255, 255, 255));
+        txtBuscar.setBorder(null);
         txtBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtBuscarActionPerformed(evt);
             }
         });
-        jPanel1.add(txtBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 210, 180, 40));
+        jPanel1.add(txtBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 220, 180, 40));
 
         btnLimpiar.setBackground(new java.awt.Color(255, 255, 255));
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
@@ -288,13 +297,14 @@ public class Panel_Pacientes extends javax.swing.JPanel {
                 btnLimpiarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1300, 210, 40, 40));
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 210, 270, 40));
+        jPanel1.add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1300, 220, 40, 40));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 220, 270, 40));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel3.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(62, 134, 203));
         jLabel3.setText("BUSCAR POR DNI");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1064, 190, 170, 20));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 200, 170, 20));
+        jPanel1.add(lblLineaBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 260, 180, 2));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -315,24 +325,24 @@ public class Panel_Pacientes extends javax.swing.JPanel {
 
     private void btnEditar_Datos_PacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditar_Datos_PacienteActionPerformed
         int selectedRow = table_Pacientes.getSelectedRow();
-
+        
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Por favor, selecciona un registro de la tabla para modificar los datos.");
         } else {
             int id_paciente_seleccionado = (int) table_Pacientes.getValueAt(selectedRow, 0);
-
+            
             String nombre_paciente = table_Pacientes.getValueAt(selectedRow, 1).toString();
             String apellido_paciente = table_Pacientes.getValueAt(selectedRow, 2).toString();
             String dni_paciente = table_Pacientes.getValueAt(selectedRow, 3).toString();
             String edad_paciente = table_Pacientes.getValueAt(selectedRow, 4).toString();
             String enfermedad_paciente = table_Pacientes.getValueAt(selectedRow, 5).toString();
             String celular_paciente = table_Pacientes.getValueAt(selectedRow, 6).toString();
-
+            
             java.sql.Timestamp timestamp = (java.sql.Timestamp) table_Pacientes.getValueAt(selectedRow, 7);
             Date fecha_ingreso = new Date(timestamp.getTime());
-
+            
             F_Modificar_Paciente modificar_paciente = new F_Modificar_Paciente();
-
+            
             modificar_paciente.setVisible(true);
             modificar_paciente.setResizable(false);
             modificar_paciente.setLocationRelativeTo(null);
@@ -344,7 +354,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
             modificar_paciente.txtCelular.setTransferHandler(null);
             modificar_paciente.txtEdad.setTransferHandler(null);
             modificar_paciente.txaDescripcion.setTransferHandler(null);
-
+            
             modificar_paciente.txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyTyped(java.awt.event.KeyEvent evt) {
                     char c = evt.getKeyChar();
@@ -354,7 +364,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
                     }
                 }
             });
-
+            
             modificar_paciente.txtApellidos.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyTyped(java.awt.event.KeyEvent evt) {
                     char c = evt.getKeyChar();
@@ -364,7 +374,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
                     }
                 }
             });
-
+            
             modificar_paciente.txtCelular.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyTyped(java.awt.event.KeyEvent evt) {
                     char c = evt.getKeyChar();
@@ -374,7 +384,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
                     }
                 }
             });
-
+            
             modificar_paciente.txtEdad.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyTyped(java.awt.event.KeyEvent evt) {
                     char c = evt.getKeyChar();
@@ -384,7 +394,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
                     }
                 }
             });
-
+            
             modificar_paciente.txaDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyTyped(java.awt.event.KeyEvent evt) {
                     char c = evt.getKeyChar();
@@ -393,7 +403,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
                     }
                 }
             });
-
+            
             modificar_paciente.txtNombre.setText(nombre_paciente);
             modificar_paciente.txtApellidos.setText(apellido_paciente);
             modificar_paciente.txtCelular.setText(celular_paciente);
@@ -401,9 +411,9 @@ public class Panel_Pacientes extends javax.swing.JPanel {
             modificar_paciente.txtEdad.setText(edad_paciente);
             modificar_paciente.txaDescripcion.setText(enfermedad_paciente);
             modificar_paciente.dateFecha_Ingreso.setDate(fecha_ingreso);
-
+            
             modificar_paciente.dateFecha_Ingreso.setEnabled(false);
-
+            
         }
     }//GEN-LAST:event_btnEditar_Datos_PacienteActionPerformed
 
@@ -413,7 +423,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
 
     private void btnCopiar_DniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopiar_DniActionPerformed
         int selectedRow = table_Pacientes.getSelectedRow();
-
+        
         if (selectedRow != -1) {
             String dni = table_Pacientes.getValueAt(selectedRow, 3).toString(); // Suponiendo que la posición del DNI es la columna 3 (índice 2)
 
@@ -446,11 +456,11 @@ public class Panel_Pacientes extends javax.swing.JPanel {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String dniBusqueda = txtBuscar.getText().trim();
-
+        
         DefaultTableModel model = (DefaultTableModel) table_Pacientes.getModel();
         TableRowSorter<DefaultTableModel> rowSorter = new TableRowSorter<>(model);
         table_Pacientes.setRowSorter(rowSorter);
-
+        
         if (dniBusqueda.length() == 0) {
             rowSorter.setRowFilter(null);
         } else {
@@ -466,7 +476,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
         Limpiar();
     }//GEN-LAST:event_btnLimpiarActionPerformed
-
+    
     void Limpiar() {
         DefaultTableModel model = (DefaultTableModel) table_Pacientes.getModel();
         TableRowSorter<DefaultTableModel> rowSorter = new TableRowSorter<>(model);
@@ -474,18 +484,18 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         rowSorter.setRowFilter(null); // Elimina cualquier filtro aplicado
         txtBuscar.setText("");
     }
-
+    
     void actualizarDatos_Paciente() {
         DefaultTableModel tableModel = (DefaultTableModel) table_Pacientes.getModel();
         tableModel.setRowCount(0); // Limpia los datos existentes en la tabla
 
         String query = "SELECT * FROM TB_PACIENTES";
-
+        
         try {
             abrirConexion();
             ps = connection.prepareStatement(query);
             rs = ps.executeQuery();
-
+            
             while (rs.next()) {
                 Object[] rowData = new Object[]{
                     rs.getInt("id_paciente"),
@@ -518,6 +528,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblLineaBuscar;
     public javax.swing.JTable table_Pacientes;
     public javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables

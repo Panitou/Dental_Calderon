@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -26,6 +27,10 @@ public class Panel_Pagos extends javax.swing.JPanel {
     public Connection connection;
     public PreparedStatement ps;
     public ResultSet rs;
+
+    String actualizar = "/images/actualizar.png";
+
+    ImageIcon actualizarImagen = new ImageIcon(Panel_Pagos.class.getResource(actualizar));
 
     F_Historial_General historial = new F_Historial_General();
 
@@ -50,6 +55,8 @@ public class Panel_Pagos extends javax.swing.JPanel {
         abrirConexion();
         Mostrar_Datos_Tabla_Pagos();
         deshabilitarEdicionTabla(tablePagos);
+        
+        btnActualizar.setIcon(actualizarImagen);
     }
 
     private void deshabilitarEdicionTabla(JTable tabla) {
@@ -133,7 +140,7 @@ public class Panel_Pagos extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(tablePagos);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 267, 1320, 480));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 267, 1320, 440));
 
         btnCancelar_Deuda.setBackground(new java.awt.Color(62, 202, 151));
         btnCancelar_Deuda.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -145,52 +152,51 @@ public class Panel_Pagos extends javax.swing.JPanel {
                 btnCancelar_DeudaActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCancelar_Deuda, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 190, 40));
+        jPanel1.add(btnCancelar_Deuda, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 190, 40));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(62, 134, 203));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("FILTROS DE BUSQUEDA");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 180, 230, 30));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 190, 230, 30));
 
         cbxBusquedaPagos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PENDIENTE", "PAGADO" }));
-        jPanel1.add(cbxBusquedaPagos, new org.netbeans.lib.awtextra.AbsoluteConstraints(1160, 210, 180, 40));
+        jPanel1.add(cbxBusquedaPagos, new org.netbeans.lib.awtextra.AbsoluteConstraints(1160, 220, 180, 40));
 
-        btnActualizar.setBackground(new java.awt.Color(62, 134, 203));
+        btnActualizar.setBackground(new java.awt.Color(255, 255, 255));
         btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
-        btnActualizar.setText("ACTUALIZAR DATOS");
-        btnActualizar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnActualizar.setBorder(null);
         btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnActualizarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 20, 150, 30));
+        jPanel1.add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 20, 32, 32));
 
         jbtnHistorial_Paciente.setBackground(new java.awt.Color(62, 202, 151));
         jbtnHistorial_Paciente.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jbtnHistorial_Paciente.setForeground(new java.awt.Color(255, 255, 255));
-        jbtnHistorial_Paciente.setText("VER HISTORIAL");
+        jbtnHistorial_Paciente.setText("VER HISTORIAL DEL TRATAMIENTO");
         jbtnHistorial_Paciente.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jbtnHistorial_Paciente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnHistorial_PacienteActionPerformed(evt);
             }
         });
-        jPanel1.add(jbtnHistorial_Paciente, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 210, 180, 40));
+        jPanel1.add(jbtnHistorial_Paciente, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 220, 290, 40));
 
         jbtnRegistro_General.setBackground(new java.awt.Color(62, 202, 151));
         jbtnRegistro_General.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jbtnRegistro_General.setForeground(new java.awt.Color(255, 255, 255));
-        jbtnRegistro_General.setText("TODOS LOS REGISTROS");
+        jbtnRegistro_General.setText("HISTORIAL GENERAL DE PAGOS");
         jbtnRegistro_General.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jbtnRegistro_General.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnRegistro_GeneralActionPerformed(evt);
             }
         });
-        jPanel1.add(jbtnRegistro_General, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 210, 230, 40));
+        jPanel1.add(jbtnRegistro_General, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 720, 260, 40));
 
         btnAplicarfiltro.setBackground(new java.awt.Color(62, 134, 203));
         btnAplicarfiltro.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -202,7 +208,7 @@ public class Panel_Pagos extends javax.swing.JPanel {
                 btnAplicarfiltroActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAplicarfiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(989, 210, 160, 40));
+        jPanel1.add(btnAplicarfiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 220, 160, 40));
 
         btnLimpiarFiltro.setBackground(new java.awt.Color(62, 134, 203));
         btnLimpiarFiltro.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -214,7 +220,7 @@ public class Panel_Pagos extends javax.swing.JPanel {
                 btnLimpiarFiltroActionPerformed(evt);
             }
         });
-        jPanel1.add(btnLimpiarFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(819, 210, 160, 40));
+        jPanel1.add(btnLimpiarFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 220, 160, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

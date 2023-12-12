@@ -60,11 +60,6 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         tabla.getTableHeader().setResizingAllowed(false);
     }
 
-    private void actualizarCamposSecundarios() {
-        txtDireccionPane.setText(txtDireccion.getText());
-        txtTelefonoPane.setText(txtTelefono.getText());
-    }
-
     public F_Nueva_Proforma() throws SQLException {
         initComponents();
 
