@@ -70,6 +70,9 @@ public final class F_Odontologos extends javax.swing.JFrame {
         txfCelular.setText("");
         txfCorreo.setText("");
         txfEspecialidad.setText("");
+        txfID.setEditable(true);
+
+        txfID.requestFocus();
     }
 
     void activarBotones() {
@@ -102,6 +105,8 @@ public final class F_Odontologos extends javax.swing.JFrame {
             rs = ps.executeQuery();
 
             if (rs.next()) {
+                txfID.setEditable(false);
+
                 txfID.setText(rs.getString("id_odontologo"));
                 txfNombre.setText(rs.getString("nombre_odontologo"));
                 txfApellidos.setText(rs.getString("apellido_odontologo"));
@@ -165,6 +170,11 @@ public final class F_Odontologos extends javax.swing.JFrame {
         btnEliminar.setForeground(new java.awt.Color(255, 255, 255));
         btnEliminar.setText("ELIMINAR ODONTOLOGO");
         btnEliminar.setEnabled(false);
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 510, 200, 40));
 
         btnActualizar.setBackground(new java.awt.Color(0, 122, 255));
@@ -291,12 +301,48 @@ public final class F_Odontologos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+
         int id = Integer.parseInt(txfID.getText().trim());
         String nombre = txfNombre.getText().trim();
         String apellido = txfApellidos.getText().trim();
         String especialidad = txfEspecialidad.getText().trim();
         String celular = txfCelular.getText().trim();
         String correo = txfCorreo.getText().trim();
+
+        try {
+            c = Conexion.getConnection();
+            String sql = "UPDATE TB_ODONTOLOGOS "
+                    + "SET nombre_odontologo=?, "
+                    + "apellido_odontologo=?, "
+                    + "especialidad=?, "
+                    + "celular_odontologo=?, "
+                    + "correo=? "
+                    + "WHERE id_odontologo=?";
+
+            ps = c.prepareStatement(sql);
+
+            ps.setString(1, nombre);
+            ps.setString(2, apellido);
+            ps.setString(3, especialidad);
+            ps.setString(4, celular);
+            ps.setString(5, correo);
+            ps.setInt(6, id);
+
+            int affectedRows = ps.executeUpdate();
+            if (affectedRows > 0) {
+                Mostrar_Datos_Tabla_Odontologos(tblOdontologos);
+                ReiniciarPrograma();
+                JOptionPane.showMessageDialog(null, "Odontólogo actualizado correctamente.");
+            } else {
+                ReiniciarPrograma();
+                JOptionPane.showMessageDialog(null, "ERROR. No se pudo actualizar el odontólogo.");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al actualizar los datos");
+            System.out.println("ERROR: " + e.getMessage());
+        } finally {
+            cerrarConexiones();
+        }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -380,6 +426,38 @@ public final class F_Odontologos extends javax.swing.JFrame {
             Logger.getLogger(F_Odontologos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnReiniciarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        int id = Integer.parseInt(txfID.getText());
+
+        // Confirmar si el usuario realmente quiere eliminar el odontólogo
+        int confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea eliminar el odontólogo con ID " + id + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            try {
+                c = Conexion.getConnection();
+                String sql = "DELETE FROM TB_ODONTOLOGOS WHERE id_odontologo = ?";
+                ps = c.prepareStatement(sql);
+
+                ps.setInt(1, id);
+
+                int affectedRows = ps.executeUpdate();
+
+                if (affectedRows > 0) {
+                    Mostrar_Datos_Tabla_Odontologos(tblOdontologos);
+                    ReiniciarPrograma();
+                    JOptionPane.showMessageDialog(null, "Odontólogo eliminado correctamente.");
+                } else {
+                    ReiniciarPrograma();
+                    JOptionPane.showMessageDialog(null, "No se pudo eliminar el odontólogo.");
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error al eliminar el odontólogo: " + ex.getMessage());
+            } finally {
+                cerrarConexiones();
+            }
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void deshabilitarEdicionTabla(JTable tabla) {
         tabla.setDefaultEditor(Object.class, null); // Deshabilitar la edición
