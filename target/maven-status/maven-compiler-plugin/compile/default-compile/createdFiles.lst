@@ -161,6 +161,7 @@ proyecto\clinica_dental_calderon\Form\BarraProgreso.class
 proyecto\clinica_dental_calderon\Form\F_Nueva_Proforma$10.class
 proyecto\clinica_dental_calderon\Form\F_Eliminar_Odontologo.class
 proyecto\clinica_dental_calderon\Form\Panel_Pagos$4.class
+proyecto\clinica_dental_calderon\Form\F_Odontologos$5.class
 proyecto\clinica_dental_calderon\Form\Panel_Tratamientos$4.class
 proyecto\clinica_dental_calderon\Form\F_Actualizar_Tratamiento$1.class
 proyecto\clinica_dental_calderon\Form\F_Nuevo_Tratamiento$5.class
@@ -180,10 +181,12 @@ proyecto\clinica_dental_calderon\Form\Panel_Pagos$2.class
 proyecto\clinica_dental_calderon\Form\Panel_Pacientes$2.class
 proyecto\clinica_dental_calderon\Form\F_Modificar_Paciente.class
 proyecto\clinica_dental_calderon\Form\F_Sistema$2.class
+proyecto\clinica_dental_calderon\Form\F_Odontologos$3.class
 proyecto\clinica_dental_calderon\Form\F_Editar_Odontologo.class
 proyecto\clinica_dental_calderon\Form\F_Login$2.class
 proyecto\clinica_dental_calderon\Form\F_Agregar_Paciente$8.class
 proyecto\clinica_dental_calderon\Form\F_Cancelar_Deuda$1.class
+proyecto\clinica_dental_calderon\Form\F_Odontologos$4.class
 proyecto\clinica_dental_calderon\Form\Panel_Pacientes$1.class
 proyecto\clinica_dental_calderon\Form\F_Sistema$3.class
 proyecto\clinica_dental_calderon\Form\F_VistaPrevia_Proforma$3.class
