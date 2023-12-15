@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import proyecto.clinica_dental_calderon.DB.Conexion;
 
@@ -14,8 +16,13 @@ import proyecto.clinica_dental_calderon.DB.Conexion;
  */
 public class F_Agregar_Paciente extends javax.swing.JFrame {
 
-    public F_Agregar_Paciente() {
+    Panel_Pacientes pacientes;
+
+    public F_Agregar_Paciente() throws SQLException {
         initComponents();
+
+        pacientes = new Panel_Pacientes();
+
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         setDateToCurrent();
@@ -230,6 +237,7 @@ public class F_Agregar_Paciente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnCrearPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearPacienteActionPerformed
+
         if (txtDni.getText().isEmpty() || txtNombre.getText().isEmpty()
                 || txtApellido.getText().isEmpty() || txtCelular.getText().isEmpty()
                 || txtEdad.getText().isEmpty() || dateFecha_Ingreso.getDate() == null) {
@@ -266,6 +274,7 @@ public class F_Agregar_Paciente extends javax.swing.JFrame {
                 if (rowsAffected > 0) {
                     JOptionPane.showMessageDialog(this, "Paciente creado exitosamente");
                     Limpiar_Campos();
+                    dispose();
                 } else {
                     JOptionPane.showMessageDialog(this, "Error al crear el paciente");
                 }
@@ -296,7 +305,11 @@ public class F_Agregar_Paciente extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new F_Agregar_Paciente().setVisible(true);
+                try {
+                    new F_Agregar_Paciente().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(F_Agregar_Paciente.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

@@ -100,6 +100,7 @@ proyecto\clinica_dental_calderon\Form\F_Modificar_Paciente$6.class
 proyecto\clinica_dental_calderon\Form\F_Login$9.class
 proyecto\clinica_dental_calderon\Form\Panel_Citas$3.class
 proyecto\clinica_dental_calderon\Form\F_Actualizar_Tratamiento$2.class
+proyecto\clinica_dental_calderon\Form\F_VistaPrevia_Proforma$2.class
 proyecto\clinica_dental_calderon\Form\F_Historial_General$3.class
 proyecto\clinica_dental_calderon\Form\F_Agendar_Cita$3.class
 proyecto\clinica_dental_calderon\Form\Panel_Proformas$3.class
@@ -175,6 +176,7 @@ proyecto\clinica_dental_calderon\Form\F_Agregar_Paciente$8.class
 proyecto\clinica_dental_calderon\Form\F_Cancelar_Deuda$1.class
 proyecto\clinica_dental_calderon\Form\Panel_Pacientes$1.class
 proyecto\clinica_dental_calderon\Form\F_Sistema$3.class
+proyecto\clinica_dental_calderon\Form\F_VistaPrevia_Proforma$3.class
 proyecto\clinica_dental_calderon\Form\F_VistaPrevia_Proforma.class
 proyecto\clinica_dental_calderon\Form\F_Agregar_Paciente$9.class
 proyecto\clinica_dental_calderon\Form\F_Login$3.class

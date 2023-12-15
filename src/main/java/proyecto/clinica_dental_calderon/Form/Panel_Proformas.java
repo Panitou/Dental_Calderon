@@ -29,7 +29,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
     public Connection connection;
     public PreparedStatement ps;
     public ResultSet rs;
-    
+
     String actualizar = "/images/actualizar.png";
     ImageIcon actualizarImagen = new ImageIcon(Panel_Proformas.class.getResource(actualizar));
 
@@ -64,7 +64,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
 
         dateChooserFechaInicio.getDateEditor().setEnabled(false);
         dateChooserFechaFin.getDateEditor().setEnabled(false);
-        
+
         jbtnActualizar.setIcon(actualizarImagen);
     }
 
@@ -367,9 +367,9 @@ public class Panel_Proformas extends javax.swing.JPanel {
                     vistaprevia_proforma.txtTelefono.setEditable(false);
                     vistaprevia_proforma.jtxaAntecedentes.setEditable(false);
                     vistaprevia_proforma.jtxaMotivo.setEditable(false);
-                    vistaprevia_proforma.dateFecha.setEnabled(false);
+                    vistaprevia_proforma.dateFecha.setEditable(false);
                     vistaprevia_proforma.TxtPaneTabla.setEditable(false);
-                    
+
                     //Logo
                     vistaprevia_proforma.Lbllogo.setIcon(iconImagen);
 

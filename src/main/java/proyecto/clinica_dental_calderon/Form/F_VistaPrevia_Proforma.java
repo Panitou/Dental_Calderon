@@ -1,5 +1,13 @@
 package proyecto.clinica_dental_calderon.Form;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.print.PageFormat;
+import java.awt.print.Paper;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+
 /**
  *
  * @author jcald
@@ -53,18 +61,20 @@ public class F_VistaPrevia_Proforma extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        btnImprimir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setMinimumSize(new java.awt.Dimension(620, 813));
-        jPanel1.setPreferredSize(new java.awt.Dimension(610, 8013));
+        jPanel1.setMinimumSize(new java.awt.Dimension(596, 813));
+        jPanel1.setPreferredSize(new java.awt.Dimension(596, 813));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         TxtPaneTabla.setPreferredSize(new java.awt.Dimension(62, 17));
         jScrollPane1.setViewportView(TxtPaneTabla);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 380, 600, 420));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 380, 570, 420));
 
         txtNombres.setBackground(new java.awt.Color(255, 255, 255));
         txtNombres.setBorder(null);
@@ -76,7 +86,7 @@ public class F_VistaPrevia_Proforma extends javax.swing.JFrame {
 
         txtEdad.setBackground(new java.awt.Color(255, 255, 255));
         txtEdad.setBorder(null);
-        jPanel1.add(txtEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 260, 60, 20));
+        jPanel1.add(txtEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 260, 30, 20));
 
         txtDireccion.setBackground(new java.awt.Color(255, 255, 255));
         txtDireccion.setBorder(null);
@@ -84,7 +94,7 @@ public class F_VistaPrevia_Proforma extends javax.swing.JFrame {
 
         txtTelefono.setBackground(new java.awt.Color(255, 255, 255));
         txtTelefono.setBorder(null);
-        jPanel1.add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 290, 160, 20));
+        jPanel1.add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 290, 130, 20));
 
         jLabel1.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
@@ -108,7 +118,7 @@ public class F_VistaPrevia_Proforma extends javax.swing.JFrame {
 
         jtxaAntecedentes.setBackground(new java.awt.Color(255, 255, 255));
         jtxaAntecedentes.setBorder(null);
-        jPanel1.add(jtxaAntecedentes, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 320, 490, 20));
+        jPanel1.add(jtxaAntecedentes, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 320, 460, 20));
 
         jtxaMotivo.setBackground(new java.awt.Color(255, 255, 255));
         jtxaMotivo.setBorder(null);
@@ -176,18 +186,18 @@ public class F_VistaPrevia_Proforma extends javax.swing.JFrame {
         jLabel20.setText("Lunes a Sábado 9:00 am. a 1:00 pm. / 3:00 pm. a 9:00 pm.");
         jPanel1.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 230, 380, 20));
         jPanel1.add(Lbllogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 230, 117));
-        jPanel1.add(lblLineaFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 370, 150, 2));
+        jPanel1.add(lblLineaFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 370, 120, 2));
         jPanel1.add(lblLineaApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 280, 200, 2));
         jPanel1.add(lblLineaDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 310, 280, 2));
-        jPanel1.add(lblLineaTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 310, 170, 2));
+        jPanel1.add(lblLineaTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 310, 140, 2));
         jPanel1.add(lblLineaNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 280, 140, 2));
-        jPanel1.add(lblLineaAntecedentes, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 340, 490, 2));
+        jPanel1.add(lblLineaAntecedentes, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 340, 460, 2));
         jPanel1.add(lblLineaMotivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 370, 310, 2));
-        jPanel1.add(lblLineaEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 280, 60, 2));
+        jPanel1.add(lblLineaEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 280, 30, 2));
 
         dateFecha.setBackground(new java.awt.Color(255, 255, 255));
         dateFecha.setBorder(null);
-        jPanel1.add(dateFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 350, 150, 20));
+        jPanel1.add(dateFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 350, 120, 20));
 
         jLabel16.setFont(new java.awt.Font("Lucida Calligraphy", 1, 12)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(0, 122, 255));
@@ -213,19 +223,74 @@ public class F_VistaPrevia_Proforma extends javax.swing.JFrame {
         jLabel17.setText("Calderón Flores");
         jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 40, 120, 20));
 
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btnImprimir.setBackground(new java.awt.Color(0, 122, 255));
+        btnImprimir.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
+        btnImprimir.setForeground(new java.awt.Color(255, 255, 255));
+        btnImprimir.setText("IMPRIMIR PROFORMA");
+        btnImprimir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImprimirActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnImprimir, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 10, 190, 30));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 620, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 813, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
+        PrinterJob printerJob = PrinterJob.getPrinterJob();
+
+        PageFormat pageFormat = printerJob.defaultPage();
+        pageFormat.setOrientation(PageFormat.PORTRAIT); // Orientación vertical
+        Paper paper = new Paper();
+        double paperWidth = 8.3 * 72; // Ancho en puntos (1 pulgada = 72 puntos)
+        double paperHeight = 11.7 * 72; // Altura en puntos
+        paper.setSize(paperWidth, paperHeight);
+        paper.setImageableArea(0, 0, paperWidth, paperHeight);
+        pageFormat.setPaper(paper);
+
+        printerJob.setPrintable(new Printable() {
+            @Override
+            public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
+                if (pageIndex > 0) {
+                    return Printable.NO_SUCH_PAGE;
+                }
+
+                Graphics2D g2 = (Graphics2D) graphics;
+                g2.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+
+                jPanel1.print(g2); // Reemplaza 'panel' con el nombre de tu panel
+                return Printable.PAGE_EXISTS;
+            }
+        }, pageFormat);
+
+        boolean printDialog = printerJob.printDialog();
+        if (printDialog) {
+            try {
+                printerJob.print();
+            } catch (PrinterException e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_btnImprimirActionPerformed
 
     public static void main(String args[]) {
 
@@ -239,6 +304,7 @@ public class F_VistaPrevia_Proforma extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JLabel Lbllogo;
     public javax.swing.JTextPane TxtPaneTabla;
+    private javax.swing.JButton btnImprimir;
     public javax.swing.JTextField dateFecha;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel16;
@@ -260,6 +326,7 @@ public class F_VistaPrevia_Proforma extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JTextField jtxaAntecedentes;
     public javax.swing.JTextField jtxaMotivo;
