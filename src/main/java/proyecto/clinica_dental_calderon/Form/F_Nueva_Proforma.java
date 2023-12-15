@@ -994,7 +994,7 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
                 + "</style></head><body>");
 
 // Resto de tu código...
-        tablaTratamientos.append("<table><tr><th>TRATAMIENTO</th><th>CANT.</th><th>P/U</th><th>TOTAL</th></tr>");
+        tablaTratamientos.append("<table><tr><th>TRATAMIENTO</th><th>CANT.</th><th>P/U</th><th>S.TOTAL</th></tr>");
 
         for (int i = 0; i < rowCount; i++) {
             String tratamiento = model.getValueAt(i, 0).toString();
@@ -1048,6 +1048,8 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         String horaRegistro = txtHora.getText();
         String Costo = txtCosto.getText();
 
+        
+        
         Connection c = null;
         PreparedStatement ps = null;
 
@@ -1076,6 +1078,8 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         StringBuilder cantidadesBuilder = new StringBuilder();
         StringBuilder costosUnitariosBuilder = new StringBuilder();
         StringBuilder subtotalesBuilder = new StringBuilder();
+        
+        
 
         for (int i = 0; i < cantidadTratamientos; i++) {
             String tratamiento = tblTratamiento.getValueAt(i, 0).toString();
@@ -1087,8 +1091,6 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
             cantidadesBuilder.append(cantidad).append(",");
             costosUnitariosBuilder.append(costoUnitario).append(",");
             subtotalesBuilder.append(subtotal).append(",");
-
-            totalProforma += subtotal;
         }
 
         // Eliminar la última coma de las cadenas

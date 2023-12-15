@@ -13,7 +13,7 @@ import javax.swing.ImageIcon;
  * GitHub https://github.com/Panitou
  */
 public class F_Sistema extends javax.swing.JFrame implements ActionListener {
-
+    
     public Connection connection;
 
     //ICONO DEL SISTEMA
@@ -28,7 +28,7 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
     String Pagos = "/images/pagos.png";
     String Proforma = "/images/Proforma.png";
     String CerrarSesion = "/images/CerrarSesion.png";
-
+    
     ImageIcon iconImagen = new ImageIcon(F_Sistema.class.getResource(logoimagencircle));
     ImageIcon pacientesImagen = new ImageIcon(F_Sistema.class.getResource(Pacientes));
     ImageIcon tratamientoImagen = new ImageIcon(F_Sistema.class.getResource(Tratamientos));
@@ -36,9 +36,9 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
     ImageIcon pagosImagen = new ImageIcon(F_Sistema.class.getResource(Pagos));
     ImageIcon proformasImagen = new ImageIcon(F_Sistema.class.getResource(Proforma));
     ImageIcon sesionImagen = new ImageIcon(F_Sistema.class.getResource(CerrarSesion));
-
+    
     ImageIcon casaImagen = new ImageIcon(F_Sistema.class.getResource(casa));
-
+    
     Panel_Pacientes pacientes = new Panel_Pacientes();
     Panel_Citas citas = new Panel_Citas();
     Panel_Tratamientos tratamientos = new Panel_Tratamientos();
@@ -46,52 +46,52 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
     Panel_Proformas proformas = new Panel_Proformas();
     Panel_Inicio inicioMenu = new Panel_Inicio();
     F_Login login = new F_Login();
-
+    
     public F_Sistema() throws SQLException {
-
+        
         initComponents();
-
+        
         PanelSistema.add(inicioMenu);
-
+        
         this.setIconImage(new ImageIcon(F_Sistema.class.getResource(logo)).getImage());
-
+        
         lblLogo.setIcon(iconImagen);
         lblPacientes.setIcon(pacientesImagen);
         lblTratamientos.setIcon(tratamientoImagen);
         lblCitas.setIcon(citasImagen);
         lblPagos.setIcon(pagosImagen);
         lblProforma.setIcon(proformasImagen);
-
+        
         lblCasa.setIcon(casaImagen);
-
+        
         btnMenuPrincipal.setEnabled(false);
-
+        
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-
+        
         pacientes.abrirConexion();
         tratamientos.abrirConexion();
         citas.abrirConexion();
         pagos.abrirConexion();
         proformas.abrirConexion();
         login.cerrarRecursos();
-
+        
         lblLogo.requestFocusInWindow();
-
+        
         btnPacientes.addActionListener(this);
         btnTratamientos.addActionListener(this);
         btnCitas.addActionListener(this);
         btnPagos.addActionListener(this);
         btnReportes.addActionListener(this);
         btnMenuPrincipal.addActionListener(this);
-
+        
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         Object evt = e.getSource();
         if (evt.equals(btnPacientes)) {
-
+            
             pacientes.actualizarDatos_Paciente();
             tratamientos.actualizarTablaTratamientos();
             citas.actualizarTablaCitas();
@@ -100,107 +100,107 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
 
             // Resto del código para mostrar el panel de pacientes
             inicioMenu.setVisible(false);
-
+            
             citas.setVisible(false);
             tratamientos.setVisible(false);
             proformas.setVisible(false);
             pagos.setVisible(false);
             pacientes.setVisible(true);
-
+            
             PanelSistema.add(pacientes);
             PanelSistema.validate();
             deshabilitar_Boton_Pacientes();
             // Resto de tu código para el botón Pacientes
         } else if (evt.equals(btnTratamientos)) {
-
+            
             pacientes.actualizarDatos_Paciente();
             tratamientos.actualizarTablaTratamientos();
             citas.actualizarTablaCitas();
             pagos.actualizarTablaPagos();
             proformas.actualizarTablaProformas();
-
+            
             inicioMenu.setVisible(false);
-
+            
             citas.setVisible(false);
             pacientes.setVisible(false);
             proformas.setVisible(false);
             pagos.setVisible(false);
             tratamientos.setVisible(true);
-
+            
             PanelSistema.add(tratamientos);
             PanelSistema.validate();
             deshabilitar_Boton_Tratamientos();
             // Resto de tu código para el botón Tratamientos
         } else if (evt.equals(btnCitas)) {
-
+            
             pacientes.actualizarDatos_Paciente();
             tratamientos.actualizarTablaTratamientos();
             citas.actualizarTablaCitas();
             pagos.actualizarTablaPagos();
             proformas.actualizarTablaProformas();
-
+            
             inicioMenu.setVisible(false);
-
+            
             pacientes.setVisible(false);
             tratamientos.setVisible(false);
             proformas.setVisible(false);
             pagos.setVisible(false);
             citas.setVisible(true);
-
+            
             PanelSistema.add(citas);
             PanelSistema.validate();
             deshabilitar_Boton_Citas();
             // Resto de tu código para el botón Citas
         } else if (evt.equals(btnPagos)) {
-
+            
             pacientes.actualizarDatos_Paciente();
             tratamientos.actualizarTablaTratamientos();
             citas.actualizarTablaCitas();
             pagos.actualizarTablaPagos();
             proformas.actualizarTablaProformas();
-
+            
             inicioMenu.setVisible(false);
-
+            
             citas.setVisible(false);
             pacientes.setVisible(false);
             tratamientos.setVisible(false);
             proformas.setVisible(false);
             pagos.setVisible(true);
-
+            
             PanelSistema.add(pagos);
             PanelSistema.validate();
             deshabilitar_Boton_Pagos();
             // Resto de tu código para el botón Pagos
         } else if (evt.equals(btnReportes)) {
-
+            
             pacientes.actualizarDatos_Paciente();
             tratamientos.actualizarTablaTratamientos();
             citas.actualizarTablaCitas();
             pagos.actualizarTablaPagos();
             proformas.actualizarTablaProformas();
-
+            
             inicioMenu.setVisible(false);
-
+            
             pacientes.setVisible(false);
             citas.setVisible(false);
             tratamientos.setVisible(false);
             pagos.setVisible(false);
             proformas.setVisible(true);
-
+            
             PanelSistema.add(proformas);
             PanelSistema.validate();
             deshabilitar_Boton_Reportes();
             // Resto de tu código para el botón Reportes
         } else if (evt.equals(btnMenuPrincipal)) {
-
+            
             pacientes.actualizarDatos_Paciente();
             tratamientos.actualizarTablaTratamientos();
             citas.actualizarTablaCitas();
             pagos.actualizarTablaPagos();
             proformas.actualizarTablaProformas();
-
+            
             inicioMenu.setVisible(true);
-
+            
             pacientes.setVisible(false);
             citas.setVisible(false);
             tratamientos.setVisible(false);
@@ -210,9 +210,9 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
             PanelSistema.validate();
             deshabilitar_Boton_Menu();
         }
-
+        
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -405,9 +405,9 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
         btnPagos.setEnabled(true);
         btnReportes.setEnabled(true);
     }//GEN-LAST:event_lblCasaMouseClicked
-
+    
     public static void main(String args[]) {
-
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
@@ -445,12 +445,12 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
             btnPagos.setEnabled(true);
             btnReportes.setEnabled(true);
             btnMenuPrincipal.setEnabled(true);
-
+            
         } else if (!pacientes.isVisible()) {
             btnPacientes.setEnabled(true);
         }
     }
-
+    
     public void deshabilitar_Boton_Citas() {
         if (citas.isVisible()) {
             btnCitas.setEnabled(false);
@@ -459,12 +459,12 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
             btnPagos.setEnabled(true);
             btnReportes.setEnabled(true);
             btnMenuPrincipal.setEnabled(true);
-
+            
         } else if (!citas.isVisible()) {
             btnCitas.setEnabled(true);
         }
     }
-
+    
     public void deshabilitar_Boton_Tratamientos() {
         if (tratamientos.isVisible()) {
             btnTratamientos.setEnabled(false);
@@ -472,14 +472,14 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
             btnPacientes.setEnabled(true);
             btnPagos.setEnabled(true);
             btnMenuPrincipal.setEnabled(true);
-
+            
             btnReportes.setEnabled(true);
-
+            
         } else if (!tratamientos.isVisible()) {
             btnTratamientos.setEnabled(true);
         }
     }
-
+    
     public void deshabilitar_Boton_Pagos() {
         if (pagos.isVisible()) {
             btnPacientes.setEnabled(true);
@@ -487,13 +487,13 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
             btnTratamientos.setEnabled(true);
             btnReportes.setEnabled(true);
             btnMenuPrincipal.setEnabled(true);
-
+            
             btnPagos.setEnabled(false);
         } else {
             btnPagos.setEnabled(true);
         }
     }
-
+    
     public void deshabilitar_Boton_Reportes() {
         if (proformas.isVisible()) {
             btnPacientes.setEnabled(true);
@@ -506,17 +506,18 @@ public class F_Sistema extends javax.swing.JFrame implements ActionListener {
             btnReportes.setEnabled(true);
         }
     }
-
+    
     public void deshabilitar_Boton_Menu() {
         if (inicioMenu.isVisible()) {
             btnPacientes.setEnabled(true);
             btnTratamientos.setEnabled(true);
             btnCitas.setEnabled(true);
             btnPagos.setEnabled(true);
+            btnReportes.setEnabled(true);
             btnMenuPrincipal.setEnabled(false);
         } else if (!inicioMenu.isVisible()) {
             btnMenuPrincipal.setEnabled(true);
         }
     }
-
+    
 }

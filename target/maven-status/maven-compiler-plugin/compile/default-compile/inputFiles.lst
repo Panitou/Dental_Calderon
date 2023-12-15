@@ -3,8 +3,10 @@ C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\Form\Panel_Pag
 C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\Form\F_Actualizar_Tratamiento.java
 C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\test\Test2.java
 C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\Form\F_Sistema.java
+C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\Form\F_Eliminar_Odontologo.java
 C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\Form\F_Historial_General.java
 C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\Form\F_VistaPrevia_Proforma.java
+C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\Form\F_Agregar_Odontologo.java
 C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\test\Test1.java
 C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\Form\BarraProgreso.java
 C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\Form\F_Agendar_Cita.java
@@ -18,6 +20,7 @@ C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\Form\Panel_Ini
 C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\Form\F_Login.java
 C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\controlador_Tratamiento\Tratamientos.java
 C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\Form\F_Actualizar_Cita.java
+C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\Form\F_Editar_Odontologo.java
 C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\Form\F_Modificar_Paciente.java
 C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\Form\Panel_Proformas.java
 C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\Form\F_Agregar_Paciente.java
@@ -25,6 +28,7 @@ C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\Form\F_Mostrar
 C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\controlador_Odontologos\Odontologos.java
 C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\Form\F_Reprogramar_Cita.java
 C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\Form\Panel_Citas.java
+C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\Form\F_Odontologos.java
 C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\Form\PanelPrinter.java
 C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\Form\Panel_Tratamientos.java
 C:\Dental_Calderon\src\main\java\proyecto\clinica_dental_calderon\Form\F_Historial_Paciente.java

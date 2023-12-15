@@ -296,7 +296,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
     }//GEN-LAST:event_jbtnActualizarActionPerformed
 
     // Método para construir la tabla en HTML
-    private String construirTablaHTML(String tratamientos, String cantidades, String costosUnitarios, String subtotales) {
+    private String construirTablaHTML(String tratamientos, String cantidades, String costosUnitarios, String subtotales, double costofinal) {
         StringBuilder tablaHTML = new StringBuilder("<html><head><style>"
                 + "table {border-collapse: collapse; width: 100%;}"
                 + "th, td {text-align: left; padding: 2px; font-size: 9px; border-right: none; font-family: Arial;}"
@@ -304,7 +304,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
                 + "td {border-bottom: 1px solid #00354B;}"
                 + "</style></head><body>");
 
-        tablaHTML.append("<table><tr><th>Tratamiento</th><th>Cantidad</th><th>Costo Unitario</th><th>Costo Total</th></tr>");
+        tablaHTML.append("<table><tr><th>TRATAMIENTOS</th><th>CANT.</th><th>P/U</th><th>S.TOTAL</th></tr>");
 
         // Aquí debes procesar las cadenas separadas por comas y construir las filas de la tabla
         String[] tratamientosArray = tratamientos.split(",");
@@ -320,7 +320,11 @@ public class Panel_Proformas extends javax.swing.JPanel {
                     .append("<td>").append(costosUnitariosArray[i]).append("</td>")
                     .append("<td>").append(subtotalesArray[i]).append("</td>")
                     .append("</tr>");
+            // Sumar el costo total de cada tratamiento
         }
+
+        // Añadir la fila del costo final
+        tablaHTML.append("<tr><td colspan='3'>Costo Final</td><td>").append(costofinal).append("</td></tr>");
 
         tablaHTML.append("</table></body></html>");
 
@@ -354,6 +358,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
                     String antecedentesPaciente = rs.getString("antecedentes");
                     String motivoPaciente = rs.getString("motivo_consulta");
                     Date fechaRegistro = rs.getDate("fecha_registro");
+                    Double costoFinal = rs.getDouble("total");
 
                     vistaprevia_proforma.setVisible(true);
                     vistaprevia_proforma.setLocationRelativeTo(null);
@@ -402,7 +407,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
                     String subtotales = rs.getString("subtotales");
 
                     // Procesar los datos y construir la tabla en HTML
-                    String tablaHTML = construirTablaHTML(tratamientos, cantidades, costosUnitarios, subtotales);
+                    String tablaHTML = construirTablaHTML(tratamientos, cantidades, costosUnitarios, subtotales, costoFinal);
 
                     // Establecer el HTML en el TextPane
                     vistaprevia_proforma.TxtPaneTabla.setContentType("text/html");

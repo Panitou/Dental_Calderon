@@ -230,6 +230,7 @@ public class F_VistaPrevia_Proforma extends javax.swing.JFrame {
         btnImprimir.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
         btnImprimir.setForeground(new java.awt.Color(255, 255, 255));
         btnImprimir.setText("IMPRIMIR PROFORMA");
+        btnImprimir.setBorder(null);
         btnImprimir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnImprimirActionPerformed(evt);
