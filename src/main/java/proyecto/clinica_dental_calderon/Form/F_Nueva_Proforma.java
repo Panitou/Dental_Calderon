@@ -63,6 +63,21 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
 
     public F_Nueva_Proforma() throws SQLException {
         initComponents();
+        btnActualizarDesc.setEnabled(false);
+
+        // Suponiendo que tblTratamiento es el nombre de tu tabla y txaDescripcion es el JTextArea
+        tblTratamiento.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent event) {
+                if (!event.getValueIsAdjusting()) {
+                    int selectedRow = tblTratamiento.getSelectedRow();
+                    if (selectedRow != -1) {
+                        Object descripcion = tblTratamiento.getValueAt(selectedRow, 1); // Suponiendo que la descripción está en la columna 1
+                        txaDescripcion.setText(descripcion != null ? descripcion.toString() : ""); // Actualizar el JTextArea con la descripción seleccionada
+                        btnActualizarDesc.setEnabled(true);
+                    }
+                }
+            }
+        });
 
         txtCosto.setDocument(new F_Nueva_Proforma.CostoFilter());
 
@@ -524,8 +539,6 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         txtTelefono = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jtxaMotivo = new javax.swing.JTextArea();
         spnCantidad = new javax.swing.JSpinner();
         cbxTratamientos = new javax.swing.JComboBox();
         btnAgregarTratamiento = new javax.swing.JButton();
@@ -539,6 +552,13 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         btnEliminarTratamiento = new javax.swing.JButton();
         btnImprimir = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        txaDescripcion = new javax.swing.JTextArea();
+        btnActualizarDesc = new javax.swing.JButton();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jtxaMotivo = new javax.swing.JTextArea();
+        jLabel34 = new javax.swing.JLabel();
+        checkPu = new javax.swing.JCheckBox();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         TextPaneVistaPrevia = new javax.swing.JTextPane();
@@ -552,8 +572,6 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
-        jLabel26 = new javax.swing.JLabel();
         txtNombrePane = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
         txtApellidoPane = new javax.swing.JTextField();
@@ -578,6 +596,8 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         lblLineaTelefono = new javax.swing.JLabel();
         lblLineaAntecedentes = new javax.swing.JLabel();
         lblLineaMotivo = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
 
         jCheckBox2.setText("jCheckBox2");
 
@@ -589,15 +609,15 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(1375, 813));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setMinimumSize(new java.awt.Dimension(773, 813));
-        jPanel1.setPreferredSize(new java.awt.Dimension(773, 813));
+        jPanel1.setMinimumSize(new java.awt.Dimension(958, 838));
+        jPanel1.setPreferredSize(new java.awt.Dimension(958, 838));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(30, 85, 131));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("NUEVA PROFORMA");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 10, 370, 60));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, 370, 60));
 
         btnGuardar_Proforma.setBackground(new java.awt.Color(30, 85, 131));
         btnGuardar_Proforma.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -609,25 +629,25 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
                 btnGuardar_ProformaActionPerformed(evt);
             }
         });
-        jPanel1.add(btnGuardar_Proforma, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 600, 230, 40));
+        jPanel1.add(btnGuardar_Proforma, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 770, 230, 40));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(30, 85, 131));
         jLabel3.setText("TRATAMIENTOS REGISTRADOS");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 300, 400, 20));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 430, 390, 20));
         jPanel1.add(txtNombres, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, 170, 30));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(30, 85, 131));
         jLabel4.setText("APELLIDOS");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 90, 190, 20));
-        jPanel1.add(txtApellidos, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 110, 170, 30));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 90, 170, 20));
+        jPanel1.add(txtApellidos, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 110, 220, 30));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(30, 85, 131));
         jLabel5.setText("ANTECEDENTES");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 90, 210, 20));
-        jPanel1.add(txtEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 110, 70, 30));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 90, 280, 20));
+        jPanel1.add(txtEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 110, 70, 30));
 
         dateFecha.setEnabled(false);
         jPanel1.add(dateFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, 140, 30));
@@ -636,7 +656,7 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(30, 85, 131));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("TOTAL");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 530, 110, 20));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 700, 110, 20));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(30, 85, 131));
@@ -651,18 +671,18 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(30, 85, 131));
         jLabel8.setText("NOMBRES");
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 90, 170, 20));
-        jPanel1.add(txtCosto, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 550, 110, 30));
+        jPanel1.add(txtCosto, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 720, 110, 30));
 
         jtxaAntecedentes.setColumns(20);
         jtxaAntecedentes.setRows(5);
         jScrollPane2.setViewportView(jtxaAntecedentes);
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 110, 210, 80));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 110, 360, 90));
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(30, 85, 131));
         jLabel10.setText("S/");
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 400, 20, 40));
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 430, 20, 40));
 
         checkEditar_Precio.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         checkEditar_Precio.setForeground(new java.awt.Color(51, 51, 51));
@@ -677,32 +697,26 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
                 checkEditar_PrecioActionPerformed(evt);
             }
         });
-        jPanel1.add(checkEditar_Precio, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 550, 120, 30));
+        jPanel1.add(checkEditar_Precio, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 720, 120, 30));
 
         jSeparator1.setForeground(new java.awt.Color(51, 51, 51));
         jSeparator1.setToolTipText("");
-        jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 590, 660, 10));
-        jPanel1.add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 170, 160, 30));
+        jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 760, 870, 10));
+        jPanel1.add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 170, 160, 30));
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(30, 85, 131));
         jLabel11.setText("TELÉFONO");
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 150, 110, 20));
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 150, 110, 20));
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(30, 85, 131));
         jLabel9.setText("MOTIVO DE CONSULTA");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 200, 210, 20));
-
-        jtxaMotivo.setColumns(20);
-        jtxaMotivo.setRows(5);
-        jScrollPane3.setViewportView(jtxaMotivo);
-
-        jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 220, 210, 70));
-        jPanel1.add(spnCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 400, 80, 40));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 210, 280, 20));
+        jPanel1.add(spnCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 430, 100, 40));
 
         cbxTratamientos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 1", "Item 2", "Item 3", "Item 4", "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(cbxTratamientos, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 330, 250, 40));
+        jPanel1.add(cbxTratamientos, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 360, 250, 40));
 
         btnAgregarTratamiento.setBackground(new java.awt.Color(24, 177, 135));
         btnAgregarTratamiento.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -714,36 +728,36 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
                 btnAgregarTratamientoActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAgregarTratamiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 450, 120, 40));
+        jPanel1.add(btnAgregarTratamiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 510, 120, 40));
 
         tblTratamiento.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Tratamiento", "Cantidad", "Costo", "Subtotal"
+                "Tratamiento", "Descripción", "Cantidad", "Costo", "Subtotal"
             }
         ));
         jScrollPane1.setViewportView(tblTratamiento);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 330, 400, 190));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 460, 610, 230));
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(30, 85, 131));
-        jLabel12.setText("TRATAMIENTOS");
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 300, 140, 20));
-        jPanel1.add(txtCostoUnitario, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 400, 80, 40));
+        jLabel12.setText("DESCRIPCIÓN");
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 330, 140, 20));
+        jPanel1.add(txtCostoUnitario, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 430, 120, 40));
 
         jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(30, 85, 131));
         jLabel13.setText("EDAD");
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 90, 60, 20));
-        jPanel1.add(txtDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 170, 260, 30));
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 90, 60, 20));
+        jPanel1.add(txtDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 170, 310, 30));
 
         jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(30, 85, 131));
         jLabel14.setText("CANTIDAD");
-        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 380, 110, 20));
+        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 410, 110, 20));
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(30, 85, 131));
@@ -760,7 +774,7 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
                 btnEliminarTratamientoActionPerformed(evt);
             }
         });
-        jPanel1.add(btnEliminarTratamiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 450, 120, 40));
+        jPanel1.add(btnEliminarTratamiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 510, 120, 40));
 
         btnImprimir.setBackground(new java.awt.Color(30, 85, 131));
         btnImprimir.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -772,7 +786,46 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
                 btnImprimirActionPerformed(evt);
             }
         });
-        jPanel1.add(btnImprimir, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 600, 140, 40));
+        jPanel1.add(btnImprimir, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 770, 140, 40));
+
+        txaDescripcion.setColumns(20);
+        txaDescripcion.setRows(5);
+        jScrollPane5.setViewportView(txaDescripcion);
+
+        jPanel1.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 350, 440, 70));
+
+        btnActualizarDesc.setBackground(new java.awt.Color(30, 85, 131));
+        btnActualizarDesc.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
+        btnActualizarDesc.setForeground(new java.awt.Color(255, 255, 255));
+        btnActualizarDesc.setText("ACTUALIZAR");
+        btnActualizarDesc.setBorder(null);
+        btnActualizarDesc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarDescActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnActualizarDesc, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 370, 150, 30));
+
+        jtxaMotivo.setColumns(20);
+        jtxaMotivo.setRows(5);
+        jScrollPane6.setViewportView(jtxaMotivo);
+
+        jPanel1.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 230, 360, 90));
+
+        jLabel34.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel34.setForeground(new java.awt.Color(30, 85, 131));
+        jLabel34.setText("TRATAMIENTOS");
+        jPanel1.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 330, 140, 20));
+
+        checkPu.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
+        checkPu.setForeground(new java.awt.Color(51, 51, 51));
+        checkPu.setText("EDITAR P/U");
+        checkPu.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                checkPuItemStateChanged(evt);
+            }
+        });
+        jPanel1.add(checkPu, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 480, 100, -1));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setMinimumSize(new java.awt.Dimension(596, 813));
@@ -783,184 +836,178 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         TextPaneVistaPrevia.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
         jScrollPane4.setViewportView(TextPaneVistaPrevia);
 
-        jPanel2.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 400, 574, 400));
-        jPanel2.add(Lbllogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 230, 117));
+        jPanel2.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 574, 480));
+        jPanel2.add(Lbllogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 10, 230, 117));
 
         jLabel2.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(51, 51, 51));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("C.O.P 8994");
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 100, 120, 20));
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 120, 20));
 
         jLabel16.setFont(new java.awt.Font("Lucida Calligraphy", 1, 12)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(0, 122, 255));
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel16.setText("Dr. Oswaldo M.");
-        jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 40, 120, 20));
+        jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 120, 20));
 
         jLabel17.setFont(new java.awt.Font("Lucida Calligraphy", 1, 12)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(0, 122, 255));
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel17.setText("Calderón Flores");
-        jPanel2.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 60, 120, 20));
+        jPanel2.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 120, 20));
 
         jLabel19.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(51, 51, 51));
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel19.setText("Cirujano - Dentista");
-        jPanel2.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 80, 120, 20));
+        jPanel2.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 120, 20));
 
         jLabel20.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 10)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(51, 51, 51));
         jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel20.setText("Lunes a Sábado 9:00 am. a 1:00 pm. / 3:00 pm. a 9:00 pm.");
-        jPanel2.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 250, 380, 20));
+        jPanel2.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 190, 310, 20));
 
         jLabel21.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 10)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(0, 122, 255));
         jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel21.setText("Av. Universitaria Norte N° 6809 Of. 202 - 203");
-        jPanel2.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 170, 230, 20));
+        jPanel2.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 150, 230, 20));
 
         jLabel22.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 10)); // NOI18N
         jLabel22.setForeground(new java.awt.Color(0, 122, 255));
         jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel22.setText("Urb. Santa Luzmila, Comas (Esquina con Av. Guillermo de la Fuente)");
-        jPanel2.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 190, 350, 20));
+        jPanel2.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 130, 350, 20));
 
         jLabel23.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 10)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(0, 122, 255));
         jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel23.setText("Telf.: 536-3680");
-        jPanel2.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 210, 90, 20));
+        jPanel2.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 170, 90, 20));
 
         jLabel24.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 10)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(0, 122, 255));
         jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel24.setText("Cel.: 995-302-877");
-        jPanel2.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 210, 100, 20));
-
-        jLabel25.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
-        jLabel25.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel25.setText("Rehabilitación Oral - Cirugía - Implantes");
-        jPanel2.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 150, 270, 20));
-
-        jLabel26.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
-        jLabel26.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel26.setText("Hora de Atención");
-        jPanel2.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 230, 120, 20));
+        jPanel2.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 170, 100, 20));
 
         txtNombrePane.setBackground(new java.awt.Color(255, 255, 255));
         txtNombrePane.setBorder(null);
-        jPanel2.add(txtNombrePane, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 280, 140, 20));
+        jPanel2.add(txtNombrePane, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 140, 13));
 
-        jLabel18.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
+        jLabel18.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 10)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(51, 51, 51));
         jLabel18.setText("Nombre:");
-        jPanel2.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 60, 20));
+        jPanel2.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 50, -1));
 
         txtApellidoPane.setBackground(new java.awt.Color(255, 255, 255));
         txtApellidoPane.setBorder(null);
-        jPanel2.add(txtApellidoPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 280, 210, 20));
+        jPanel2.add(txtApellidoPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 220, 210, 13));
 
-        jLabel27.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
+        jLabel27.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 10)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(51, 51, 51));
         jLabel27.setText("Apellido:");
-        jPanel2.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 280, 60, 20));
+        jPanel2.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 220, 50, -1));
 
         txtEdadPane.setBackground(new java.awt.Color(255, 255, 255));
         txtEdadPane.setBorder(null);
-        jPanel2.add(txtEdadPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 280, 30, 20));
+        jPanel2.add(txtEdadPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 220, 40, 13));
 
-        jLabel28.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
+        jLabel28.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 10)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(51, 51, 51));
         jLabel28.setText("Edad:");
-        jPanel2.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 280, 40, 20));
+        jPanel2.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 220, 30, -1));
 
         txtTelefonoPane.setBackground(new java.awt.Color(255, 255, 255));
         txtTelefonoPane.setBorder(null);
-        jPanel2.add(txtTelefonoPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 310, 100, 20));
+        jPanel2.add(txtTelefonoPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 250, 100, 13));
 
-        jLabel29.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
+        jLabel29.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 10)); // NOI18N
         jLabel29.setForeground(new java.awt.Color(51, 51, 51));
         jLabel29.setText("Telefono:");
-        jPanel2.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 310, 70, 20));
+        jPanel2.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 250, 70, -1));
 
         txtDireccionPane.setBackground(new java.awt.Color(255, 255, 255));
         txtDireccionPane.setBorder(null);
-        jPanel2.add(txtDireccionPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 310, 320, 20));
+        jPanel2.add(txtDireccionPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 250, 320, 13));
 
-        jLabel30.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
+        jLabel30.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 10)); // NOI18N
         jLabel30.setForeground(new java.awt.Color(51, 51, 51));
         jLabel30.setText("Direccion:");
-        jPanel2.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, 70, 20));
+        jPanel2.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 50, -1));
 
-        jLabel31.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
+        jLabel31.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 10)); // NOI18N
         jLabel31.setForeground(new java.awt.Color(51, 51, 51));
         jLabel31.setText("Antecedentes:");
-        jPanel2.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 90, 20));
+        jPanel2.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 80, -1));
 
         txtAntecedentesPane.setBackground(new java.awt.Color(255, 255, 255));
         txtAntecedentesPane.setBorder(null);
-        jPanel2.add(txtAntecedentesPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 340, 480, 20));
+        jPanel2.add(txtAntecedentesPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 280, 490, 13));
 
         txtMotivoPane.setBackground(new java.awt.Color(255, 255, 255));
         txtMotivoPane.setBorder(null);
-        jPanel2.add(txtMotivoPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 370, 350, 20));
+        jPanel2.add(txtMotivoPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 310, 360, 13));
 
-        jLabel32.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
+        jLabel32.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 10)); // NOI18N
         jLabel32.setForeground(new java.awt.Color(51, 51, 51));
         jLabel32.setText("Motivo:");
-        jPanel2.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 60, 20));
+        jPanel2.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, 50, -1));
 
         txtFechaPane.setBackground(new java.awt.Color(255, 255, 255));
         txtFechaPane.setBorder(null);
-        jPanel2.add(txtFechaPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 370, 100, 20));
+        jPanel2.add(txtFechaPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 310, 110, 13));
 
-        jLabel33.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
+        jLabel33.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 10)); // NOI18N
         jLabel33.setForeground(new java.awt.Color(51, 51, 51));
         jLabel33.setText("Fecha:");
-        jPanel2.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 370, 50, 20));
+        jPanel2.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 310, 40, -1));
 
         lblLineaNombre.setText("jLabel34");
-        jPanel2.add(lblLineaNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 300, 150, 2));
+        jPanel2.add(lblLineaNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 240, 150, 2));
 
         lblLineaApellido.setText("jLabel34");
-        jPanel2.add(lblLineaApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 300, 210, 2));
+        jPanel2.add(lblLineaApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 240, 210, 2));
 
         lblLineaEdad.setText("jLabel34");
-        jPanel2.add(lblLineaEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 302, 40, 2));
+        jPanel2.add(lblLineaEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 240, 40, 2));
 
         lblLineaFecha.setText("jLabel34");
-        jPanel2.add(lblLineaFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 390, 110, 2));
+        jPanel2.add(lblLineaFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 330, 110, 2));
 
         lblLineaDireccion.setText("jLabel34");
-        jPanel2.add(lblLineaDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 330, 330, 2));
+        jPanel2.add(lblLineaDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 270, 330, 2));
 
         lblLineaTelefono.setText("jLabel34");
-        jPanel2.add(lblLineaTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 330, 110, 2));
+        jPanel2.add(lblLineaTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 270, 110, 2));
 
         lblLineaAntecedentes.setText("jLabel34");
-        jPanel2.add(lblLineaAntecedentes, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 360, 480, 2));
+        jPanel2.add(lblLineaAntecedentes, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 300, 480, 2));
 
         lblLineaMotivo.setText("jLabel34");
-        jPanel2.add(lblLineaMotivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 390, 360, 2));
+        jPanel2.add(lblLineaMotivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 330, 360, 2));
+
+        jLabel25.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 14)); // NOI18N
+        jLabel25.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel25.setText("N°");
+        jPanel2.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 20, 30));
+        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 60, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 773, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 596, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 838, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -968,7 +1015,6 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void actualizarVistaPrevia() {
-
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String fechaFormateada = dateFormat.format(dateFecha.getDate());
 
@@ -993,17 +1039,18 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
                 + "td {border-bottom: 1px solid #00354B;}"
                 + "</style></head><body>");
 
-// Resto de tu código...
         tablaTratamientos.append("<table><tr><th>TRATAMIENTO</th><th>CANT.</th><th>P/U</th><th>S.TOTAL</th></tr>");
 
         for (int i = 0; i < rowCount; i++) {
             String tratamiento = model.getValueAt(i, 0).toString();
-            int cantidad = Integer.parseInt(model.getValueAt(i, 1).toString());
-            double costoUnitario = Double.parseDouble(model.getValueAt(i, 2).toString());
-            double costoTotal = Double.parseDouble(model.getValueAt(i, 3).toString());
+            String descripcion = model.getValueAt(i, 1).toString();
+            int cantidad = Integer.parseInt(model.getValueAt(i, 2).toString());
+            double costoUnitario = Double.parseDouble(model.getValueAt(i, 3).toString());
+            double costoTotal = Double.parseDouble(model.getValueAt(i, 4).toString());
 
+            // Agregar tratamiento y descripción en una nueva línea
             tablaTratamientos.append("<tr>")
-                    .append("<td>").append(tratamiento).append("</td>")
+                    .append("<td>").append(tratamiento).append("<br>(").append(descripcion).append(")</td>")
                     .append("<td>").append(cantidad).append("</td>")
                     .append("<td>").append(costoUnitario).append("</td>")
                     .append("<td>").append(costoTotal).append("</td>")
@@ -1048,8 +1095,6 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         String horaRegistro = txtHora.getText();
         String Costo = txtCosto.getText();
 
-        
-        
         Connection c = null;
         PreparedStatement ps = null;
 
@@ -1078,19 +1123,21 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         StringBuilder cantidadesBuilder = new StringBuilder();
         StringBuilder costosUnitariosBuilder = new StringBuilder();
         StringBuilder subtotalesBuilder = new StringBuilder();
-        
-        
 
         for (int i = 0; i < cantidadTratamientos; i++) {
             String tratamiento = tblTratamiento.getValueAt(i, 0).toString();
-            String cantidad = tblTratamiento.getValueAt(i, 1).toString();
-            double costoUnitario = Double.parseDouble(tblTratamiento.getValueAt(i, 2).toString());
-            double subtotal = Double.parseDouble(tblTratamiento.getValueAt(i, 3).toString());
+            String descripcion = tblTratamiento.getValueAt(i, 1).toString();
+            String cantidad = tblTratamiento.getValueAt(i, 2).toString();
+            double costoUnitario = Double.parseDouble(tblTratamiento.getValueAt(i, 3).toString());
+            double subtotal = Double.parseDouble(tblTratamiento.getValueAt(i, 4).toString());
 
-            tratamientosBuilder.append(tratamiento).append(",");
-            cantidadesBuilder.append(cantidad).append(",");
-            costosUnitariosBuilder.append(costoUnitario).append(",");
-            subtotalesBuilder.append(subtotal).append(",");
+            // Construir el tratamiento con la descripción entre paréntesis
+            String tratamientoConDescripcion = tratamiento + " (" + descripcion + ")" + ", ";
+
+            tratamientosBuilder.append(tratamientoConDescripcion);
+            cantidadesBuilder.append(cantidad).append(", ");
+            costosUnitariosBuilder.append(costoUnitario).append(", ");
+            subtotalesBuilder.append(subtotal).append(", ");
         }
 
         // Eliminar la última coma de las cadenas
@@ -1169,29 +1216,34 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
     private void btnAgregarTratamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarTratamientoActionPerformed
         checkEditar_Precio.setEnabled(true);
 
-        String tratamientoseleccionado = cbxTratamientos.getSelectedItem().toString();
+        String tratamientoSeleccionado = cbxTratamientos.getSelectedItem().toString();
         double costoUnitario = Double.parseDouble(txtCostoUnitario.getText());
         int cantidadSeleccionada = (int) spnCantidad.getValue();
         double costoTotal = cantidadSeleccionada * costoUnitario;
 
-        // Agregar fila a la tabla
+        String descripcion = txaDescripcion.getText(); // Obtener la descripción del JTextArea
+
+        // Agregar fila a la tabla con tratamiento, descripción y cantidad
         DefaultTableModel model = (DefaultTableModel) tblTratamiento.getModel();
-        model.addRow(new Object[]{tratamientoseleccionado, cantidadSeleccionada, costoUnitario, costoTotal});
+        model.addRow(new Object[]{tratamientoSeleccionado, descripcion, cantidadSeleccionada, costoUnitario, costoTotal});
 
         // Actualizar el total
         total += costoTotal;
 
         // Actualizar el txtCosto con el total
         txtCosto.setText(String.valueOf(total));
+
         // Actualizar la vista previa
         actualizarVistaPrevia();
+
         // Reiniciar el spinner a 1
         spnCantidad.setValue(1);
 
-        // Reiniciar txtCostoUnitario
-        // Puedes establecerlo a un valor predeterminado si es necesario
-        // Habilitar el botón eliminar
+        // Limpiar el JTextArea de la descripción después de agregar
+        txaDescripcion.setText("");
 
+        // Habilitar el botón eliminar
+        btnEliminarTratamiento.setEnabled(true);
     }//GEN-LAST:event_btnAgregarTratamientoActionPerformed
 
     private void btnEliminarTratamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarTratamientoActionPerformed
@@ -1270,6 +1322,29 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnImprimirActionPerformed
 
+    private void btnActualizarDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarDescActionPerformed
+        int selectedRow = tblTratamiento.getSelectedRow();
+        String nuevaDescripcion = txaDescripcion.getText();
+
+        if (selectedRow != -1) {
+            tblTratamiento.setValueAt(nuevaDescripcion, selectedRow, 1);
+            tblTratamiento.setRowSelectionAllowed(false);
+            txaDescripcion.setText("");
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione un registro de la tabla para actualizar la descripción.");
+        }
+    }//GEN-LAST:event_btnActualizarDescActionPerformed
+
+    private void checkPuItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkPuItemStateChanged
+        if (checkPu.isSelected()) {
+            // Habilitar la edición del txtCosto
+            txtCostoUnitario.setEditable(true);
+        } else {
+            // Deshabilitar la edición del txtCosto
+            txtCostoUnitario.setEditable(false);
+        }
+    }//GEN-LAST:event_checkPuItemStateChanged
+
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -1286,12 +1361,14 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Lbllogo;
     public javax.swing.JTextPane TextPaneVistaPrevia;
+    private javax.swing.JButton btnActualizarDesc;
     private javax.swing.JButton btnAgregarTratamiento;
     private javax.swing.JButton btnEliminarTratamiento;
     public javax.swing.JButton btnGuardar_Proforma;
     private javax.swing.JButton btnImprimir;
     public javax.swing.JComboBox cbxTratamientos;
     public javax.swing.JCheckBox checkEditar_Precio;
+    private javax.swing.JCheckBox checkPu;
     public com.toedter.calendar.JDateChooser dateFecha;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox7;
@@ -1314,7 +1391,6 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
@@ -1323,6 +1399,7 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1333,9 +1410,11 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextField jTextField1;
     public javax.swing.JTextArea jtxaAntecedentes;
     public javax.swing.JTextArea jtxaMotivo;
     private javax.swing.JLabel lblLineaAntecedentes;
@@ -1348,6 +1427,7 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
     private javax.swing.JLabel lblLineaTelefono;
     public javax.swing.JSpinner spnCantidad;
     public javax.swing.JTable tblTratamiento;
+    private javax.swing.JTextArea txaDescripcion;
     private javax.swing.JTextField txtAntecedentesPane;
     public javax.swing.JTextField txtApellidoPane;
     public javax.swing.JTextField txtApellidos;
@@ -1358,7 +1438,7 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
     public javax.swing.JTextField txtEdad;
     public javax.swing.JTextField txtEdadPane;
     private javax.swing.JTextField txtFechaPane;
-    public javax.swing.JTextField txtHora;
+    private javax.swing.JTextField txtHora;
     private javax.swing.JTextField txtMotivoPane;
     public javax.swing.JTextField txtNombrePane;
     public javax.swing.JTextField txtNombres;

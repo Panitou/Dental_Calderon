@@ -365,14 +365,14 @@ public class Panel_Proformas extends javax.swing.JPanel {
                     vistaprevia_proforma.setResizable(false);
 
                     //Deshabilitar campos
-                    vistaprevia_proforma.txtNombres.setEditable(false);
-                    vistaprevia_proforma.txtApellidos.setEditable(false);
-                    vistaprevia_proforma.txtEdad.setEditable(false);
-                    vistaprevia_proforma.txtDireccion.setEditable(false);
-                    vistaprevia_proforma.txtTelefono.setEditable(false);
-                    vistaprevia_proforma.jtxaAntecedentes.setEditable(false);
-                    vistaprevia_proforma.jtxaMotivo.setEditable(false);
-                    vistaprevia_proforma.dateFecha.setEditable(false);
+                    vistaprevia_proforma.txtNombrePane.setEditable(false);
+                    vistaprevia_proforma.txtApellidoPane.setEditable(false);
+                    vistaprevia_proforma.txtEdadPane.setEditable(false);
+                    vistaprevia_proforma.txtDireccionPane.setEditable(false);
+                    vistaprevia_proforma.txtTelefonoPane.setEditable(false);
+                    vistaprevia_proforma.jtxaAntecedentesPane.setEditable(false);
+                    vistaprevia_proforma.jtxaMotivoPane.setEditable(false);
+                    vistaprevia_proforma.dateFechaPane.setEditable(false);
                     vistaprevia_proforma.TxtPaneTabla.setEditable(false);
 
                     //Logo
@@ -390,14 +390,14 @@ public class Panel_Proformas extends javax.swing.JPanel {
 
                     // Continúa obteniendo los demás campos
                     // Actualizar los campos con los datos de la proforma
-                    vistaprevia_proforma.txtNombres.setText(nombrePaciente);
-                    vistaprevia_proforma.txtApellidos.setText(apellidoPaciente);
-                    vistaprevia_proforma.txtEdad.setText(String.valueOf(edadPaciente));
-                    vistaprevia_proforma.txtDireccion.setText(direccionPaciente);
-                    vistaprevia_proforma.txtTelefono.setText(telefonoPaciente);
-                    vistaprevia_proforma.jtxaAntecedentes.setText(antecedentesPaciente);
-                    vistaprevia_proforma.jtxaMotivo.setText(motivoPaciente);
-                    vistaprevia_proforma.dateFecha.setText(fechaRegistro.toString());
+                    vistaprevia_proforma.txtNombrePane.setText(nombrePaciente);
+                    vistaprevia_proforma.txtApellidoPane.setText(apellidoPaciente);
+                    vistaprevia_proforma.txtEdadPane.setText(String.valueOf(edadPaciente));
+                    vistaprevia_proforma.txtDireccionPane.setText(direccionPaciente);
+                    vistaprevia_proforma.txtTelefonoPane.setText(telefonoPaciente);
+                    vistaprevia_proforma.jtxaAntecedentesPane.setText(antecedentesPaciente);
+                    vistaprevia_proforma.jtxaMotivoPane.setText(motivoPaciente);
+                    vistaprevia_proforma.dateFechaPane.setText(fechaRegistro.toString());
 
                     // Continúa actualizando los demás campos
                     // Obtener los datos separados por comas desde la base de datos
