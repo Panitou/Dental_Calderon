@@ -5,7 +5,6 @@ proyecto\clinica_dental_calderon\Form\F_Login$4.class
 proyecto\clinica_dental_calderon\Form\F_Sistema$7.class
 proyecto\clinica_dental_calderon\Form\F_Login.class
 proyecto\clinica_dental_calderon\Form\F_Nuevo_Tratamiento$CostoFilter.class
-proyecto\clinica_dental_calderon\Form\Panel_Proformas$6.class
 proyecto\clinica_dental_calderon\Form\F_Login$10.class
 proyecto\clinica_dental_calderon\Form\F_Nuevo_Tratamiento$7.class
 proyecto\clinica_dental_calderon\Form\F_Cancelar_Deuda.class
@@ -62,6 +61,7 @@ proyecto\clinica_dental_calderon\Form\F_Odontologos.class
 proyecto\clinica_dental_calderon\Form\Panel_Pagos.class
 proyecto\clinica_dental_calderon\Form\Panel_Citas$4.class
 proyecto\clinica_dental_calderon\Form\F_Editar_Proforma$4.class
+proyecto\clinica_dental_calderon\Form\F_Editar_Proforma$7.class
 proyecto\clinica_dental_calderon\Form\F_Nueva_Proforma$23.class
 proyecto\clinica_dental_calderon\Form\F_Login$8.class
 proyecto\clinica_dental_calderon\Form\F_Mostrar_Datos_Cita$2.class
@@ -148,6 +148,7 @@ proyecto\clinica_dental_calderon\Form\F_Nueva_Proforma$CostoFilter.class
 proyecto\clinica_dental_calderon\Form\F_Sistema$5.class
 proyecto\clinica_dental_calderon\Form\Panel_Pacientes$5.class
 proyecto\clinica_dental_calderon\Form\F_Sistema.class
+proyecto\clinica_dental_calderon\Form\F_Editar_Proforma$8.class
 proyecto\clinica_dental_calderon\Form\F_Nueva_Proforma$20.class
 proyecto\clinica_dental_calderon\Form\F_Reprogramar_Cita$4.class
 proyecto\clinica_dental_calderon\Form\F_Nueva_Proforma$8.class
@@ -156,6 +157,7 @@ proyecto\clinica_dental_calderon\Form\F_Mostrar_Datos_Cita$1.class
 proyecto\clinica_dental_calderon\Form\F_Nuevo_Tratamiento$3.class
 proyecto\clinica_dental_calderon\Form\Panel_Inicio.class
 proyecto\clinica_dental_calderon\Form\Panel_Inicio$1.class
+proyecto\clinica_dental_calderon\Form\F_Historial_General$4.class
 proyecto\clinica_dental_calderon\Form\F_Login$6.class
 proyecto\clinica_dental_calderon\Form\F_Reprogramar_Cita$1.class
 proyecto\clinica_dental_calderon\Form\F_Modificar_Paciente$2.class

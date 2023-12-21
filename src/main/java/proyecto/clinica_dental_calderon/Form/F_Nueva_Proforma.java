@@ -60,9 +60,16 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         tabla.getTableHeader().setReorderingAllowed(false); // Evitar el movimiento de columnas
         tabla.getTableHeader().setResizingAllowed(false);
     }
+    
+    
+
+    
 
     public F_Nueva_Proforma() throws SQLException {
         initComponents();
+
+       
+
         btnActualizarDesc.setEnabled(false);
 
         // Suponiendo que tblTratamiento es el nombre de tu tabla y txaDescripcion es el JTextArea
@@ -597,7 +604,7 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         lblLineaAntecedentes = new javax.swing.JLabel();
         lblLineaMotivo = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtId = new javax.swing.JLabel();
 
         jCheckBox2.setText("jCheckBox2");
 
@@ -922,7 +929,7 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
 
         txtTelefonoPane.setBackground(new java.awt.Color(255, 255, 255));
         txtTelefonoPane.setBorder(null);
-        jPanel2.add(txtTelefonoPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 250, 100, 13));
+        jPanel2.add(txtTelefonoPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 250, 120, 13));
 
         jLabel29.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 10)); // NOI18N
         jLabel29.setForeground(new java.awt.Color(51, 51, 51));
@@ -991,9 +998,12 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
 
         jLabel25.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 14)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel25.setText("N°");
-        jPanel2.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 20, 30));
-        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 60, 30));
+        jLabel25.setText("N° PROFORMA");
+        jPanel2.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, -1, 20));
+
+        txtId.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 14)); // NOI18N
+        txtId.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel2.add(txtId, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 150, 60, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1328,6 +1338,7 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
 
         if (selectedRow != -1) {
             tblTratamiento.setValueAt(nuevaDescripcion, selectedRow, 1);
+            actualizarVistaPrevia();
             tblTratamiento.setRowSelectionAllowed(false);
             txaDescripcion.setText("");
         } else {
@@ -1414,7 +1425,6 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField1;
     public javax.swing.JTextArea jtxaAntecedentes;
     public javax.swing.JTextArea jtxaMotivo;
     private javax.swing.JLabel lblLineaAntecedentes;
@@ -1438,7 +1448,8 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
     public javax.swing.JTextField txtEdad;
     public javax.swing.JTextField txtEdadPane;
     private javax.swing.JTextField txtFechaPane;
-    private javax.swing.JTextField txtHora;
+    public javax.swing.JTextField txtHora;
+    public javax.swing.JLabel txtId;
     private javax.swing.JTextField txtMotivoPane;
     public javax.swing.JTextField txtNombrePane;
     public javax.swing.JTextField txtNombres;

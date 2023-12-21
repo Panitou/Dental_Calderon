@@ -33,6 +33,12 @@ public class Panel_Proformas extends javax.swing.JPanel {
     String actualizar = "/images/actualizar.png";
     ImageIcon actualizarImagen = new ImageIcon(Panel_Proformas.class.getResource(actualizar));
 
+    String buscar = "/images/buscar.png";
+    String limpiar = "/images/borrar.png";
+
+    ImageIcon buscarImagen = new ImageIcon(Panel_Pacientes.class.getResource(buscar));
+    ImageIcon limpiarImage = new ImageIcon(Panel_Pacientes.class.getResource(limpiar));
+
     String nombre = "/images/linea.png";
     ImageIcon LineaNombreImage = new ImageIcon(Panel_Proformas.class.getResource(nombre));
     String logoimagencirclex200 = "/images/LogoParaProforma.png";
@@ -61,11 +67,10 @@ public class Panel_Proformas extends javax.swing.JPanel {
         abrirConexion();
         Mostrar_Datos_Tabla();
         deshabilitarEdicionTabla(jtblProformas);
-
-        dateChooserFechaInicio.getDateEditor().setEnabled(false);
-        dateChooserFechaFin.getDateEditor().setEnabled(false);
-
         jbtnActualizar.setIcon(actualizarImagen);
+
+        btnBuscar.setIcon(buscarImagen);
+        btnLimpiar.setIcon(limpiarImage);
     }
 
     private void deshabilitarEdicionTabla(JTable tabla) {
@@ -113,12 +118,10 @@ public class Panel_Proformas extends javax.swing.JPanel {
         jtblProformas = new javax.swing.JTable();
         jbtnNueva_Proforma = new javax.swing.JButton();
         jbtnActualizar = new javax.swing.JButton();
-        dateChooserFechaFin = new com.toedter.calendar.JDateChooser();
-        btnLimpiarFiltro = new javax.swing.JButton();
-        btnAplicarFiltro = new javax.swing.JButton();
-        dateChooserFechaInicio = new com.toedter.calendar.JDateChooser();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        txtId = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        btnLimpiar = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(1365, 770));
 
@@ -180,42 +183,30 @@ public class Panel_Proformas extends javax.swing.JPanel {
             }
         });
         jPanel1.add(jbtnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 20, 32, 32));
-        jPanel1.add(dateChooserFechaFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(1160, 170, 190, 40));
 
-        btnLimpiarFiltro.setBackground(new java.awt.Color(62, 134, 203));
-        btnLimpiarFiltro.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnLimpiarFiltro.setForeground(new java.awt.Color(255, 255, 255));
-        btnLimpiarFiltro.setText("LIMPIAR FILTRO");
-        btnLimpiarFiltro.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnLimpiarFiltro.addActionListener(new java.awt.event.ActionListener() {
+        txtId.setBorder(null);
+        jPanel1.add(txtId, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 170, 170, 40));
+
+        jLabel4.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel4.setText("Buscar por N°");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 150, 170, 20));
+
+        btnLimpiar.setBackground(new java.awt.Color(255, 255, 255));
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLimpiarFiltroActionPerformed(evt);
+                btnLimpiarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnLimpiarFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 170, 170, 40));
+        jPanel1.add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1300, 170, 40, 40));
 
-        btnAplicarFiltro.setBackground(new java.awt.Color(62, 134, 203));
-        btnAplicarFiltro.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnAplicarFiltro.setForeground(new java.awt.Color(255, 255, 255));
-        btnAplicarFiltro.setText("APLICAR FILTRO");
-        btnAplicarFiltro.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnAplicarFiltro.addActionListener(new java.awt.event.ActionListener() {
+        btnBuscar.setBackground(new java.awt.Color(255, 255, 255));
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAplicarFiltroActionPerformed(evt);
+                btnBuscarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAplicarFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 170, 170, 40));
-        jPanel1.add(dateChooserFechaInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 170, 190, 40));
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel2.setText("HASTA:");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1160, 150, 190, 20));
-
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel3.setText("DE:");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 150, 190, 20));
+        jPanel1.add(btnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1250, 170, 40, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -229,34 +220,57 @@ public class Panel_Proformas extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void limpiarCampos() {
-        nueva_proforma.txtNombres.setText("");
-        nueva_proforma.txtApellidos.setText("");
-        nueva_proforma.txtTelefono.setText("");
-        nueva_proforma.txtDireccion.setText("");
-        nueva_proforma.txtEdad.setText("");
-        nueva_proforma.txtEdadPane.setText("");
-        nueva_proforma.txtApellidoPane.setText("");
-        nueva_proforma.txtNombrePane.setText("");
-        nueva_proforma.jtxaAntecedentes.setText("");
-        nueva_proforma.jtxaMotivo.setText("");
-        nueva_proforma.txtCostoUnitario.setText("");
-        nueva_proforma.txtCosto.setText("");
+    public int obtenerProximoID() {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-        nueva_proforma.cbxTratamientos.setSelectedIndex(0);
+        try {
+            // Establece la conexión con tu base de datos
+            connection = Conexion.getConnection();// Reemplaza esto con tu lógica para obtener la conexión
 
-        DefaultTableModel model = (DefaultTableModel) nueva_proforma.tblTratamiento.getModel();
-        model.setRowCount(0);
+            // Consulta para obtener el último ID
+            String query = "SELECT MAX(id_proforma) AS id_proforma FROM TB_PROFORMAS";
+            ps = connection.prepareStatement(query);
+            rs = ps.executeQuery();
 
-        nueva_proforma.spnCantidad.setValue(0);
-        nueva_proforma.TextPaneVistaPrevia.setText("");
+            int ultimoID = 0;
 
+            if (rs.next()) {
+                ultimoID = rs.getInt(1);
+            }
+
+            // Suma 1 al último ID para obtener el próximo ID
+            return ultimoID + 1;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1; // Manejo de errores
+        } finally {
+            // Cierra los recursos
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
+
     private void jbtnNueva_ProformaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnNueva_ProformaActionPerformed
         try {
             F_Nueva_Proforma proforma = new F_Nueva_Proforma();
             proforma.setVisible(true);
             proforma.btnGuardar_Proforma.setVisible(true);
+            int proxID = obtenerProximoID();
+            proforma.txtId.setText(String.valueOf(proxID));
         } catch (SQLException ex) {
             Logger.getLogger(Panel_Proformas.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -350,6 +364,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
 
                 if (rs.next()) {
                     // Obtener datos de la proforma desde la consulta
+                    int id = rs.getInt("id_proforma");
                     String nombrePaciente = rs.getString("nombre_paciente");
                     String apellidoPaciente = rs.getString("apellido_paciente");
                     String edadPaciente = rs.getString("edad_paciente");
@@ -370,10 +385,10 @@ public class Panel_Proformas extends javax.swing.JPanel {
                     vistaprevia_proforma.txtEdadPane.setEditable(false);
                     vistaprevia_proforma.txtDireccionPane.setEditable(false);
                     vistaprevia_proforma.txtTelefonoPane.setEditable(false);
-                    vistaprevia_proforma.jtxaAntecedentesPane.setEditable(false);
-                    vistaprevia_proforma.jtxaMotivoPane.setEditable(false);
-                    vistaprevia_proforma.dateFechaPane.setEditable(false);
-                    vistaprevia_proforma.TxtPaneTabla.setEditable(false);
+                    vistaprevia_proforma.txtAntecedentesPane.setEditable(false);
+                    vistaprevia_proforma.txtMotivoPane.setEditable(false);
+                    vistaprevia_proforma.txtFechaPane.setEditable(false);
+                    vistaprevia_proforma.TextPaneVistaPrevia.setEditable(false);
 
                     //Logo
                     vistaprevia_proforma.Lbllogo.setIcon(iconImagen);
@@ -390,14 +405,15 @@ public class Panel_Proformas extends javax.swing.JPanel {
 
                     // Continúa obteniendo los demás campos
                     // Actualizar los campos con los datos de la proforma
+                    vistaprevia_proforma.txtId.setText(String.valueOf(id));
                     vistaprevia_proforma.txtNombrePane.setText(nombrePaciente);
                     vistaprevia_proforma.txtApellidoPane.setText(apellidoPaciente);
                     vistaprevia_proforma.txtEdadPane.setText(String.valueOf(edadPaciente));
                     vistaprevia_proforma.txtDireccionPane.setText(direccionPaciente);
                     vistaprevia_proforma.txtTelefonoPane.setText(telefonoPaciente);
-                    vistaprevia_proforma.jtxaAntecedentesPane.setText(antecedentesPaciente);
-                    vistaprevia_proforma.jtxaMotivoPane.setText(motivoPaciente);
-                    vistaprevia_proforma.dateFechaPane.setText(fechaRegistro.toString());
+                    vistaprevia_proforma.txtAntecedentesPane.setText(antecedentesPaciente);
+                    vistaprevia_proforma.txtMotivoPane.setText(motivoPaciente);
+                    vistaprevia_proforma.txtFechaPane.setText(fechaRegistro.toString());
 
                     // Continúa actualizando los demás campos
                     // Obtener los datos separados por comas desde la base de datos
@@ -410,8 +426,8 @@ public class Panel_Proformas extends javax.swing.JPanel {
                     String tablaHTML = construirTablaHTML(tratamientos, cantidades, costosUnitarios, subtotales, costoFinal);
 
                     // Establecer el HTML en el TextPane
-                    vistaprevia_proforma.TxtPaneTabla.setContentType("text/html");
-                    vistaprevia_proforma.TxtPaneTabla.setText(tablaHTML);
+                    vistaprevia_proforma.TextPaneVistaPrevia.setContentType("text/html");
+                    vistaprevia_proforma.TextPaneVistaPrevia.setText(tablaHTML);
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -434,76 +450,44 @@ public class Panel_Proformas extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jbtnVista_GeneralActionPerformed
 
-    private void btnAplicarFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAplicarFiltroActionPerformed
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        String idBusqueda = txtId.getText().trim();
 
-        if (dateChooserFechaInicio.getDate() == null || dateChooserFechaFin.getDate() == null) {
-            JOptionPane.showMessageDialog(this, "Seleccione ambas fechas de inicio y fin.");
-            return;
-        }
-
-        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>((DefaultTableModel) jtblProformas.getModel());
-        jtblProformas.setRowSorter(sorter);
-
-        RowFilter<DefaultTableModel, Object> filter = new RowFilter<DefaultTableModel, Object>() {
-            public boolean include(Entry<? extends DefaultTableModel, ? extends Object> entry) {
-                try {
-                    java.sql.Date rowDate = (java.sql.Date) entry.getValue(4); // Cambia el índice a 4, la columna de fecha
-
-                    // Convertir la fecha a cadena para comparar
-                    String rowDateStr = sdf.format(rowDate);
-                    Date fechaInicio = sdf.parse(sdf.format(dateChooserFechaInicio.getDate()));
-                    Date fechaFin = sdf.parse(sdf.format(dateChooserFechaFin.getDate()));
-
-                    // Ajustar la fecha de inicio al inicio del día (00:00:00)
-                    Calendar calInicio = Calendar.getInstance();
-                    calInicio.setTime(fechaInicio);
-                    calInicio.set(Calendar.HOUR_OF_DAY, 0);
-                    calInicio.set(Calendar.MINUTE, 0);
-                    calInicio.set(Calendar.SECOND, 0);
-                    fechaInicio = calInicio.getTime();
-
-                    // Ajustar la fecha de fin al final del día (23:59:59)
-                    Calendar calFin = Calendar.getInstance();
-                    calFin.setTime(fechaFin);
-                    calFin.set(Calendar.HOUR_OF_DAY, 23);
-                    calFin.set(Calendar.MINUTE, 59);
-                    calFin.set(Calendar.SECOND, 59);
-                    fechaFin = calFin.getTime();
-
-                    // Filtro por rango de fechas
-                    return (rowDate.after(fechaInicio) || rowDate.equals(fechaInicio))
-                            && (rowDate.before(fechaFin) || rowDate.equals(fechaFin));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-            }
-        };
-
-        sorter.setRowFilter(filter);
-    }//GEN-LAST:event_btnAplicarFiltroActionPerformed
-
-    private void btnLimpiarFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarFiltroActionPerformed
         DefaultTableModel model = (DefaultTableModel) jtblProformas.getModel();
-        TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
-        jtblProformas.setRowSorter(sorter);
-        sorter.setRowFilter(null);
-    }//GEN-LAST:event_btnLimpiarFiltroActionPerformed
+        TableRowSorter<DefaultTableModel> rowSorter = new TableRowSorter<>(model);
+        jtblProformas.setRowSorter(rowSorter);
+
+        if (idBusqueda.length() == 0) {
+            rowSorter.setRowFilter(null);
+        } else {
+            // Crear un filtro para el DNI en la columna correspondiente (supongamos que es la columna 3)
+            rowSorter.setRowFilter(RowFilter.regexFilter(idBusqueda, 0));
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        Limpiar();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    void Limpiar() {
+        DefaultTableModel model = (DefaultTableModel) jtblProformas.getModel();
+        TableRowSorter<DefaultTableModel> rowSorter = new TableRowSorter<>(model);
+        jtblProformas.setRowSorter(rowSorter);
+        rowSorter.setRowFilter(null); // Elimina cualquier filtro aplicado
+        txtId.setText("");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAplicarFiltro;
-    private javax.swing.JButton btnLimpiarFiltro;
-    private com.toedter.calendar.JDateChooser dateChooserFechaFin;
-    private com.toedter.calendar.JDateChooser dateChooserFechaInicio;
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnLimpiar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbtnActualizar;
     private javax.swing.JButton jbtnNueva_Proforma;
     private javax.swing.JButton jbtnVista_General;
     private javax.swing.JTable jtblProformas;
+    private javax.swing.JTextField txtId;
     // End of variables declaration//GEN-END:variables
 }
