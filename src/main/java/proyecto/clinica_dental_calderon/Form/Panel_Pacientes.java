@@ -252,7 +252,6 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         });
         jPanel1.add(btnEditar_Datos_Paciente, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 220, 260, 40));
 
-        btnActualizar.setBackground(new java.awt.Color(255, 255, 255));
         btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
         btnActualizar.setBorder(null);
@@ -275,7 +274,6 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         });
         jPanel1.add(btnCopiar_Dni, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 220, 150, 40));
 
-        btnBuscar.setBackground(new java.awt.Color(255, 255, 255));
         btnBuscar.setBorder(null);
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -284,7 +282,6 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         });
         jPanel1.add(btnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1250, 220, 40, 40));
 
-        txtBuscar.setBackground(new java.awt.Color(255, 255, 255));
         txtBuscar.setBorder(null);
         txtBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -293,7 +290,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         });
         jPanel1.add(txtBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 220, 180, 40));
 
-        btnLimpiar.setBackground(new java.awt.Color(255, 255, 255));
+        btnLimpiar.setBorder(null);
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLimpiarActionPerformed(evt);
@@ -481,6 +478,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
         Limpiar();
+        txtBuscar.setText("");
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     void Limpiar() {
@@ -488,7 +486,6 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         TableRowSorter<DefaultTableModel> rowSorter = new TableRowSorter<>(model);
         table_Pacientes.setRowSorter(rowSorter);
         rowSorter.setRowFilter(null); // Elimina cualquier filtro aplicado
-        txtBuscar.setText("");
     }
 
     void actualizarDatos_Paciente() {

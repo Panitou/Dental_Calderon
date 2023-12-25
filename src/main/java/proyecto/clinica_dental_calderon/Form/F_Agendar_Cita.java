@@ -158,15 +158,15 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
             }
         } catch (Exception e) {
             System.out.println("Error" + e);
-        }finally{
+        } finally {
             try {
-                if(rs != null){
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps != null){
+                if (ps != null) {
                     ps.close();
                 }
-                if(connect != null){
+                if (connect != null) {
                     connect.close();
                 }
             } catch (SQLException ex) {
@@ -519,6 +519,10 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
 
     private void btnAgregar_CitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar_CitaActionPerformed
         java.util.Date currentDate = new java.util.Date();
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        calendar.setTime(currentDate);
+        int currentHour = calendar.get(java.util.Calendar.HOUR_OF_DAY);
+        int currentMinute = calendar.get(java.util.Calendar.MINUTE);
 
         Connection c = null;
         PreparedStatement ps = null;
@@ -531,14 +535,21 @@ public class F_Agendar_Cita extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Por favor, ingrese una fecha");
             } else {
                 Date selectedDate = new java.sql.Date(dateCita.getDate().getTime());
-                int selectedHour = (int) SpinnerHora.getValue();
-                int selectedMinute = (int) SpinnerMinuto.getValue();
-                if (selectedDate.before(currentDate)) {
-                    JOptionPane.showMessageDialog(this, "La fecha de la cita no puede ser en días anteriores.");
-                } else if (selectedHour == 0) {
+                java.sql.Time selectedTime = new java.sql.Time((int) SpinnerHora.getValue(), (int) SpinnerMinuto.getValue(), 0);
+
+                // Crear una nueva fecha combinando la fecha seleccionada y la hora actual
+                java.util.Calendar selectedDateTime = java.util.Calendar.getInstance();
+                selectedDateTime.setTime(selectedDate);
+                selectedDateTime.set(java.util.Calendar.HOUR_OF_DAY, (int) SpinnerHora.getValue());
+                selectedDateTime.set(java.util.Calendar.MINUTE, (int) SpinnerMinuto.getValue());
+                selectedDateTime.set(java.util.Calendar.SECOND, 0);
+                selectedDateTime.set(java.util.Calendar.MILLISECOND, 0);
+
+                if (selectedDateTime.getTime().before(currentDate)) {
+                    JOptionPane.showMessageDialog(this, "La fecha/hora de la cita no puede ser en el pasado.");
+                } else if ((int) SpinnerHora.getValue() == 0) {
                     JOptionPane.showMessageDialog(this, "La hora no puede ser 0. Por favor, seleccione una hora válida.");
                 } else {
-                    Time selectedTime = new java.sql.Time(selectedHour, selectedMinute, 0);
                     String odontologo = cbxOdontologo.getSelectedItem().toString();
                     String descripcion = txaDescripcion.getText();
 

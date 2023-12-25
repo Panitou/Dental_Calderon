@@ -1,9 +1,18 @@
 package proyecto.clinica_dental_calderon.Form;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import proyecto.clinica_dental_calderon.DB.Conexion;
 
 /**
  *
@@ -20,6 +29,91 @@ public class Panel_Inicio extends javax.swing.JPanel {
 
         lblFondo.setIcon(fondoImagen);
 
+        Mostrar_Datos_Tabla_Citas_Hoy(tblCitasHoy);
+    }
+
+    public void actualizarTabla() throws SQLException {
+        DefaultTableModel tableModel = (DefaultTableModel) tblCitasHoy.getModel();
+        tableModel.setRowCount(0); // Limpia los datos existentes en la tabla
+
+        String query = "SELECT id_cita, id_tratamiento, dni_paciente, fecha, hora, odontologo, descripcion, estado_cita FROM TB_CITAS WHERE DATE(fecha) = CURDATE()";
+        Connection c = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            c = Conexion.getConnection();
+            ps = c.prepareStatement(query);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Object[] rowData = new Object[]{
+                    rs.getInt("id_cita"),
+                    rs.getInt("id_tratamiento"),
+                    rs.getString("dni_paciente"),
+                    rs.getDate("fecha"),
+                    rs.getTime("hora"),
+                    rs.getString("descripcion"),
+                    rs.getString("odontologo"),};
+                tableModel.addRow(rowData);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al cargar los datos de la tabla.");
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (c != null) {
+                c.close();
+            }
+        }
+    }
+
+    public void Mostrar_Datos_Tabla_Citas_Hoy(JTable tableCitas) throws SQLException {
+        DefaultTableModel tableModel = (DefaultTableModel) tableCitas.getModel();
+        // Limpia la tabla para asegurarte de que no haya datos anteriores
+        tableModel.setRowCount(0);
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection c = null;
+
+        // Realiza una consulta SQL para obtener los datos de TB_CITAS del día actual
+        String query = "SELECT id_cita, id_tratamiento, dni_paciente, fecha, hora, odontologo, descripcion, estado_cita FROM TB_CITAS WHERE DATE(fecha) = CURDATE()";
+
+        try {
+            c = Conexion.getConnection();
+            ps = c.prepareStatement(query);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int idCita = rs.getInt("id_cita");
+                int idTratamiento = rs.getInt("id_tratamiento");
+                String dniPaciente = rs.getString("dni_paciente");
+                Date fecha = rs.getDate("fecha");
+                Time hora = rs.getTime("hora");
+                String descripcion = rs.getString("descripcion");
+                String odontologo = rs.getString("odontologo");
+                // Agrega una nueva fila a la tabla con los datos obtenidos
+                tableModel.addRow(new Object[]{idCita, idTratamiento, dniPaciente, fecha, hora, descripcion, odontologo});
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al cargar los datos de la tabla de citas.");
+        } finally {
+            if (ps != null) {
+                ps.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+            if (c != null) {
+                c.close();
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -27,6 +121,10 @@ public class Panel_Inicio extends javax.swing.JPanel {
     private void initComponents() {
 
         btnOdontologos = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblCitasHoy = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
         lblFondo = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(1365, 770));
@@ -42,7 +140,30 @@ public class Panel_Inicio extends javax.swing.JPanel {
                 btnOdontologosActionPerformed(evt);
             }
         });
-        add(btnOdontologos, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 220, 50));
+        add(btnOdontologos, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 700, 220, 50));
+
+        tblCitasHoy.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Nº Cita", "Nº Tratamiento", "Dni", "Fecha", "Hora", "Descripcion", "Odontologo"
+            }
+        ));
+        jScrollPane1.setViewportView(tblCitasHoy);
+
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 960, 340));
+
+        jButton1.setText("jButton1");
+        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1185, 713, 160, 40));
+
+        jLabel2.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("CITAS PARA HOY");
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 220, 40));
         add(lblFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1365, 770));
     }// </editor-fold>//GEN-END:initComponents
 
@@ -58,6 +179,10 @@ public class Panel_Inicio extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOdontologos;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblFondo;
+    public javax.swing.JTable tblCitasHoy;
     // End of variables declaration//GEN-END:variables
 }
