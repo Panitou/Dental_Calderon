@@ -123,7 +123,6 @@ public class Panel_Inicio extends javax.swing.JPanel {
         btnOdontologos = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCitasHoy = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         lblFondo = new javax.swing.JLabel();
 
@@ -140,7 +139,7 @@ public class Panel_Inicio extends javax.swing.JPanel {
                 btnOdontologosActionPerformed(evt);
             }
         });
-        add(btnOdontologos, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 700, 220, 50));
+        add(btnOdontologos, new org.netbeans.lib.awtextra.AbsoluteConstraints(1120, 20, 220, 50));
 
         tblCitasHoy.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -155,10 +154,7 @@ public class Panel_Inicio extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(tblCitasHoy);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 960, 340));
-
-        jButton1.setText("jButton1");
-        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1185, 713, 160, 40));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 960, 270));
 
         jLabel2.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -179,7 +175,6 @@ public class Panel_Inicio extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOdontologos;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblFondo;

@@ -320,7 +320,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
 
         tablaHTML.append("<table><tr><th>TRATAMIENTOS</th><th>CANT.</th><th>P/U</th><th>S.TOTAL</th></tr>");
 
-        // Aquí debes procesar las cadenas separadas por comas y construir las filas de la tabla
+        // Procesar los datos y construir la tabla en HTML
         String[] tratamientosArray = tratamientos.split(",");
         String[] cantidadesArray = cantidades.split(",");
         String[] costosUnitariosArray = costosUnitarios.split(",");
@@ -328,22 +328,23 @@ public class Panel_Proformas extends javax.swing.JPanel {
 
         // Suponiendo que todas las matrices tienen la misma longitud
         for (int i = 0; i < tratamientosArray.length; i++) {
-            tablaHTML.append("<tr>")
-                    .append("<td>").append(tratamientosArray[i]).append("</td>")
-                    .append("<td>").append(cantidadesArray[i]).append("</td>")
-                    .append("<td>").append(costosUnitariosArray[i]).append("</td>")
-                    .append("<td>").append(subtotalesArray[i]).append("</td>")
-                    .append("</tr>");
-            // Sumar el costo total de cada tratamiento
+            if (!tratamientosArray[i].isEmpty() && !cantidadesArray[i].isEmpty() && !costosUnitariosArray[i].isEmpty() && !subtotalesArray[i].isEmpty()) {
+                tablaHTML.append("<tr>")
+                        .append("<td>").append(tratamientosArray[i]).append("</td>")
+                        .append("<td>").append(cantidadesArray[i]).append("</td>")
+                        .append("<td>").append(costosUnitariosArray[i]).append("</td>")
+                        .append("<td>").append(subtotalesArray[i]).append("</td>")
+                        .append("</tr>");
+            }
         }
 
         // Añadir la fila del costo final
         tablaHTML.append("<tr><td colspan='3'>Costo Final</td><td>").append(costofinal).append("</td></tr>");
 
         tablaHTML.append("</table></body></html>");
-
         return tablaHTML.toString();
     }
+
 
     private void jbtnVista_GeneralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnVista_GeneralActionPerformed
 

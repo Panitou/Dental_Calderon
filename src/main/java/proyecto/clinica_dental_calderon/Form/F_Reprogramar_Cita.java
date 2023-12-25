@@ -26,7 +26,7 @@ public class F_Reprogramar_Cita extends javax.swing.JFrame {
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(this);
-        
+
         // Crear un SpinnerNumberModel para el Spinner de Hora
         SpinnerNumberModel hourSpinnerModel = new SpinnerNumberModel(0, 0, 23, 1);
         spinnerNueva_Hora.setModel(hourSpinnerModel);
@@ -34,7 +34,7 @@ public class F_Reprogramar_Cita extends javax.swing.JFrame {
         // Crear un SpinnerNumberModel para el Spinner de Minuto
         SpinnerNumberModel minuteSpinnerModel = new SpinnerNumberModel(0, 0, 59, 1);
         spinnerNuevo_Minutos.setModel(minuteSpinnerModel);
-        
+
         JSpinner.NumberEditor editorHora = new JSpinner.NumberEditor(spinnerNueva_Hora, "00");
         JFormattedTextField txtFieldHora = editorHora.getTextField();
         ((NumberFormatter) txtFieldHora.getFormatter()).setAllowsInvalid(false);
@@ -44,6 +44,8 @@ public class F_Reprogramar_Cita extends javax.swing.JFrame {
         JFormattedTextField txtFieldMinuto = editorMinuto.getTextField();
         ((NumberFormatter) txtFieldMinuto.getFormatter()).setAllowsInvalid(false);
         spinnerNuevo_Minutos.setEditor(editorMinuto);
+
+        dateNueva_Fecha.getDateEditor().setEnabled(false);
 
     }
 
@@ -405,7 +407,7 @@ public class F_Reprogramar_Cita extends javax.swing.JFrame {
     private javax.swing.JCheckBox checkMantener_Fecha;
     private javax.swing.JCheckBox checkMantener_Hora;
     public com.toedter.calendar.JDateChooser dateChooserFechaCita;
-    private com.toedter.calendar.JDateChooser dateNueva_Fecha;
+    public com.toedter.calendar.JDateChooser dateNueva_Fecha;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;

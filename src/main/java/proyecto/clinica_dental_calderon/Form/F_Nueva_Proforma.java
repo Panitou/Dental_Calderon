@@ -60,15 +60,9 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         tabla.getTableHeader().setReorderingAllowed(false); // Evitar el movimiento de columnas
         tabla.getTableHeader().setResizingAllowed(false);
     }
-    
-    
-
-    
 
     public F_Nueva_Proforma() throws SQLException {
         initComponents();
-
-       
 
         btnActualizarDesc.setEnabled(false);
 
@@ -1060,7 +1054,7 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
 
             // Agregar tratamiento y descripción en una nueva línea
             tablaTratamientos.append("<tr>")
-                    .append("<td>").append(tratamiento).append("<br>(").append(descripcion).append(")</td>")
+                    .append("<td>").append(tratamiento).append("(").append(descripcion).append(")</td>")
                     .append("<td>").append(cantidad).append("</td>")
                     .append("<td>").append(costoUnitario).append("</td>")
                     .append("<td>").append(costoTotal).append("</td>")
@@ -1069,7 +1063,7 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
             // Sumar el costo total de cada tratamiento
             totalTratamientos += costoTotal;
         }
-
+        tablaTratamientos.append("<tr><td colspan='4'></td></tr>");
         // Añadir la fila del costo final
         tablaTratamientos.append("<tr><td colspan='3'>Costo Final</td><td>").append(txtCosto.getText()).append("</td></tr>");
 

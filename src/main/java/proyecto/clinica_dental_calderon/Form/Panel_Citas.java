@@ -10,13 +10,16 @@ import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
 
 import javax.swing.JTable;
 
 import javax.swing.SpinnerNumberModel;
 
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.NumberFormatter;
 import proyecto.clinica_dental_calderon.DB.Conexion;
 
 /*
@@ -54,7 +57,7 @@ public class Panel_Citas extends javax.swing.JPanel {
         abrirConexion();
         Mostrar_Datos_Tabla_Citas(tableCitas);
         deshabilitarEdicionTabla(tableCitas);
-        
+
         btnActualizarDatos.setIcon(actualizarImagen);
     }
 
@@ -348,6 +351,18 @@ public class Panel_Citas extends javax.swing.JPanel {
             // Crear un SpinnerNumberModel para el Spinner de Minuto
             SpinnerNumberModel minuteSpinnerModel = new SpinnerNumberModel(0, 0, 59, 1);
             reprogramarCita.spinnerNuevo_Minutos.setModel(minuteSpinnerModel);
+
+            JSpinner.NumberEditor editorHora = new JSpinner.NumberEditor(reprogramarCita.spinnerNueva_Hora, "00");
+            JFormattedTextField txtFieldHora = editorHora.getTextField();
+            ((NumberFormatter) txtFieldHora.getFormatter()).setAllowsInvalid(false);
+            reprogramarCita.spinnerNueva_Hora.setEditor(editorHora);
+
+            JSpinner.NumberEditor editorMinuto = new JSpinner.NumberEditor(reprogramarCita.spinnerNuevo_Minutos, "00");
+            JFormattedTextField txtFieldMinuto = editorMinuto.getTextField();
+            ((NumberFormatter) txtFieldMinuto.getFormatter()).setAllowsInvalid(false);
+            reprogramarCita.spinnerNuevo_Minutos.setEditor(editorMinuto);
+
+            reprogramarCita.dateNueva_Fecha.getDateEditor().setEnabled(false);
 
             reprogramarCita.txtNumeroCita.setEditable(false);
             reprogramarCita.txtTratamiento.setEditable(false);
