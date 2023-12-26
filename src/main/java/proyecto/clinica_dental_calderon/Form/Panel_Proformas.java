@@ -1,6 +1,9 @@
 package proyecto.clinica_dental_calderon.Form;
 
 //PDF
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +18,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import proyecto.clinica_dental_calderon.DB.Conexion;
@@ -63,8 +68,25 @@ public class Panel_Proformas extends javax.swing.JPanel {
     }
 
     public Panel_Proformas() throws SQLException {
+
+        
+
         initComponents();
         abrirConexion();
+
+        JTableHeader header = jtblProformas.getTableHeader();
+        header.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
+
+        jtblProformas.getTableHeader().setOpaque(false);
+        jtblProformas.getTableHeader().setBackground(new Color(62, 134, 203));
+        jtblProformas.getTableHeader().setForeground(Color.WHITE);
+        jtblProformas.setRowHeight(30);
+
+        Dimension headerSize = header.getPreferredSize();
+        headerSize.height = 30;
+        header.setPreferredSize(headerSize);
+        header.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 13));
+
         Mostrar_Datos_Tabla();
         deshabilitarEdicionTabla(jtblProformas);
         jbtnActualizar.setIcon(actualizarImagen);
@@ -79,7 +101,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
         tabla.getTableHeader().setResizingAllowed(false);
     }
 
-    void Mostrar_Datos_Tabla() {
+    void Mostrar_Datos_Tabla() throws SQLException {
         DefaultTableModel dt = (DefaultTableModel) jtblProformas.getModel();
 
         dt.setRowCount(0);
@@ -104,6 +126,16 @@ public class Panel_Proformas extends javax.swing.JPanel {
         } catch (SQLException esql) {
             esql.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al cargar los datos de la tabla de proformas.");
+        } finally {
+            if (ps != null) {
+                ps.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
         }
     }
 
@@ -146,6 +178,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
         });
         jPanel1.add(jbtnVista_General, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 220, 40));
 
+        jtblProformas.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 12)); // NOI18N
         jtblProformas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -173,7 +206,6 @@ public class Panel_Proformas extends javax.swing.JPanel {
         });
         jPanel1.add(jbtnNueva_Proforma, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 220, 40));
 
-        jbtnActualizar.setBackground(new java.awt.Color(255, 255, 255));
         jbtnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jbtnActualizar.setForeground(new java.awt.Color(255, 255, 255));
         jbtnActualizar.setBorder(null);
@@ -184,6 +216,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
         });
         jPanel1.add(jbtnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 20, 32, 32));
 
+        txtId.setBackground(new java.awt.Color(238, 238, 238));
         txtId.setBorder(null);
         jPanel1.add(txtId, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 170, 170, 40));
 
@@ -192,7 +225,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
         jLabel4.setText("Buscar por N°");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 150, 170, 20));
 
-        btnLimpiar.setBackground(new java.awt.Color(255, 255, 255));
+        btnLimpiar.setBorder(null);
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLimpiarActionPerformed(evt);
@@ -200,7 +233,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
         });
         jPanel1.add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1300, 170, 40, 40));
 
-        btnBuscar.setBackground(new java.awt.Color(255, 255, 255));
+        btnBuscar.setBorder(null);
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBuscarActionPerformed(evt);
@@ -393,7 +426,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
 
                     //Logo
                     vistaprevia_proforma.Lbllogo.setIcon(iconImagen);
-                    
+
                     // Continúa obteniendo los demás campos
                     // Actualizar los campos con los datos de la proforma
                     vistaprevia_proforma.txtId.setText(String.valueOf(id));

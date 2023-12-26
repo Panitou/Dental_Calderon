@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import proyecto.clinica_dental_calderon.DB.Conexion;
@@ -37,12 +38,12 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
         header.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
 
         //Width
-        tableTratamientos.getColumnModel().getColumn(0).setPreferredWidth(20); // N°
-        tableTratamientos.getColumnModel().getColumn(1).setPreferredWidth(60); // Tratamiento
+        tableTratamientos.getColumnModel().getColumn(0).setPreferredWidth(5); // N°
+        tableTratamientos.getColumnModel().getColumn(1).setPreferredWidth(40); // Tratamiento
         tableTratamientos.getColumnModel().getColumn(2).setPreferredWidth(120); // Descripción
         tableTratamientos.getColumnModel().getColumn(3).setPreferredWidth(120); // Fecha De Creación
         tableTratamientos.getColumnModel().getColumn(4).setPreferredWidth(50); // Costo
-        tableTratamientos.getColumnModel().getColumn(5).setPreferredWidth(220); //Estado de la deuda
+        tableTratamientos.getColumnModel().getColumn(5).setPreferredWidth(250); //Estado de la deuda
         tableTratamientos.getColumnModel().getColumn(6).setPreferredWidth(90); //Estado del tratamiento 
         tableTratamientos.getColumnModel().getColumn(7).setPreferredWidth(30); //Estado del tratamiento 
         tableTratamientos.getColumnModel().getColumn(8).setPreferredWidth(80); //Estado del tratamiento 
@@ -58,8 +59,17 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
         headerSize.height = 30;
         tableHeader.setPreferredSize(headerSize);
         tableHeader.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 13));
+
         btnActualizar.setIcon(actualizarImagen);
         Mostrar_Datos_Tabla();
+        
+        deshabilitarEdicionTabla(tableTratamientos);
+    }
+
+    private void deshabilitarEdicionTabla(JTable tabla) {
+        tabla.setDefaultEditor(Object.class, null); // Deshabilitar la edición
+        tabla.getTableHeader().setReorderingAllowed(false); // Evitar el movimiento de columnas
+        tabla.getTableHeader().setResizingAllowed(false);
     }
 
     public void abrirConexion() throws SQLException {
@@ -78,7 +88,7 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
         }
     }
 
-    public void Mostrar_Datos_Tabla() {
+    public void Mostrar_Datos_Tabla() throws SQLException {
         DefaultTableModel dt = (DefaultTableModel) tableTratamientos.getModel();
 
         dt.setRowCount(0);
@@ -104,12 +114,20 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
 
                 dt.addRow(new Object[]{idTratamiento, dni, nombre, apellido, odontologo, tratamiento, fecha_creacion, costo, estado_pago, estado_tratamiento});
             }
-            rs.close();
-            ps.close();
 
         } catch (SQLException esql) {
             esql.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al cargar los datos de la tabla de tratamientos.");
+        } finally {
+            if (ps != null) {
+                ps.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
         }
     }
 
@@ -212,6 +230,8 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
         });
         jPanel1.add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 20, 32, 32));
 
+        jScrollPane2.setBorder(null);
+
         tableTratamientos.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 12)); // NOI18N
         tableTratamientos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -226,6 +246,7 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
         ));
         tableTratamientos.setFocusable(false);
         tableTratamientos.setRowHeight(25);
+        tableTratamientos.setShowGrid(true);
         tableTratamientos.setShowHorizontalLines(true);
         tableTratamientos.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(tableTratamientos);

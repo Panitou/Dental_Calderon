@@ -187,7 +187,7 @@ public class F_Mostrar_Datos_Cita extends javax.swing.JFrame {
         txaEnfermedad.setPreferredSize(new java.awt.Dimension(113, 20));
         jScrollPane1.setViewportView(txaEnfermedad);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 360, 50));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 260, 50));
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(51, 51, 51));
@@ -220,12 +220,12 @@ public class F_Mostrar_Datos_Cita extends javax.swing.JFrame {
         jScrollPane2.setViewportView(txaDescripcion);
 
         jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 370, 550, 90));
-        jPanel1.add(txtTratamiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 220, 170, 30));
+        jPanel1.add(txtTratamiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 220, 270, 30));
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(51, 51, 51));
         jLabel11.setText("TRATAMIENTO");
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 200, 170, 20));
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 200, 170, 20));
         jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 80, 170, 30));
 
         btnCerrar.setBackground(new java.awt.Color(30, 85, 131));

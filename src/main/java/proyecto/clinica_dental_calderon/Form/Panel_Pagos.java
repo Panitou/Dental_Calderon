@@ -1,5 +1,8 @@
 package proyecto.clinica_dental_calderon.Form;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.sql.Connection;
@@ -13,6 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
@@ -53,9 +57,33 @@ public class Panel_Pagos extends javax.swing.JPanel {
     public Panel_Pagos() throws SQLException {
         initComponents();
         abrirConexion();
+
+        JTableHeader header = tablePagos.getTableHeader();
+        header.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
+
+        //Width
+        tablePagos.getColumnModel().getColumn(0).setPreferredWidth(20);
+        tablePagos.getColumnModel().getColumn(1).setPreferredWidth(20);
+        tablePagos.getColumnModel().getColumn(2).setPreferredWidth(50);
+        tablePagos.getColumnModel().getColumn(3).setPreferredWidth(50);
+        tablePagos.getColumnModel().getColumn(4).setPreferredWidth(250);
+        tablePagos.getColumnModel().getColumn(5).setPreferredWidth(20);
+        tablePagos.getColumnModel().getColumn(6).setPreferredWidth(20);
+        tablePagos.getColumnModel().getColumn(7).setPreferredWidth(50);
+
+        tablePagos.getTableHeader().setOpaque(false);
+        tablePagos.getTableHeader().setBackground(new Color(62, 134, 203));
+        tablePagos.getTableHeader().setForeground(Color.WHITE);
+        tablePagos.setRowHeight(30);
+
+        Dimension headerSize = header.getPreferredSize();
+        headerSize.height = 30;
+        header.setPreferredSize(headerSize);
+        header.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 13));
+
         Mostrar_Datos_Tabla_Pagos();
         deshabilitarEdicionTabla(tablePagos);
-        
+
         btnActualizar.setIcon(actualizarImagen);
     }
 
@@ -127,6 +155,7 @@ public class Panel_Pagos extends javax.swing.JPanel {
         jLabel1.setText("PAGOS");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 240, 90));
 
+        tablePagos.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 12)); // NOI18N
         tablePagos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null},
@@ -163,7 +192,6 @@ public class Panel_Pagos extends javax.swing.JPanel {
         cbxBusquedaPagos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PENDIENTE", "PAGADO" }));
         jPanel1.add(cbxBusquedaPagos, new org.netbeans.lib.awtextra.AbsoluteConstraints(1160, 220, 180, 40));
 
-        btnActualizar.setBackground(new java.awt.Color(255, 255, 255));
         btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
         btnActualizar.setBorder(null);

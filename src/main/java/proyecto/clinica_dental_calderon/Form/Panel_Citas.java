@@ -1,5 +1,8 @@
 package proyecto.clinica_dental_calderon.Form;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -19,6 +22,7 @@ import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
 
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.text.NumberFormatter;
 import proyecto.clinica_dental_calderon.DB.Conexion;
 
@@ -54,11 +58,35 @@ public class Panel_Citas extends javax.swing.JPanel {
 
     public Panel_Citas() throws SQLException {
         initComponents();
-        abrirConexion();
-        Mostrar_Datos_Tabla_Citas(tableCitas);
-        deshabilitarEdicionTabla(tableCitas);
+
+        JTableHeader header = tableCitas.getTableHeader();
+        header.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
+
+        //Width
+        tableCitas.getColumnModel().getColumn(0).setPreferredWidth(20);
+        tableCitas.getColumnModel().getColumn(1).setPreferredWidth(20);
+        tableCitas.getColumnModel().getColumn(2).setPreferredWidth(20);
+        tableCitas.getColumnModel().getColumn(3).setPreferredWidth(10);
+        tableCitas.getColumnModel().getColumn(4).setPreferredWidth(10);
+        tableCitas.getColumnModel().getColumn(5).setPreferredWidth(30);
+        tableCitas.getColumnModel().getColumn(6).setPreferredWidth(300);
+        tableCitas.getColumnModel().getColumn(7).setPreferredWidth(20);
+
+        tableCitas.getTableHeader().setOpaque(false);
+        tableCitas.getTableHeader().setBackground(new Color(62, 134, 203));
+        tableCitas.getTableHeader().setForeground(Color.WHITE);
+        tableCitas.setRowHeight(30);
+
+        Dimension headerSize = header.getPreferredSize();
+        headerSize.height = 30;
+        header.setPreferredSize(headerSize);
+        header.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 13));
+
+        Mostrar_Datos_Tabla_Citas();
 
         btnActualizarDatos.setIcon(actualizarImagen);
+    
+        deshabilitarEdicionTabla(tableCitas);
     }
 
     private void deshabilitarEdicionTabla(JTable tabla) {
@@ -68,7 +96,7 @@ public class Panel_Citas extends javax.swing.JPanel {
     }
 
     // Método para mostrar los datos de la tabla TB_CITAS en la JTable tableCitas
-    public void Mostrar_Datos_Tabla_Citas(JTable tableCitas) {
+    public void Mostrar_Datos_Tabla_Citas() throws SQLException {
         DefaultTableModel tableModel = (DefaultTableModel) tableCitas.getModel();
         // Limpia la tabla para asegurarte de que no haya datos anteriores
         tableModel.setRowCount(0);
@@ -77,7 +105,7 @@ public class Panel_Citas extends javax.swing.JPanel {
         String query = "SELECT id_cita, id_tratamiento, dni_paciente, fecha, hora, odontologo, descripcion, estado_cita FROM TB_CITAS";
 
         try { // Reemplaza esto con tu lógica real de conexión a la base de datos
-
+            abrirConexion();
             ps = connection.prepareStatement(query);
             rs = ps.executeQuery();
 
@@ -97,6 +125,16 @@ public class Panel_Citas extends javax.swing.JPanel {
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al cargar los datos de la tabla de citas.");
+        } finally {
+            if (ps != null) {
+                ps.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
         }
     }
 
@@ -141,6 +179,9 @@ public class Panel_Citas extends javax.swing.JPanel {
         });
         jPanel1.add(btnCrear_Cita, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 180, 40));
 
+        jScrollPane1.setBorder(null);
+
+        tableCitas.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 12)); // NOI18N
         tableCitas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null},
@@ -149,9 +190,14 @@ public class Panel_Citas extends javax.swing.JPanel {
                 {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "N° Cita", "N° Tratamiento", "Dni", "Fecha", "Hora", "Odontólogo", "Descripción", "Estado"
+                "N° Citas", "N° Tratamiento", "Dni", "Fecha", "Hora", "Odontólogo", "Descripción", "Estado"
             }
         ));
+        tableCitas.setFocusable(false);
+        tableCitas.setRowHeight(25);
+        tableCitas.setShowGrid(true);
+        tableCitas.setShowHorizontalLines(true);
+        tableCitas.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tableCitas);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 1320, 480));
@@ -213,7 +259,6 @@ public class Panel_Citas extends javax.swing.JPanel {
         });
         jPanel1.add(btnBusquedaCitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 220, 150, 40));
 
-        btnActualizarDatos.setBackground(new java.awt.Color(255, 255, 255));
         btnActualizarDatos.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnActualizarDatos.setForeground(new java.awt.Color(255, 255, 255));
         btnActualizarDatos.setBorder(null);

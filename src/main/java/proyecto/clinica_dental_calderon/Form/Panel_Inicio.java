@@ -1,5 +1,8 @@
 package proyecto.clinica_dental_calderon.Form;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -12,6 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import proyecto.clinica_dental_calderon.DB.Conexion;
 
 /**
@@ -27,9 +31,38 @@ public class Panel_Inicio extends javax.swing.JPanel {
     public Panel_Inicio() throws SQLException {
         initComponents();
 
+        JTableHeader header = tblCitasHoy.getTableHeader();
+        header.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
+
+        //Width
+        tblCitasHoy.getColumnModel().getColumn(0).setPreferredWidth(20);
+        tblCitasHoy.getColumnModel().getColumn(1).setPreferredWidth(40);
+        tblCitasHoy.getColumnModel().getColumn(2).setPreferredWidth(20);
+        tblCitasHoy.getColumnModel().getColumn(3).setPreferredWidth(10);
+        tblCitasHoy.getColumnModel().getColumn(4).setPreferredWidth(10);
+        tblCitasHoy.getColumnModel().getColumn(5).setPreferredWidth(300);
+        tblCitasHoy.getColumnModel().getColumn(6).setPreferredWidth(30);
+
+        tblCitasHoy.getTableHeader().setOpaque(false);
+        tblCitasHoy.getTableHeader().setBackground(new Color(62, 134, 203));
+        tblCitasHoy.getTableHeader().setForeground(Color.WHITE);
+        tblCitasHoy.setRowHeight(30);
+
+        Dimension headerSize = header.getPreferredSize();
+        headerSize.height = 30;
+        header.setPreferredSize(headerSize);
+        header.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 13));
+
         lblFondo.setIcon(fondoImagen);
 
         Mostrar_Datos_Tabla_Citas_Hoy(tblCitasHoy);
+        deshabilitarEdicionTabla(tblCitasHoy);
+    }
+
+    private void deshabilitarEdicionTabla(JTable tabla) {
+        tabla.setDefaultEditor(Object.class, null); // Deshabilitar la edición
+        tabla.getTableHeader().setReorderingAllowed(false); // Evitar el movimiento de columnas
+        tabla.getTableHeader().setResizingAllowed(false);
     }
 
     public void actualizarTabla() throws SQLException {
@@ -141,6 +174,7 @@ public class Panel_Inicio extends javax.swing.JPanel {
         });
         add(btnOdontologos, new org.netbeans.lib.awtextra.AbsoluteConstraints(1120, 20, 220, 50));
 
+        tblCitasHoy.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 12)); // NOI18N
         tblCitasHoy.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
@@ -152,9 +186,13 @@ public class Panel_Inicio extends javax.swing.JPanel {
                 "Nº Cita", "Nº Tratamiento", "Dni", "Fecha", "Hora", "Descripcion", "Odontologo"
             }
         ));
+        tblCitasHoy.setFocusable(false);
+        tblCitasHoy.setRowHeight(25);
+        tblCitasHoy.setShowGrid(true);
+        tblCitasHoy.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblCitasHoy);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 960, 270));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 1000, 270));
 
         jLabel2.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));

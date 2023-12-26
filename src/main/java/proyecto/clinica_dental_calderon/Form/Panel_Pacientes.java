@@ -34,6 +34,7 @@ import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
+import javax.swing.text.PlainDocument;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -81,20 +82,34 @@ public class Panel_Pacientes extends javax.swing.JPanel {
     public Panel_Pacientes() throws SQLException {
         initComponents();
 
-        lblLineaBuscar.setIcon(LineaNombreImage);
+        final int MAX_DIGITS = 15;
 
-        ((AbstractDocument) txtBuscar.getDocument()).setDocumentFilter(new DocumentFilter() {
+        txtBuscar.setDocument(new PlainDocument() {
             @Override
-            public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
-                if (text.matches("\\d+") && (fb.getDocument().getLength() + text.length() <= 3)) {
-                    super.insertString(fb, offset, text, attr);
+            public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+                if (str == null) {
+                    return;
+                }
+
+                String currentText = getText(0, getLength());
+                int totalLength = currentText.length() + str.length();
+
+                if (totalLength <= MAX_DIGITS && str.matches("\\d+")) {
+                    super.insertString(offs, str, a);
                 }
             }
 
             @Override
-            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-                if (text.matches("\\d+") && (fb.getDocument().getLength() - length + text.length() <= 3)) {
-                    super.replace(fb, offset, length, text, attrs);
+            public void replace(int offs, int length, String str, AttributeSet a) throws BadLocationException {
+                if (str == null) {
+                    return;
+                }
+
+                String currentText = getText(0, getLength());
+                int totalLength = currentText.length() - length + str.length();
+
+                if (totalLength <= MAX_DIGITS && str.matches("\\d+")) {
+                    super.replace(offs, length, str, a);
                 }
             }
         });
@@ -111,11 +126,11 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         table_Pacientes.getTableHeader().setForeground(Color.WHITE);
         table_Pacientes.setRowHeight(30);
         JTableHeader tableHeader = table_Pacientes.getTableHeader();
-        
+
         Dimension headerSize = header.getPreferredSize();
         headerSize.height = 30;
         tableHeader.setPreferredSize(headerSize);
-        tableHeader.setFont(new Font ("Microsoft YaHei UI", Font.BOLD, 13));
+        tableHeader.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 13));
         abrirConexion();
         Mostrar_Datos_Tabla_Pacientes(table_Pacientes);
         deshabilitarEdicionTabla(table_Pacientes);
@@ -195,7 +210,6 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         btnLimpiar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        lblLineaBuscar = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(1365, 770));
         setPreferredSize(new java.awt.Dimension(1365, 770));
@@ -224,10 +238,10 @@ public class Panel_Pacientes extends javax.swing.JPanel {
             }
         ));
         table_Pacientes.setFocusable(false);
-        table_Pacientes.setGridColor(new java.awt.Color(255, 153, 153));
         table_Pacientes.setMinimumSize(new java.awt.Dimension(600, 100));
         table_Pacientes.setRowHeight(25);
         table_Pacientes.setSelectionForeground(new java.awt.Color(51, 51, 51));
+        table_Pacientes.setShowGrid(true);
         table_Pacientes.setShowHorizontalLines(true);
         table_Pacientes.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(table_Pacientes);
@@ -288,6 +302,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         });
         jPanel1.add(btnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1250, 220, 40, 40));
 
+        txtBuscar.setBackground(new java.awt.Color(238, 238, 238));
         txtBuscar.setBorder(null);
         txtBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -309,7 +324,6 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         jLabel3.setForeground(new java.awt.Color(62, 134, 203));
         jLabel3.setText("BUSCAR POR DNI");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 200, 170, 20));
-        jPanel1.add(lblLineaBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 260, 180, 2));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -484,10 +498,10 @@ public class Panel_Pacientes extends javax.swing.JPanel {
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
         Limpiar();
-        txtBuscar.setText("");
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     void Limpiar() {
+        txtBuscar.setText("");
         DefaultTableModel model = (DefaultTableModel) table_Pacientes.getModel();
         TableRowSorter<DefaultTableModel> rowSorter = new TableRowSorter<>(model);
         table_Pacientes.setRowSorter(rowSorter);
@@ -537,7 +551,6 @@ public class Panel_Pacientes extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel lblLineaBuscar;
     public javax.swing.JTable table_Pacientes;
     public javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
