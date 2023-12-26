@@ -116,14 +116,6 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         checkEditar_Precio.setEnabled(false);
 
         //Lineas para los campos de texto
-        lblLineaNombre.setIcon(LineaNombreImage);
-        lblLineaApellido.setIcon(LineaNombreImage);
-        lblLineaDireccion.setIcon(LineaNombreImage);
-        lblLineaTelefono.setIcon(LineaNombreImage);
-        lblLineaEdad.setIcon(LineaNombreImage);
-        lblLineaAntecedentes.setIcon(LineaNombreImage);
-        lblLineaMotivo.setIcon(LineaNombreImage);
-        lblLineaFecha.setIcon(LineaNombreImage);
 
         //Deshabilitar campos de la Vista previa
         txtNombrePane.setEditable(false);
@@ -589,14 +581,6 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         jLabel32 = new javax.swing.JLabel();
         txtFechaPane = new javax.swing.JTextField();
         jLabel33 = new javax.swing.JLabel();
-        lblLineaNombre = new javax.swing.JLabel();
-        lblLineaApellido = new javax.swing.JLabel();
-        lblLineaEdad = new javax.swing.JLabel();
-        lblLineaFecha = new javax.swing.JLabel();
-        lblLineaDireccion = new javax.swing.JLabel();
-        lblLineaTelefono = new javax.swing.JLabel();
-        lblLineaAntecedentes = new javax.swing.JLabel();
-        lblLineaMotivo = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
         txtId = new javax.swing.JLabel();
 
@@ -894,101 +878,77 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
         jLabel24.setText("Cel.: 995-302-877");
         jPanel2.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 170, 100, 20));
 
-        txtNombrePane.setBackground(new java.awt.Color(255, 255, 255));
+        txtNombrePane.setBackground(new java.awt.Color(238, 238, 238));
         txtNombrePane.setBorder(null);
-        jPanel2.add(txtNombrePane, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 140, 13));
+        jPanel2.add(txtNombrePane, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 220, 130, 20));
 
         jLabel18.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 10)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(51, 51, 51));
         jLabel18.setText("Nombre:");
-        jPanel2.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 50, -1));
+        jPanel2.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 50, 20));
 
-        txtApellidoPane.setBackground(new java.awt.Color(255, 255, 255));
+        txtApellidoPane.setBackground(new java.awt.Color(238, 238, 238));
         txtApellidoPane.setBorder(null);
-        jPanel2.add(txtApellidoPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 220, 210, 13));
+        jPanel2.add(txtApellidoPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 220, 200, 20));
 
         jLabel27.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 10)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(51, 51, 51));
         jLabel27.setText("Apellido:");
-        jPanel2.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 220, 50, -1));
+        jPanel2.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 220, 50, 20));
 
-        txtEdadPane.setBackground(new java.awt.Color(255, 255, 255));
+        txtEdadPane.setBackground(new java.awt.Color(238, 238, 238));
         txtEdadPane.setBorder(null);
-        jPanel2.add(txtEdadPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 220, 40, 13));
+        jPanel2.add(txtEdadPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 220, 30, 20));
 
         jLabel28.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 10)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(51, 51, 51));
         jLabel28.setText("Edad:");
-        jPanel2.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 220, 30, -1));
+        jPanel2.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 220, 30, 20));
 
-        txtTelefonoPane.setBackground(new java.awt.Color(255, 255, 255));
+        txtTelefonoPane.setBackground(new java.awt.Color(238, 238, 238));
         txtTelefonoPane.setBorder(null);
-        jPanel2.add(txtTelefonoPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 250, 120, 13));
+        jPanel2.add(txtTelefonoPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 250, 110, 20));
 
         jLabel29.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 10)); // NOI18N
         jLabel29.setForeground(new java.awt.Color(51, 51, 51));
         jLabel29.setText("Telefono:");
-        jPanel2.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 250, 70, -1));
+        jPanel2.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 250, 70, 20));
 
-        txtDireccionPane.setBackground(new java.awt.Color(255, 255, 255));
+        txtDireccionPane.setBackground(new java.awt.Color(238, 238, 238));
         txtDireccionPane.setBorder(null);
-        jPanel2.add(txtDireccionPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 250, 320, 13));
+        jPanel2.add(txtDireccionPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 310, 20));
 
         jLabel30.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 10)); // NOI18N
         jLabel30.setForeground(new java.awt.Color(51, 51, 51));
         jLabel30.setText("Direccion:");
-        jPanel2.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 50, -1));
+        jPanel2.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 50, 20));
 
         jLabel31.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 10)); // NOI18N
         jLabel31.setForeground(new java.awt.Color(51, 51, 51));
         jLabel31.setText("Antecedentes:");
-        jPanel2.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 80, -1));
+        jPanel2.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 80, 20));
 
-        txtAntecedentesPane.setBackground(new java.awt.Color(255, 255, 255));
+        txtAntecedentesPane.setBackground(new java.awt.Color(238, 238, 238));
         txtAntecedentesPane.setBorder(null);
-        jPanel2.add(txtAntecedentesPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 280, 490, 13));
+        jPanel2.add(txtAntecedentesPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 280, 490, 20));
 
-        txtMotivoPane.setBackground(new java.awt.Color(255, 255, 255));
+        txtMotivoPane.setBackground(new java.awt.Color(238, 238, 238));
         txtMotivoPane.setBorder(null);
-        jPanel2.add(txtMotivoPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 310, 360, 13));
+        jPanel2.add(txtMotivoPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 310, 360, 20));
 
         jLabel32.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 10)); // NOI18N
         jLabel32.setForeground(new java.awt.Color(51, 51, 51));
         jLabel32.setText("Motivo:");
-        jPanel2.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, 50, -1));
+        jPanel2.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, 50, 20));
 
-        txtFechaPane.setBackground(new java.awt.Color(255, 255, 255));
+        txtFechaPane.setBackground(new java.awt.Color(238, 238, 238));
         txtFechaPane.setBorder(null);
-        jPanel2.add(txtFechaPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 310, 110, 13));
+        jPanel2.add(txtFechaPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 310, 110, 20));
 
         jLabel33.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 10)); // NOI18N
         jLabel33.setForeground(new java.awt.Color(51, 51, 51));
         jLabel33.setText("Fecha:");
-        jPanel2.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 310, 40, -1));
-
-        lblLineaNombre.setText("jLabel34");
-        jPanel2.add(lblLineaNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 240, 150, 2));
-
-        lblLineaApellido.setText("jLabel34");
-        jPanel2.add(lblLineaApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 240, 210, 2));
-
-        lblLineaEdad.setText("jLabel34");
-        jPanel2.add(lblLineaEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 240, 40, 2));
-
-        lblLineaFecha.setText("jLabel34");
-        jPanel2.add(lblLineaFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 330, 110, 2));
-
-        lblLineaDireccion.setText("jLabel34");
-        jPanel2.add(lblLineaDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 270, 330, 2));
-
-        lblLineaTelefono.setText("jLabel34");
-        jPanel2.add(lblLineaTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 270, 110, 2));
-
-        lblLineaAntecedentes.setText("jLabel34");
-        jPanel2.add(lblLineaAntecedentes, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 300, 480, 2));
-
-        lblLineaMotivo.setText("jLabel34");
-        jPanel2.add(lblLineaMotivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 330, 360, 2));
+        jPanel2.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 310, 40, 20));
 
         jLabel25.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 14)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(51, 51, 51));
@@ -1421,14 +1381,6 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     public javax.swing.JTextArea jtxaAntecedentes;
     public javax.swing.JTextArea jtxaMotivo;
-    private javax.swing.JLabel lblLineaAntecedentes;
-    private javax.swing.JLabel lblLineaApellido;
-    private javax.swing.JLabel lblLineaDireccion;
-    private javax.swing.JLabel lblLineaEdad;
-    private javax.swing.JLabel lblLineaFecha;
-    private javax.swing.JLabel lblLineaMotivo;
-    private javax.swing.JLabel lblLineaNombre;
-    private javax.swing.JLabel lblLineaTelefono;
     public javax.swing.JSpinner spnCantidad;
     public javax.swing.JTable tblTratamiento;
     private javax.swing.JTextArea txaDescripcion;

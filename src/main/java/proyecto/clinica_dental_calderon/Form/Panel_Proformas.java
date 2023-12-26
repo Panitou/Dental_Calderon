@@ -393,17 +393,7 @@ public class Panel_Proformas extends javax.swing.JPanel {
 
                     //Logo
                     vistaprevia_proforma.Lbllogo.setIcon(iconImagen);
-
-                    //Lineas para los campos de texto
-                    vistaprevia_proforma.lblLineaNombre.setIcon(LineaNombreImage);
-                    vistaprevia_proforma.lblLineaApellido.setIcon(LineaNombreImage);
-                    vistaprevia_proforma.lblLineaDireccion.setIcon(LineaNombreImage);
-                    vistaprevia_proforma.lblLineaTelefono.setIcon(LineaNombreImage);
-                    vistaprevia_proforma.lblLineaEdad.setIcon(LineaNombreImage);
-                    vistaprevia_proforma.lblLineaAntecedentes.setIcon(LineaNombreImage);
-                    vistaprevia_proforma.lblLineaMotivo.setIcon(LineaNombreImage);
-                    vistaprevia_proforma.lblLineaFecha.setIcon(LineaNombreImage);
-
+                    
                     // Continúa obteniendo los demás campos
                     // Actualizar los campos con los datos de la proforma
                     vistaprevia_proforma.txtId.setText(String.valueOf(id));

@@ -1,6 +1,7 @@
 package proyecto.clinica_dental_calderon.Form;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -104,12 +105,17 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         btnLimpiar.setIcon(limpiarImage);
 
         JTableHeader header = table_Pacientes.getTableHeader();
-        header.setFont(new Font("Microsoft JhengHei UI", Font.BOLD, 12));
-        table_Pacientes.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
+        header.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
         table_Pacientes.getTableHeader().setOpaque(false);
-        table_Pacientes.getTableHeader().setBackground(new Color(51, 51, 51));
+        table_Pacientes.getTableHeader().setBackground(new Color(62, 134, 203));
         table_Pacientes.getTableHeader().setForeground(Color.WHITE);
         table_Pacientes.setRowHeight(30);
+        JTableHeader tableHeader = table_Pacientes.getTableHeader();
+        
+        Dimension headerSize = header.getPreferredSize();
+        headerSize.height = 30;
+        tableHeader.setPreferredSize(headerSize);
+        tableHeader.setFont(new Font ("Microsoft YaHei UI", Font.BOLD, 13));
         abrirConexion();
         Mostrar_Datos_Tabla_Pacientes(table_Pacientes);
         deshabilitarEdicionTabla(table_Pacientes);
@@ -205,7 +211,6 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         jLabel1.setText("PACIENTES");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 350, 90));
 
-        table_Pacientes.setBackground(new java.awt.Color(207, 255, 251));
         table_Pacientes.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 12)); // NOI18N
         table_Pacientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -223,6 +228,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         table_Pacientes.setMinimumSize(new java.awt.Dimension(600, 100));
         table_Pacientes.setRowHeight(25);
         table_Pacientes.setSelectionForeground(new java.awt.Color(51, 51, 51));
+        table_Pacientes.setShowHorizontalLines(true);
         table_Pacientes.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(table_Pacientes);
 

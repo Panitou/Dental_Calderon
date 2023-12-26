@@ -1,5 +1,8 @@
 package proyecto.clinica_dental_calderon.Form;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +13,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import proyecto.clinica_dental_calderon.DB.Conexion;
 
 /*
@@ -28,6 +32,32 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
 
     public Panel_Tratamientos() throws SQLException {
         initComponents();
+
+        JTableHeader header = tableTratamientos.getTableHeader();
+        header.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 12));
+
+        //Width
+        tableTratamientos.getColumnModel().getColumn(0).setPreferredWidth(20); // N°
+        tableTratamientos.getColumnModel().getColumn(1).setPreferredWidth(60); // Tratamiento
+        tableTratamientos.getColumnModel().getColumn(2).setPreferredWidth(120); // Descripción
+        tableTratamientos.getColumnModel().getColumn(3).setPreferredWidth(120); // Fecha De Creación
+        tableTratamientos.getColumnModel().getColumn(4).setPreferredWidth(50); // Costo
+        tableTratamientos.getColumnModel().getColumn(5).setPreferredWidth(220); //Estado de la deuda
+        tableTratamientos.getColumnModel().getColumn(6).setPreferredWidth(90); //Estado del tratamiento 
+        tableTratamientos.getColumnModel().getColumn(7).setPreferredWidth(30); //Estado del tratamiento 
+        tableTratamientos.getColumnModel().getColumn(8).setPreferredWidth(80); //Estado del tratamiento 
+        tableTratamientos.getColumnModel().getColumn(9).setPreferredWidth(80); //Estado del tratamiento 
+
+        tableTratamientos.getTableHeader().setOpaque(false);
+        tableTratamientos.getTableHeader().setBackground(new Color(62, 134, 203));
+        tableTratamientos.getTableHeader().setForeground(Color.WHITE);
+        tableTratamientos.setRowHeight(30);
+        JTableHeader tableHeader = tableTratamientos.getTableHeader();
+
+        Dimension headerSize = header.getPreferredSize();
+        headerSize.height = 30;
+        tableHeader.setPreferredSize(headerSize);
+        tableHeader.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 13));
         btnActualizar.setIcon(actualizarImagen);
         Mostrar_Datos_Tabla();
     }
@@ -172,7 +202,6 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
         });
         jPanel1.add(btn_ActualizarEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 220, 200, 40));
 
-        btnActualizar.setBackground(new java.awt.Color(255, 255, 255));
         btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
         btnActualizar.setBorder(null);
@@ -183,6 +212,7 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
         });
         jPanel1.add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 20, 32, 32));
 
+        tableTratamientos.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 12)); // NOI18N
         tableTratamientos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null, null, null},
@@ -194,6 +224,10 @@ public class Panel_Tratamientos extends javax.swing.JPanel {
                 "N°", "Dni", "Nombre", "Apellido", "Odontologo", "Tratamiento", "Fecha de creación", "Costo", "Estado de la deuda", "Estado del tratamiento"
             }
         ));
+        tableTratamientos.setFocusable(false);
+        tableTratamientos.setRowHeight(25);
+        tableTratamientos.setShowHorizontalLines(true);
+        tableTratamientos.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(tableTratamientos);
 
         jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 1330, 480));
