@@ -150,7 +150,7 @@ public final class F_Login extends javax.swing.JFrame {
         lblTeam = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Clínica Dental Calderón (LOGIN)");
+        setTitle("Clínica Dental Calderón");
         setIconImages(null);
         setMinimumSize(new java.awt.Dimension(590, 423));
         setName("Clínica Dental Calderón"); // NOI18N
