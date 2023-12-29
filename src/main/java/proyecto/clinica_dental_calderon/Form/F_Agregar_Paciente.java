@@ -16,12 +16,8 @@ import proyecto.clinica_dental_calderon.DB.Conexion;
  */
 public class F_Agregar_Paciente extends javax.swing.JFrame {
 
-    Panel_Pacientes pacientes;
-
     public F_Agregar_Paciente() throws SQLException {
         initComponents();
-
-        pacientes = new Panel_Pacientes();
 
         this.setResizable(false);
         this.setLocationRelativeTo(null);
@@ -282,19 +278,18 @@ public class F_Agregar_Paciente extends javax.swing.JFrame {
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
-                // Cerrar recursos (PreparedStatement, Connection, etc.)
                 if (ps != null) {
                     try {
                         ps.close();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(F_Agregar_Paciente.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
                 if (c != null) {
                     try {
                         c.close();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(F_Agregar_Paciente.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
@@ -307,8 +302,10 @@ public class F_Agregar_Paciente extends javax.swing.JFrame {
             public void run() {
                 try {
                     new F_Agregar_Paciente().setVisible(true);
+
                 } catch (SQLException ex) {
-                    Logger.getLogger(F_Agregar_Paciente.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(F_Agregar_Paciente.class
+                            .getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });

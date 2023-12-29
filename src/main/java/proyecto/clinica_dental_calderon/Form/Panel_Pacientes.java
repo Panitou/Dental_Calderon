@@ -344,6 +344,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         } catch (SQLException ex) {
             Logger.getLogger(Panel_Pacientes.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }//GEN-LAST:event_btnAgregarPacienteActionPerformed
 
     private void btnEditar_Datos_PacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditar_Datos_PacienteActionPerformed

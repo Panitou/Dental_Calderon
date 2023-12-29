@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -242,15 +244,20 @@ public class F_Cancelar_Deuda extends javax.swing.JFrame {
                     e.printStackTrace();
                     JOptionPane.showMessageDialog(this, "Error al actualizar el estado de pago.");
                 } finally {
-                    try {
-                        if (ps != null) {
+
+                    if (ps != null) {
+                        try {
                             ps.close();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(F_Cancelar_Deuda.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        if (c != null) {
+                    }
+                    if (c != null) {
+                        try {
                             c.close();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(F_Cancelar_Deuda.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
                     }
                 }
             }
@@ -275,21 +282,26 @@ public class F_Cancelar_Deuda extends javax.swing.JFrame {
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
-                try {
-                    if (ps != null) {
+                if (ps != null) {
+                    try {
                         ps.close();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(F_Cancelar_Deuda.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    if (c != null) {
-                        c.close();
-                    }
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
                 }
+                if (c != null) {
+                    try {
+                        c.close();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(F_Cancelar_Deuda.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
             }
         }
     }//GEN-LAST:event_btnPagarActionPerformed
 
-    private void insertarHistorialPagos(int id_tratamiento, double dineroIngresado) {
+    private void insertarHistorialPagos(int id_tratamiento, double dineroIngresado) throws SQLException {
         // Obtener la fecha y hora actual
         Date fechaActual = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -319,16 +331,14 @@ public class F_Cancelar_Deuda extends javax.swing.JFrame {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al insertar en el historial de pagos.");
         } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (c != null) {
-                    c.close();
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+
+            if (ps != null) {
+                ps.close();
             }
+            if (c != null) {
+                c.close();
+            }
+
         }
     }
 
