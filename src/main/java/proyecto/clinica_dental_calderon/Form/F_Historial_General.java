@@ -1,5 +1,6 @@
 package proyecto.clinica_dental_calderon.Form;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,11 +10,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import org.apache.poi.ss.usermodel.Cell;
+import javax.swing.JFileChooser;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -204,35 +203,50 @@ public class F_Historial_General extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLimpiarFiltrosActionPerformed
 
     private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
-        try {
-            Workbook workbook = new XSSFWorkbook(); // Crear un libro Excel
-            Sheet hoja = workbook.createSheet("Datos"); // Crear una hoja
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Guardar archivo"); // Título del diálogo
+        fileChooser.setSelectedFile(new File("tabla_exportada.xlsx")); // Nombre predeterminado del archivo
 
-            TableModel modelo = tblRegistroGeneral.getModel();
-            int rowCount = modelo.getRowCount();
-            int colCount = modelo.getColumnCount();
+        int userSelection = fileChooser.showSaveDialog(this);
 
-            Row headerRow = hoja.createRow(0); // Crear la fila de encabezados
-            for (int j = 0; j < colCount; j++) {
-                headerRow.createCell(j).setCellValue(modelo.getColumnName(j)); // Establecer los nombres de las columnas como encabezados
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+
+            // Verificar si el nombre del archivo tiene la extensión .xlsx
+            if (!fileToSave.getName().toLowerCase().endsWith(".xlsx")) {
+                fileToSave = new File(fileToSave.getParentFile(), fileToSave.getName() + ".xlsx");
             }
 
-            for (int i = 0; i < rowCount; i++) {
-                Row row = hoja.createRow(i + 1); // Crear filas para los datos
+            try {
+                Workbook workbook = new XSSFWorkbook(); // Crear un libro Excel
+                Sheet hoja = workbook.createSheet("Datos"); // Crear una hoja
+
+                TableModel modelo = tblRegistroGeneral.getModel();
+                int rowCount = modelo.getRowCount();
+                int colCount = modelo.getColumnCount();
+
+                Row headerRow = hoja.createRow(0); // Crear la fila de encabezados
                 for (int j = 0; j < colCount; j++) {
-                    Object valorCelda = modelo.getValueAt(i, j); // Obtener el valor de la celda
-                    row.createCell(j).setCellValue(valorCelda != null ? valorCelda.toString() : ""); // Establecer el valor en la celda
+                    headerRow.createCell(j).setCellValue(modelo.getColumnName(j)); // Establecer los nombres de las columnas como encabezados
                 }
-            }
 
-            // Guardar el libro Excel
-            try (FileOutputStream fileOut = new FileOutputStream("tabla_exportada.xlsx")) {
-                workbook.write(fileOut);
-            }
+                for (int i = 0; i < rowCount; i++) {
+                    Row row = hoja.createRow(i + 1); // Crear filas para los datos
+                    for (int j = 0; j < colCount; j++) {
+                        Object valorCelda = modelo.getValueAt(i, j); // Obtener el valor de la celda
+                        row.createCell(j).setCellValue(valorCelda != null ? valorCelda.toString() : ""); // Establecer el valor en la celda
+                    }
+                }
 
-            workbook.close(); // Cerrar el libro Excel
-        } catch (IOException e) {
-            e.printStackTrace();
+                // Guardar el libro Excel en la ubicación seleccionada por el usuario
+                try (FileOutputStream fileOut = new FileOutputStream(fileToSave)) {
+                    workbook.write(fileOut);
+                }
+
+                workbook.close(); // Cerrar el libro Excel
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }//GEN-LAST:event_btnExportarActionPerformed
 
