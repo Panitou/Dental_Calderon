@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -84,36 +85,35 @@ public class Panel_Pacientes extends javax.swing.JPanel {
 
         final int MAX_DIGITS = 15;
 
-        txtBuscar.setDocument(new PlainDocument() {
-            @Override
-            public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-                if (str == null) {
-                    return;
-                }
-
-                String currentText = getText(0, getLength());
-                int totalLength = currentText.length() + str.length();
-
-                if (totalLength <= MAX_DIGITS && str.matches("\\d+")) {
-                    super.insertString(offs, str, a);
-                }
-            }
-
-            @Override
-            public void replace(int offs, int length, String str, AttributeSet a) throws BadLocationException {
-                if (str == null) {
-                    return;
-                }
-
-                String currentText = getText(0, getLength());
-                int totalLength = currentText.length() - length + str.length();
-
-                if (totalLength <= MAX_DIGITS && str.matches("\\d+")) {
-                    super.replace(offs, length, str, a);
-                }
-            }
-        });
-
+//        txtBuscar.setDocument(new PlainDocument() {
+//            @Override
+//            public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+//                if (str == null) {
+//                    return;
+//                }
+//
+//                String currentText = getText(0, getLength());
+//                int totalLength = currentText.length() + str.length();
+//
+//                if (totalLength <= MAX_DIGITS && str.matches("\\d+")) {
+//                    super.insertString(offs, str, a);
+//                }
+//            }
+//
+//            @Override
+//            public void replace(int offs, int length, String str, AttributeSet a) throws BadLocationException {
+//                if (str == null) {
+//                    return;
+//                }
+//
+//                String currentText = getText(0, getLength());
+//                int totalLength = currentText.length() - length + str.length();
+//
+//                if (totalLength <= MAX_DIGITS && str.matches("\\d+")) {
+//                    super.replace(offs, length, str, a);
+//                }
+//            }
+//        });
         //imagenes
         btnActualizar.setIcon(actualizarImagen);
         btnBuscar.setIcon(buscarImagen);
@@ -242,7 +242,6 @@ public class Panel_Pacientes extends javax.swing.JPanel {
         table_Pacientes.setRowHeight(25);
         table_Pacientes.setSelectionForeground(new java.awt.Color(51, 51, 51));
         table_Pacientes.setShowGrid(true);
-        table_Pacientes.setShowHorizontalLines(true);
         table_Pacientes.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(table_Pacientes);
 
@@ -322,7 +321,7 @@ public class Panel_Pacientes extends javax.swing.JPanel {
 
         jLabel3.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(62, 134, 203));
-        jLabel3.setText("BUSCAR POR DNI");
+        jLabel3.setText("BUSQUEDA");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 200, 170, 20));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -479,17 +478,28 @@ public class Panel_Pacientes extends javax.swing.JPanel {
     }//GEN-LAST:event_btnCopiar_DniActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        String dniBusqueda = txtBuscar.getText().trim();
+        String busqueda = txtBuscar.getText().trim().toLowerCase();
 
         DefaultTableModel model = (DefaultTableModel) table_Pacientes.getModel();
         TableRowSorter<DefaultTableModel> rowSorter = new TableRowSorter<>(model);
         table_Pacientes.setRowSorter(rowSorter);
 
-        if (dniBusqueda.length() == 0) {
+        if (busqueda.length() == 0) {
             rowSorter.setRowFilter(null);
         } else {
-            // Crear un filtro para el DNI en la columna correspondiente (supongamos que es la columna 3)
-            rowSorter.setRowFilter(RowFilter.regexFilter(dniBusqueda, 3));
+            RowFilter<DefaultTableModel, Object> filtroNombre = RowFilter.regexFilter("(?i)" + busqueda, 1); // Columna del nombre
+            RowFilter<DefaultTableModel, Object> filtroApellido = RowFilter.regexFilter("(?i)" + busqueda, 2); // Columna del apellido
+            RowFilter<DefaultTableModel, Object> filtroDNI = RowFilter.regexFilter(busqueda, 3); // Columna del DNI
+
+            // Aplicar filtros individualmente
+            ArrayList<RowFilter<DefaultTableModel, Object>> filtros = new ArrayList<>();
+            filtros.add(filtroNombre);
+            filtros.add(filtroApellido);
+            filtros.add(filtroDNI);
+
+            // Combinar los resultados de los filtros
+            RowFilter<DefaultTableModel, Object> filtroCombinado = RowFilter.orFilter(filtros);
+            rowSorter.setRowFilter(filtroCombinado);
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 

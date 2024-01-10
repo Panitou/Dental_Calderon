@@ -1014,7 +1014,7 @@ public class F_Nueva_Proforma extends javax.swing.JFrame {
 
             // Agregar tratamiento y descripción en una nueva línea
             tablaTratamientos.append("<tr>")
-                    .append("<td>").append(tratamiento).append("(").append(descripcion).append(")</td>")
+                    .append("<td>").append(tratamiento).append(" (").append(descripcion).append(")</td>")
                     .append("<td>").append(cantidad).append("</td>")
                     .append("<td>").append(costoUnitario).append("</td>")
                     .append("<td>").append(costoTotal).append("</td>")

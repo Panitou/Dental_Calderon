@@ -334,7 +334,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="cb" green="86" red="3e" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="BUSCAR POR DNI"/>
+            <Property name="text" type="java.lang.String" value="BUSQUEDA"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">

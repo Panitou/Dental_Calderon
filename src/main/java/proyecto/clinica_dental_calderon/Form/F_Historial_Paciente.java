@@ -72,17 +72,17 @@ public class F_Historial_Paciente extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setText("MONTO A PAGAR:");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 20, 130, 30));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 20, 130, 30));
 
         lblMontoTotal.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jPanel1.add(lblMontoTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 20, 50, 30));
+        jPanel1.add(lblMontoTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 20, 70, 30));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setText("MONTO RESTANTE:");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 60, 140, 30));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 60, 140, 30));
 
         lblMontoRestante.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jPanel1.add(lblMontoRestante, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 60, 50, 30));
+        jPanel1.add(lblMontoRestante, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 60, 70, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
